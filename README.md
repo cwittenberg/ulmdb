@@ -13,6 +13,28 @@ IPv4/IPv6 CIDR indexes and optional backends for different workloads. It support
 ordered scans, named databases and duplicate values on disk or a RAM drive.
 Its LMDB adapter provides compatible API calls and imports existing LMDB data. It is capable of serving as drop-in replacement to where LMDB is used today.
 
+## Architecture
+
+```mermaid
+flowchart TD
+    Rust["Rust · ulmdb / ulmdb-rs"] --> Engine["Engine · ulmdb<br/>catalog · transactions · snapshots"]
+    Clients["C · C++ · Python · PHP · Node.js"] --> ABI["C ABI · libulmdb_c"]
+    LMDB["LMDB applications"] --> Adapter["LMDB adapter · liblmdb"]
+    Adapter --> ABI
+    ABI --> Engine
+
+    Engine --> KV["Ordered KV · duplicates<br/>ulmdb-kv"]
+    Engine --> IP["IPv4 / IPv6 indexes<br/>ulmdb-prefix"]
+    Engine --> Storage["Persistence · ulmdb-storage<br/>immutable files · memory maps · WAL"]
+    KV --> Core["Storage traits · types<br/>ulmdb-core"]
+    IP --> Core
+    Storage --> Core
+    Storage --> OS["Native I/O · locks · sync<br/>ulmdb-platform"]
+
+    Rust -. "snapshot-log feature · Linux" .-> Log["Snapshot-log backend<br/>own KV index · versioned snapshots"]
+    Log --> Storage
+```
+
 ## Performance
 
 ### ULMDB vs LMDB vs SQLite
