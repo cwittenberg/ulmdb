@@ -447,7 +447,7 @@
       "milestone": "M7",
       "priority": "P2",
       "sources": [
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -494,7 +494,7 @@
       "milestone": "M7",
       "priority": "P2",
       "sources": [
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -541,7 +541,7 @@
       "milestone": "M7",
       "priority": "P2",
       "sources": [
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -589,7 +589,7 @@
       "milestone": "M6",
       "priority": "P2",
       "sources": [
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -636,7 +636,7 @@
       "milestone": "M8",
       "priority": "P2",
       "sources": [
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -683,7 +683,7 @@
       "milestone": "M8",
       "priority": "P2",
       "sources": [
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -730,7 +730,7 @@
       "milestone": "M8",
       "priority": "P2",
       "sources": [
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -776,7 +776,7 @@
       "milestone": "M8",
       "priority": "P2",
       "sources": [
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -822,7 +822,7 @@
       "milestone": "M8",
       "priority": "P2",
       "sources": [
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -1137,7 +1137,7 @@
       "priority": "P1",
       "sources": [
         "clients/c/src/environment.rs",
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"
@@ -2927,7 +2927,7 @@
       "priority": "P3",
       "sources": [
         "crates/ulmdb-storage/src/mapping.rs",
-        "benchmark/support/lmdb/vendor/lmdb.h"
+        "support/lmdb/vendor/lmdb.h"
       ],
       "backends": [
         "adapter-file"

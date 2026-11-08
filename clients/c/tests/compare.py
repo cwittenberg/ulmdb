@@ -2,7 +2,7 @@
 """Compile one unchanged C scenario against ULMDB and pinned upstream LMDB.
 
 Run from any directory. Requires Python >=3.11, a C compiler, Cargo, and the
-vendored pinned LMDB source in benchmark/support/lmdb/vendor. No download
+vendored pinned LMDB source in support/lmdb/vendor. No download
 or installation is performed. All scenarios use separate temporary directories.
 """
 
@@ -31,7 +31,7 @@ def run(command: list[str], **kwargs: object) -> subprocess.CompletedProcess[str
 def pinned_lmdb(source: Path) -> Path:
     if (source / "libraries/liblmdb").is_dir():
         source = source / "libraries/liblmdb"
-    pins = tomllib.loads((ROOT / "benchmark/support/lmdb/source.toml").read_text())
+    pins = tomllib.loads((ROOT / "support/lmdb/source.toml").read_text())
     pin = next(item for item in pins["sources"] if item["id"] == "LMDB")
     for item in pin["files"]:
         path = source / Path(item["path"]).name
@@ -50,7 +50,7 @@ def main() -> None:
     parser.add_argument("--library", type=Path, default=None, help="ULMDB shared library (default: target/debug/libulmdb_c.so)")
     parser.add_argument(
         "--lmdb-source", type=Path,
-        default=Path(os.environ.get("ULMDB_LMDB_SOURCE", ROOT / "benchmark/support/lmdb/vendor")),
+        default=Path(os.environ.get("ULMDB_LMDB_SOURCE", ROOT / "support/lmdb/vendor")),
         help="Pinned LMDB checkout or its libraries/liblmdb directory",
     )
     args = parser.parse_args()

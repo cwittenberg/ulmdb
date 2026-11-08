@@ -389,7 +389,7 @@ def main() -> None:
     args.package = args.package or args.source_root / "target/lmdb-ulmdb"
     args.archive = args.archive or args.source_root / "target/debug/libulmdb_c.a"
     args.suite_root = (args.suite_root or args.source_root / "clients/lmdb-ulmdb/tests").resolve()
-    args.lmdb_source = (args.lmdb_source or args.source_root / "benchmark/support/lmdb/vendor").resolve()
+    args.lmdb_source = (args.lmdb_source or args.source_root / "support/lmdb/vendor").resolve()
     for name in ("package", "archive", "output", "legacy_source"):
         setattr(args, name, getattr(args, name).resolve())
     if args.rollback_source:

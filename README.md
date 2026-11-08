@@ -55,8 +55,6 @@ Batch-write rates count rows, including all 64 puts per batch-64 transaction.
 | RAM · ordered scan | 82,614,113 | 62,070,422 | +33.10% | 5/5 |
 | RAM · new-key inserts, batch 256 | 866,452 | 850,213 | +1.91% | 3/5 |
 
-![ULMDB throughput relative to LMDB](benchmark/graphs/snapshot-log-comparison.svg)
-
 Durable single-write latency: **25.14 µs mean / 42.54 µs p99**, versus
 63.40 µs / 322.02 µs for LMDB. Each value is the median of five per-run values.
 
@@ -70,6 +68,23 @@ These results use the optional `snapshot-log` feature and
 `ulmdb::snapshot_log::Environment`, with versioned values and exact lookup.
 The default `Environment` uses Legacy and has different performance.
 [Full results and configuration](benchmark/snapshot-log-20261108/REPORT.md).
+
+### ULMDB vs LMDB vs SQLite
+
+Separate Resident results from 5 November 2026: **1.67× LMDB and 6.10x SQLite
+read throughput**. One million keys, 1,000 writes per durable transaction.
+Operations per second, geometric means of three runs. SQLite uses WAL with
+`synchronous=FULL`.
+
+| Operation | ULMDB/s | LMDB/s | SQLite/s | ULMDB / SQLite |
+| --- | ---: | ---: | ---: | ---: |
+| Load | 1,396,940 | 1,539,753 | 817,306 | 1.71x |
+| Read | 2,776,989 | 1,660,288 | 455,490 | 6.10x |
+| Update | 145,257 | 128,143 | 58,247 | 2.49x |
+
+![ULMDB, LMDB and SQLite throughput](benchmark/graphs/resident-three-way-20261105.svg)
+
+[Full three-way comparison](benchmark/ULMDB_VS_LMDB_VS_SQLITE.md).
 
 ## Get started
 
@@ -148,6 +163,17 @@ flowchart LR
     Rust -.-> Snapshot --> Journal
 ```
 
+## Influential research
+Below references have been meaningful to performance, architecture and design of ULMDB
+
+- [How to Write to SSDs (PVLDB 2026)](https://www.vldb.org/pvldb/vol19/p1469-lee.pdf)
+- [An Evaluation of B-tree Compression Techniques (VLDB Journal 2026)](https://cs.purdue.edu/homes/csjgwang/pubs/VLDBJ26_BtreeCompression.pdf)
+- [B-Trees Are Back: Engineering Fast and Pageable Node Layouts (SIGMOD 2025)](https://www.cs.cit.tum.de/fileadmin/w00cfj/dis/papers/btrees-are-back.pdf)
+- [Moving on From Group Commit: Autonomous Commit Enables High Throughput and Low Latency on NVMe SSDs (SIGMOD 2025)](https://www.cs.cit.tum.de/fileadmin/w00cfj/dis/papers/latency.pdf)
+- [PermART (SIGMOD 2026)](https://cs.uwaterloo.ca/~kdaudjee/Daudjee-PermART.pdf)
+- [xNVMe (CIDR 2026)](https://www.vldb.org/cidrdb/papers/2026/p6-houlborg.pdf)
+- [Bf-Tree (PVLDB 2024)](https://www.vldb.org/pvldb/vol17/p3442-hao.pdf)
+- [FastCommit (USENIX ATC 2024)](https://www.usenix.org/conference/atc24/presentation/shirwadkar)
 
 ## LMDB compatibility
 

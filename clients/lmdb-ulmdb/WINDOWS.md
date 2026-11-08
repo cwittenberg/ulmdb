@@ -7,7 +7,7 @@
 rustup target add x86_64-pc-windows-gnu
 cargo build --locked --release -p ulmdb-c --target x86_64-pc-windows-gnu
 python3 clients/lmdb-ulmdb/build_windows_tools.py \
-  --modern-source benchmark/support/lmdb/vendor \
+  --modern-source support/lmdb/vendor \
   --legacy-source "$HOME/.cache/ulmdb-compat/lmdb-0.9.31" \
   --dll target/x86_64-pc-windows-gnu/release/ulmdb_c.dll \
   --import-library target/x86_64-pc-windows-gnu/release/libulmdb_c.dll.a \

@@ -162,7 +162,7 @@ class Run:
         pins = json.loads((HERE / 'reference_pins.json').read_text())['references']
         paths = {'0.9.31': self.args.legacy_source or Path.home() / '.cache/ulmdb-compat/lmdb-0.9.31',
                  '0.9.36': self.args.current09_source or Path.home() / '.cache/ulmdb-compat/lmdb-0.9.36',
-                 '1.0.2': self.args.lmdb_source or self.root / 'benchmark/support/lmdb/vendor'}
+                 '1.0.2': self.args.lmdb_source or self.root / 'support/lmdb/vendor'}
         for version in VERSIONS:
             folder = self.output / 'references' / version
             source = folder / 'source'

@@ -15,7 +15,7 @@ KIND = "native-test"
 HASH = re.compile(r"[0-9a-f]{64}\Z")
 MARKER = re.compile(r"CASE_PASS test=([A-Za-z0-9_:]+) backend=([a-z0-9-]+)")
 SOURCE_ROOTS = ["Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "crates", "clients/c",
-                "clients/lmdb-ulmdb", "benchmark/support/lmdb/vendor"]
+                "clients/lmdb-ulmdb", "support/lmdb/vendor"]
 EXTRA_INPUTS = {"clients/lmdb-ulmdb/qualification/native_cases.json",
                 "clients/lmdb-ulmdb/qualification/native_evidence.py",
                 "clients/lmdb-ulmdb/qualification/run_native.py"}

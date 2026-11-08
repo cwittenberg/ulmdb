@@ -332,14 +332,14 @@ verified pages against the destination's existing cursor. `baseline` validates
 a new-realm candidate while preserving the source; it does not switch a service's
 active handle. CLI realms are decimal integers.
 
-The [candidate probe](../../benchmark/IPDON_CANDIDATES_RESULTS.json) verifies
+The local candidate probe report, `benchmark/IPDON_CANDIDATES_RESULTS.json`, verifies
 paged results against a complete fixture for both address families, including
 expired/future scan charges, duplicate batch accounting, false/unknown fields,
 explicit resumable truncation and zero result capacity for stale-only pages.
-The [integration qualification](../../benchmark/IPDON_INTEGRATION_QUALIFICATION.json)
+The local integration report, `benchmark/IPDON_INTEGRATION_QUALIFICATION.json`,
 records checks for the new APIs and the native CLI journey.
 
-The [retained synthetic report](../../benchmark/IPDON_REGIONAL_RESULTS.json)
+The local synthetic report, `benchmark/IPDON_REGIONAL_RESULTS.json`,
 uses 1,024 mixed IPv4/IPv6 RRsets with four members each and 2,048 field claims.
 Independent cases verify identical seed events and logical results after reopen.
 Compact RRset refreshes use 36.5% fewer encoded journal bytes than full

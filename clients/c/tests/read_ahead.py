@@ -187,7 +187,7 @@ def main():
     p.add_argument('--output',type=Path,default=ROOT/'target/read-ahead-qualification'/f'{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}-{os.getpid()}')
     p.add_argument('--legacy-source',type=Path,default=Path.home()/'.cache/ulmdb-compat/lmdb-0.9.31')
     p.add_argument('--current09-source',type=Path,default=Path.home()/'.cache/ulmdb-compat/lmdb-0.9.36')
-    p.add_argument('--lmdb-source',type=Path,default=ROOT/'benchmark/support/lmdb/vendor')
+    p.add_argument('--lmdb-source',type=Path,default=ROOT/'support/lmdb/vendor')
     p.add_argument('--backend-init',type=Path);p.add_argument('--backend-init-provenance',type=Path)
     p.add_argument('--timeout',type=int,default=60)
     a=p.parse_args();require(a.timeout>0,'positive timeout required');require(bool(a.backend_init)==bool(a.backend_init_provenance),'initializer and provenance must be supplied together')

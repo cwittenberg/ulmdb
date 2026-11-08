@@ -149,9 +149,10 @@ class SourceFingerprintInputs(unittest.TestCase):
                 '.dockerignore': b'**\n',
                 'utility/explorer/src/main.rs': b'const B: &[u8] = include_bytes!("banner.bin");',
                 'utility/explorer/src/banner.bin': b'embedded build input',
+                'support/lmdb/source.toml': b'schema = 1\n',
             }
             excluded = {
-                'benchmark/support/lmdb/vendor/mdb.c': b'pinned separately',
+                'support/lmdb/vendor/mdb.c': b'pinned separately',
                 'clients/lmdb-ulmdb/conformance/receipt.json': b'{}',
                 'clients/node/build/ulmdb.node': b'generated native binary',
             }

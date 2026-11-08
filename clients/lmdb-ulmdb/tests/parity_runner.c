@@ -378,7 +378,7 @@ int main(int argc, char **argv) {
     report.directory = path_join(root, "clients/lmdb-ulmdb/conformance");
     const char *home = getenv("HOME"); require(home != NULL, "HOME needed for source cache defaults");
     char *modern = getenv("ULMDB_LMDB_SOURCE") ? absolute_path(getenv("ULMDB_LMDB_SOURCE")) :
-        path_join(root, "benchmark/support/lmdb/vendor");
+        path_join(root, "support/lmdb/vendor");
     char *legacy = path_join(home, ".cache/ulmdb-compat/lmdb-0.9.31");
     char *current09 = path_join(home, ".cache/ulmdb-compat/lmdb-0.9.36");
     int explicit_report = 0;

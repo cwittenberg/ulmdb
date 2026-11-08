@@ -524,7 +524,7 @@ int main(int argc, char **argv) {
     const char *home = getenv("HOME");
     require(home != NULL, "HOME is needed for default cached source paths");
     const char *modern_env = getenv("ULMDB_LMDB_SOURCE");
-    char *modern_default = modern_env ? absolute_path(modern_env) : path_join(suite.root, "benchmark/support/lmdb/vendor");
+    char *modern_default = modern_env ? absolute_path(modern_env) : path_join(suite.root, "support/lmdb/vendor");
     char *legacy_default = path_join(home, ".cache/ulmdb-compat/lmdb-0.9.31");
     suite.package = path_join(suite.root, "target/lmdb-ulmdb");
     suite.source[MODERN] = normalize_source(modern_default);

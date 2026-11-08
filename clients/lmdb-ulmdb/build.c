@@ -46,7 +46,7 @@ static struct options parse(int count, char **arguments) {
     if (!home) build_fail("HOME is required to locate the upstream source caches");
     struct options options = {"debug", NULL, getenv("ULMDB_LMDB_SOURCE"), NULL, 0, 0};
     options.output = build_format("%s/target/lmdb-ulmdb", ULMDB_SOURCE_ROOT);
-    if (!options.modern) options.modern = build_format("%s/benchmark/support/lmdb/vendor", ULMDB_SOURCE_ROOT);
+    if (!options.modern) options.modern = build_format("%s/support/lmdb/vendor", ULMDB_SOURCE_ROOT);
     options.legacy = build_format("%s/.cache/ulmdb-compat/lmdb-0.9.31", home);
     for (int index = 1; index < count; ++index) {
         const char *flag = arguments[index];

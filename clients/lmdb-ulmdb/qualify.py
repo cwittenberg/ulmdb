@@ -34,7 +34,7 @@ LMDB_SHA256 = "06dda0723545e14d56ac7dcd6f582d9922c2ed5e16f1c3f8d0e670a96ec2ee65"
 TOOLS = ["pip==25.0.1", "setuptools==75.8.2", "wheel==0.45.1", "cmake==3.31.6"]
 SOURCES = {
     "legacy": (HERE / "legacy-source.json", Path.home() / ".cache/ulmdb-compat/lmdb-0.9.31"),
-    "modern": (HERE / "modern-source.json", ROOT / "benchmark/support/lmdb/vendor"),
+    "modern": (HERE / "modern-source.json", ROOT / "support/lmdb/vendor"),
     "current09": (HERE / "current09-source.json", Path.home() / ".cache/ulmdb-compat/lmdb-0.9.36"),
 }
 
@@ -356,9 +356,9 @@ def source_fingerprint():
     selected = {}
     for item in sorted(paths):
         path = ROOT / item
-        # The separate performance campaign rewrites benchmark source/reports.
-        # Pinned LMDB inputs are validated independently before and after gates.
-        if item.startswith("benchmark/"):
+        # Local comparison sources/reports have separate provenance. Shared
+        # pinned LMDB inputs are validated independently before and after gates.
+        if item.startswith(("benchmark/", "support/lmdb/vendor/")):
             continue
         # Include the actual compiled C++/Node client inputs, linker map,
         # Docker context policy and any embedded explorer source assets.
