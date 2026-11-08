@@ -31,6 +31,9 @@
 .idea/
 /PERFORMANCE_PLAN.md
 *.md
+!clients/php/README.md
+!clients/c/crypto/README.md
+!clients/lmdb-ulmdb/WINDOWS.md
 
 # Keep the IPDon package's public API and recovery guide reviewable.
 !crates/ulmdb-ipdon/README.md

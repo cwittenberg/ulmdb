@@ -24,7 +24,6 @@ use std::{
     cell::UnsafeCell,
     collections::VecDeque,
     mem::size_of,
-    num::NonZeroU32,
     sync::{
         Arc, OnceLock,
         atomic::{AtomicU8, AtomicU32, AtomicU64, AtomicUsize, Ordering},
@@ -86,44 +85,20 @@ impl Default for Limits {
 /// Generation in the high word, head slot+1 in the low word; zero is invalid.
 /// Pool-local IDs are not global/source authorities. Pair heads with that same
 /// pool's Views; a foreign pool can independently use equal numeric IDs.
-#[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
-pub struct Head {
-    // Declaration order keeps ordering identical to the encoded u64: compare
-    // the high generation word before the low, one-based slot word.
-    generation: NonZeroU32,
-    slot: NonZeroU32,
-}
-impl std::fmt::Debug for Head {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_tuple("Head").field(&self.to_u64()).finish()
-    }
-}
-impl std::hash::Hash for Head {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        std::hash::Hash::hash(&self.to_u64(), state);
-    }
-}
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct Head(u64);
 impl Head {
     pub fn to_u64(self) -> u64 {
-        (u64::from(self.generation.get()) << 32) | u64::from(self.slot.get())
+        self.0
     }
     pub fn from_u64(value: u64) -> Option<Self> {
-        Some(Self {
-            generation: NonZeroU32::new((value >> 32) as u32)?,
-            slot: NonZeroU32::new(value as u32)?,
-        })
+        (value as u32 != 0 && value >> 32 != 0).then_some(Self(value))
     }
     pub fn to_le_bytes(self) -> [u8; 8] {
-        self.to_u64().to_le_bytes()
+        self.0.to_le_bytes()
     }
     pub fn from_le_bytes(bytes: [u8; 8]) -> Option<Self> {
         Self::from_u64(u64::from_le_bytes(bytes))
-    }
-    fn parts(self) -> (usize, u32) {
-        // Construction validates both nonzero words once. This removes only
-        // redundant representation checks; a View still checks pool bounds,
-        // retirement, generation, publication and visible birth on every get.
-        ((self.slot.get() - 1) as usize, self.generation.get())
     }
 }
 fn identity(index: usize, generation: u32) -> u64 {
@@ -362,7 +337,7 @@ impl View {
     }
     #[inline]
     pub fn get(&self, head: Head) -> Option<&[u8]> {
-        let (index, generation) = head.parts();
+        let (index, generation) = slot_id(head.0)?;
         let head = self.shared.head(index)?;
         let epoch = self.epoch();
         // This ordering is essential: a reused end reset synchronizes its
@@ -453,7 +428,7 @@ impl<'view> ReadCache<'view> {
     }
     #[inline]
     pub fn get(&mut self, head: Head) -> Option<&'view [u8]> {
-        let (index, generation) = head.parts();
+        let (index, generation) = slot_id(head.0)?;
         let epoch = self.epoch;
         let head = self.head(index)?;
         // Identical validation/order to View::get; cached addresses grant no
@@ -786,7 +761,7 @@ impl PoolWriter {
                 }
                 (Some(head), value) => {
                     self.current_head(head)?;
-                    self.seen.push(head.to_u64());
+                    self.seen.push(head.0);
                     retire_records += 1;
                     if value.is_some() {
                         records += 1;
@@ -848,7 +823,7 @@ impl PoolWriter {
         })
     }
     fn current_head(&self, head: Head) -> Result<u64> {
-        let (index, generation) = head.parts();
+        let (index, generation) = slot_id(head.0).ok_or(Error::StaleHandle)?;
         let slot = self.shared.head(index).ok_or(Error::StaleHandle)?;
         let link = slot.link.load(Ordering::Acquire);
         if (link >> 32) as u32 != generation
@@ -874,7 +849,7 @@ impl PoolWriter {
             slot.link
                 .store(u64::from(generation) << 32, Ordering::Release);
             slot.end.store(FOREVER, Ordering::Release);
-            return Ok(Head::from_u64(identity(index, generation)).expect("allocated valid head"));
+            return Ok(Head(identity(index, generation)));
         }
         Err(Error::LimitExceeded)
     }
@@ -966,7 +941,7 @@ impl PoolWriter {
         })
     }
     fn abort_head(&mut self, head: Head) {
-        let (index, _) = head.parts();
+        let (index, _) = slot_id(head.0).expect("private head");
         self.shared
             .head(index)
             .expect("initialized head")
@@ -1107,12 +1082,12 @@ impl Ready<'_> {
     }
     pub fn publish(mut self) -> View {
         for pending in &self.pool.pending {
-            let (head_index, generation) = pending.head.parts();
+            let (head_index, generation) = slot_id(pending.head.0).expect("prepared head");
             let head = self.pool.shared.head(head_index).expect("initialized head");
             if pending.delete {
                 head.end.store(self.epoch, Ordering::Release);
                 self.pool.retired_heads.push_back(Retired {
-                    identity: pending.head.to_u64(),
+                    identity: pending.head.0,
                     epoch: self.epoch,
                 });
                 self.pool.active_heads -= 1;
@@ -1182,36 +1157,6 @@ fn copy_heads(heads: &[Head]) -> Result<Vec<Head>> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
-    fn head_preserves_numeric_wire_order_and_hash_with_both_nonzero_words() {
-        use std::hash::{DefaultHasher, Hash, Hasher};
-        assert_eq!(size_of::<Head>(), 8);
-        assert_eq!(size_of::<Option<Head>>(), 8);
-        for invalid in [0, 1, u64::from(u32::MAX), 1 << 32, u64::MAX << 32] {
-            assert!(Head::from_u64(invalid).is_none());
-            assert!(Head::from_le_bytes(invalid.to_le_bytes()).is_none());
-        }
-        let mut encoded = [
-            u64::MAX,
-            2 << 32 | 1,
-            1 << 32 | u64::from(u32::MAX),
-            1 << 32 | 1,
-        ];
-        let mut heads = encoded.map(|value| Head::from_u64(value).unwrap());
-        for (head, value) in heads.iter().copied().zip(encoded) {
-            assert_eq!(head.to_u64(), value);
-            assert_eq!(head.to_le_bytes(), value.to_le_bytes());
-            assert_eq!(Head::from_le_bytes(head.to_le_bytes()), Some(head));
-            let mut expected = DefaultHasher::new();
-            let mut actual = DefaultHasher::new();
-            value.hash(&mut expected);
-            head.hash(&mut actual);
-            assert_eq!(expected.finish(), actual.finish());
-        }
-        encoded.sort_unstable();
-        heads.sort_unstable();
-        assert_eq!(heads.map(Head::to_u64), encoded);
-    }
     fn limits() -> Limits {
         Limits {
             max_bytes: 64 << 10,
@@ -1444,7 +1389,7 @@ mod tests {
                 )
                 .unwrap();
             let fresh = ready.heads()[0];
-            assert_eq!(fresh.to_u64() as u32, head.to_u64() as u32);
+            assert_eq!(fresh.0 as u32, head.0 as u32);
             assert_ne!(fresh, head);
             let newest = ready.publish();
             assert!(newest.get(head).is_none());
@@ -1590,7 +1535,7 @@ mod tests {
             .publish();
         drop(first);
         for epoch in (2..130).step_by(2) {
-            let guessed = Head::from_u64(stale.to_u64() + (1u64 << 32)).unwrap();
+            let guessed = Head::from_u64(stale.0 + (1u64 << 32)).unwrap();
             let fresh_deleted = std::thread::scope(|scope| {
                 let reader_view = deleted.clone();
                 let stop = Arc::new(AtomicBool::new(false));
@@ -1748,7 +1693,7 @@ mod tests {
         let (mut pool, old, heads) = PoolWriter::seed(0, &[b"inline"], l).unwrap();
         let head = heads[0];
         let mut cache = old.read_cache();
-        let (head_index, _) = head.parts();
+        let (head_index, _) = slot_id(head.0).unwrap();
         let packed = pool
             .shared
             .head(head_index)
