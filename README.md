@@ -26,7 +26,9 @@ second, geometric means of three runs. SQLite uses WAL with `synchronous=FULL`.
 | Read | 2,776,989 | 1,660,288 | 455,490 | 6.10x |
 | Update | 145,257 | 128,143 | 58,247 | 2.49x |
 
-![ULMDB, LMDB and SQLite throughput](assets/sqlite-comparison.svg)
+#### Throughput compared
+<img width="1000" height="450" alt="image" src="https://github.com/user-attachments/assets/93908d06-a911-4c23-bb9c-d17c37346ae3" />
+
 
 ### ULMDB vs LMDB
 
