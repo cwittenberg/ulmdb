@@ -1,7 +1,7 @@
 # Ultra Low-Latency Memory-Mapped Database (ULMDB) 
 **ULMDB is one of the the fastest Rust key-value databases.**
 
-**12.2 million successful lookups/second in RAM — 2.94× LMDB and 6.1× faster than SQLite in read performance**
+**12.2 million successful lookups/second in RAM. 2.94x LMDB and 6.1x faster than SQLite in read performance**
 
 **Ultra Low-latency Memory-mapped Database** is based on the design of
 the older [LMDB](https://www.symas.com/lmdb.php), an
@@ -17,7 +17,7 @@ Its LMDB adapter provides compatible API calls and imports existing LMDB data. I
 
 ### ULMDB vs LMDB vs SQLite
 
-**1.67× LMDB and 6.10× SQLite read throughput** with the Resident backend.
+**1.67× LMDB and 6.10x SQLite read throughput** with the Resident backend.
 One million keys, 1,000 writes per durable transaction. Operations per second,
 geometric means of three runs. SQLite uses WAL with `synchronous=FULL`.
 
@@ -149,7 +149,7 @@ storage while preserving the original files.
 [Compatibility limits and remaining work](clients/lmdb-ulmdb/PARITY_GAPS.md).
 
 ULMDB is experimental; production durability and full LMDB parity are not yet
-established.
+established. ipdon (an IP intelligence platform in development) is using it.
 
 More: [Engine source](crates/ulmdb) · [IPDon regional database](crates/ulmdb-ipdon/README.md) ·
 [Utilities](utility/README.md)
