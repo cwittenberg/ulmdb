@@ -17,22 +17,12 @@ Its LMDB adapter provides compatible API calls and imports existing LMDB data. I
 
 ```mermaid
 flowchart TD
-    Rust["Rust · ulmdb / ulmdb-rs"] --> Engine["Engine · ulmdb<br/>catalog · transactions · snapshots"]
-    Clients["C · C++ · Python · PHP · Node.js"] --> ABI["C ABI · libulmdb_c"]
-    LMDB["LMDB applications"] --> Adapter["LMDB adapter · liblmdb"]
-    Adapter --> ABI
-    ABI --> Engine
+    Apps["Applications<br/>Rust · C/C++ · Python · PHP · Node.js"]
+    API["Client APIs<br/>Rust API · C ABI · LMDB adapter"]
+    Engine["ULMDB engine<br/>Transactions · snapshots<br/>KV · duplicates · IPv4/IPv6"]
+    Storage["Storage<br/>Native files · memory maps · optional WAL"]
 
-    Engine --> KV["Ordered KV · duplicates<br/>ulmdb-kv"]
-    Engine --> IP["IPv4 / IPv6 indexes<br/>ulmdb-prefix"]
-    Engine --> Storage["Persistence · ulmdb-storage<br/>immutable files · memory maps · WAL"]
-    KV --> Core["Storage traits · types<br/>ulmdb-core"]
-    IP --> Core
-    Storage --> Core
-    Storage --> OS["Native I/O · locks · sync<br/>ulmdb-platform"]
-
-    Rust -. "snapshot-log feature · Linux" .-> Log["Snapshot-log backend<br/>own KV index · versioned snapshots"]
-    Log --> Storage
+    Apps --> API --> Engine --> Storage
 ```
 
 ## Performance
