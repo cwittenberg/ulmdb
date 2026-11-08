@@ -26,7 +26,9 @@ use std::{
     sync::{Arc, Mutex, MutexGuard},
 };
 use ulmdb_storage::snapshot_log::Journal;
-use ulmdb_storage::snapshot_versions::{Limits as VersionLimits, PoolWriter, View as VersionView};
+use ulmdb_storage::snapshot_versions::{
+    Limits as VersionLimits, PoolWriter, ReadCache as VersionReadCache, View as VersionView,
+};
 
 const STATE: &[u8; 8] = b"ULMSNAP1";
 const EFFECTS: &[u8; 8] = b"ULMTXNS1";
@@ -259,6 +261,7 @@ pub struct LookupStats {
     pub published_deletes: u64,
     pub gc_steps: u64,
     pub base_entries: usize,
+    pub base_spill_entries: usize,
     pub base_bytes: usize,
     pub base_capacity: usize,
     pub delta_nodes: usize,
@@ -281,6 +284,7 @@ impl From<lookup::Stats> for LookupStats {
             published_deletes: stats.published_deletes,
             gc_steps: stats.gc_steps,
             base_entries: stats.base_entries,
+            base_spill_entries: stats.base_spill_entries,
             base_bytes: stats.base_bytes,
             base_capacity: stats.base_capacity,
             delta_nodes: stats.delta_nodes,
@@ -479,33 +483,68 @@ impl<'a> KvRead<'a> {
         upper: Bound<&[u8]>,
         reverse: bool,
     ) -> Result<Cursor<'a>> {
+        let full_scan = matches!(lower, Bound::Unbounded) && matches!(upper, Bound::Unbounded);
         Ok(Cursor {
             iter: self
                 .snapshot
                 .index
                 .scan(self.database, lower, upper, reverse),
-            values: self.snapshot.values.as_ref(),
+            values: match self.snapshot.values.as_ref() {
+                Some(view) if full_scan => CursorValues::Local {
+                    view,
+                    cache: view.read_cache(),
+                    previous_miss: false,
+                },
+                Some(view) => CursorValues::Scalar(view),
+                None => CursorValues::Plain,
+            },
         })
     }
 }
 pub struct Cursor<'a> {
     iter: index::ScanIter<'a>,
-    values: Option<&'a VersionView>,
+    values: CursorValues<'a>,
+}
+enum CursorValues<'a> {
+    Scalar(&'a VersionView),
+    Local {
+        view: &'a VersionView,
+        cache: VersionReadCache<'a>,
+        previous_miss: bool,
+    },
+    Plain,
+}
+impl<'a> CursorValues<'a> {
+    #[inline(always)]
+    fn resolve(&mut self, stored: &'a [u8]) -> Result<&'a [u8]> {
+        match self {
+            Self::Scalar(view) => versioned::cursor_value(view, stored),
+            Self::Plain => Ok(stored),
+            Self::Local {
+                view,
+                cache,
+                previous_miss,
+            } => {
+                let (result, miss) = versioned::cached_cursor_value(cache, stored);
+                if *previous_miss && miss {
+                    // No read-ahead: two consumed rows with misses end the
+                    // locality trial. Subsequent rows use the scalar path.
+                    let scalar = *view;
+                    *self = Self::Scalar(scalar);
+                } else {
+                    *previous_miss = miss;
+                }
+                result
+            }
+        }
+    }
 }
 impl<'a> Iterator for Cursor<'a> {
     type Item = Result<(&'a [u8], &'a [u8])>;
     #[inline(always)]
     fn next(&mut self) -> Option<Self::Item> {
         let (_, key, value) = self.iter.next()?;
-        Some(match self.values {
-            Some(values) => versioned::decode_handle(value).and_then(|head| {
-                values
-                    .get(head)
-                    .map(|value| (key, value))
-                    .ok_or(Error::Corrupt("snapshot-log stale cursor value"))
-            }),
-            None => Ok((key, value)),
-        })
+        Some(self.values.resolve(value).map(|value| (key, value)))
     }
 }
 
@@ -915,12 +954,12 @@ impl WriteTxn<'_> {
             None
         };
         let member_many = if plan.len() > 1 {
-            plan.membership(ready.heads())?
+            Some(plan.prepare_membership(sequence, &ready)?)
         } else {
-            Vec::new()
+            None
         };
-        let membership = if plan.len() > 1 {
-            member_many.as_slice()
+        let membership = if let Some(members) = &member_many {
+            members.changes()
         } else {
             member_one.as_slice()
         };
@@ -929,6 +968,8 @@ impl WriteTxn<'_> {
         // the same proof without each repeating ordered searches per key.
         let proof = if membership.is_empty() {
             None
+        } else if let Some(members) = &member_many {
+            Some(members.proof())
         } else {
             Some(plan.prove_membership(sequence, &ready, membership)?)
         };
@@ -2612,6 +2653,71 @@ mod tests {
     }
 
     #[test]
+    fn full_scan_locality_trial_falls_back_and_keeps_old_borrows() {
+        let p = path("adaptive-scan");
+        let env = Environment::create(
+            &p,
+            Options {
+                versioned_values: true,
+                journal_capacity: 128 << 10,
+                transaction_bytes: 64 << 10,
+                ..options()
+            },
+        )
+        .unwrap();
+        let mut tx = env.begin_write().unwrap();
+        tx.create_database(b"kv", DatabaseKind::Kv).unwrap();
+        for n in (0u64..512).step_by(2) {
+            tx.put(b"kv", &n.to_be_bytes(), &[n as u8; 64]).unwrap();
+        }
+        tx.commit().unwrap();
+        let old = env.begin_read();
+        let old_kv = old.kv(b"kv").unwrap();
+        let mut local = old_kv
+            .cursor(Bound::Unbounded, Bound::Unbounded, false)
+            .unwrap();
+        let borrowed = local.next().unwrap().unwrap().1;
+        let pointer = borrowed.as_ptr();
+        local.next().unwrap().unwrap();
+        assert!(matches!(local.values, CursorValues::Local { .. }));
+
+        let mut tx = env.begin_write().unwrap();
+        for n in (1u64..512).step_by(2) {
+            tx.put(b"kv", &n.to_be_bytes(), &[n as u8; 64]).unwrap();
+        }
+        tx.put(b"kv", &0u64.to_be_bytes(), &[255; 64]).unwrap();
+        tx.commit().unwrap();
+        assert_eq!(borrowed, &[0; 64]);
+        assert_eq!(borrowed.as_ptr(), pointer);
+        assert_eq!(local.count(), 254);
+
+        let current = env.begin_read();
+        let kv = current.kv(b"kv").unwrap();
+        for reverse in [false, true] {
+            let mut mixed = kv
+                .cursor(Bound::Unbounded, Bound::Unbounded, reverse)
+                .unwrap();
+            mixed.next().unwrap().unwrap();
+            mixed.next().unwrap().unwrap();
+            assert!(matches!(mixed.values, CursorValues::Scalar(_)));
+            assert_eq!(mixed.count(), 510);
+        }
+        let mut bounded = kv
+            .cursor(
+                Bound::Included(&0u64.to_be_bytes()),
+                Bound::Included(&3u64.to_be_bytes()),
+                false,
+            )
+            .unwrap();
+        assert!(matches!(bounded.values, CursorValues::Scalar(_)));
+        assert_eq!(bounded.by_ref().count(), 4);
+        drop(bounded);
+        drop(current);
+        drop(old);
+        drop(env);
+        std::fs::remove_dir_all(p).unwrap();
+    }
+    #[test]
     fn scan_cache_preserves_returned_borrows_across_advance_and_commit() {
         let p = path("scan-cache-borrows");
         let o = Options {
@@ -2680,7 +2786,8 @@ mod tests {
         let before = env.begin_read();
         let stats = env.stats().unwrap();
         assert!(stats.exact_lookup);
-        assert_eq!(stats.lookup.unwrap().base_entries, 4096);
+        let lookup = stats.lookup.unwrap();
+        assert_eq!(lookup.base_entries + lookup.base_spill_entries, 4096);
         assert_eq!(stats.lookup.unwrap().delta_nodes, 0);
         let borrowed = before.get(b"kv", &0u64.to_be_bytes()).unwrap().unwrap();
         let mut tx = env.begin_write().unwrap();

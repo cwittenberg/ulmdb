@@ -18,6 +18,9 @@
 //! After those gates every traversed record is epoch-pinned: future records
 //! have end > birth > View epoch, and the selected record has end > View epoch.
 //! Traversal stops there, before older, potentially reclaimed predecessors.
+//! With at most 24 bits of version IDs, a head-link medium-length hint and a
+//! chunk medium-publication epoch can prove the selected birth visible without reading
+//! its Record. Larger capacities retain full-width links and the ordinary walk.
 
 use crate::{Error, Result};
 use std::{
@@ -39,6 +42,8 @@ const PRIVATE: u8 = 1;
 const PUBLISHED: u8 = 2;
 const FOREVER: u64 = u64::MAX;
 const ARC_HEADER: usize = 2 * size_of::<usize>();
+const LINK_VERSION_MASK: u32 = 0x00ff_ffff;
+const LINK_MEDIUM: u32 = 1 << 31;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Limits {
@@ -197,7 +202,8 @@ struct Record {
     value: Value,
 }
 struct HeadSlot {
-    // High word = head generation, low word = latest version slot+1.
+    // High word = head generation. Low word is slot+1, or, when fast_links
+    // permits, low24 slot+1 plus bit31 Medium and bits24..30 medium length.
     // A private head has low word zero and cannot expose a record.
     link: AtomicU64,
     end: AtomicU64,
@@ -233,10 +239,16 @@ struct MediumCell(UnsafeCell<[u8; MEDIUM]>);
 struct VersionChunk {
     slots: Box<[VersionSlot]>,
     medium: OnceLock<Box<[MediumCell]>>,
+    // Maximum epoch of a hinted medium record published in this chunk. Never
+    // advanced by prepare/abort or reset by collection/reuse. The sole writer
+    // advances this before the first hinted incoming head link in an epoch;
+    // later hinted links follow that same store. Unhinted links use the normal
+    // birth walk and need no certificate.
+    medium_epoch: AtomicU64,
 }
 
 // All raw record/sidecar accesses are private to this module. The only reader
-// is View::get after the packed head gates; the only mutations are unlinked
+// is View/ReadCache after the packed head and birth gates; mutations are unlinked
 // initialization or exclusive-writer epoch-safe reclaim/reuse.
 #[allow(unsafe_code)]
 mod cells {
@@ -277,8 +289,10 @@ mod cells {
         unsafe { (&*slot.record.get()).as_ref() }
     }
     pub(super) fn medium(cell: &MediumCell, length: usize) -> &[u8] {
-        // SAFETY: the borrowed Record pins this exact sidecar slot. Length was
-        // bounded on creation; the sidecar is never changed until safe reuse.
+        // SAFETY: head/generation and birth validation identifies this exact
+        // published slot, via a borrowed Record or the chunk publication stamp.
+        // The borrowed View pins it; length was bounded on creation, and the
+        // sidecar is never changed until epoch-safe reuse.
         unsafe { &(&*cell.0.get())[..length] }
     }
 }
@@ -287,8 +301,31 @@ struct Shared {
     heads: Box<[OnceLock<Box<[HeadSlot]>>]>,
     versions: Box<[OnceLock<VersionChunk>]>,
     budget: Arc<Budget>,
+    fast_links: bool,
 }
 impl Shared {
+    #[inline]
+    fn link_parts(&self, link: u64) -> (u32, u8) {
+        let word = link as u32;
+        // Every compact non-medium link is already a plain ordinal. Avoid
+        // reading the pool mode on that common path. A full-width ordinal may
+        // also set the hint bit, so only the immutable mode permits decoding.
+        if word & LINK_MEDIUM != 0 && self.fast_links {
+            (word & LINK_VERSION_MASK, ((word >> 24) & 0x7f) as u8)
+        } else {
+            (word, 0)
+        }
+    }
+    #[inline]
+    fn version_link(&self, version: u32, medium_len: u8) -> u32 {
+        if medium_len != 0 && self.fast_links {
+            debug_assert!(version <= LINK_VERSION_MASK);
+            debug_assert!((INLINE + 1..=MEDIUM).contains(&usize::from(medium_len)));
+            version | LINK_MEDIUM | (u32::from(medium_len) << 24)
+        } else {
+            version
+        }
+    }
     #[inline]
     fn head(&self, index: usize) -> Option<&HeadSlot> {
         self.heads
@@ -337,7 +374,21 @@ impl View {
     }
     #[inline]
     pub fn get(&self, head: Head) -> Option<&[u8]> {
-        let (index, generation) = slot_id(head.0)?;
+        self.get_encoded(head.0)
+    }
+    /// Resolve an encoded head's numeric bits through this View.
+    /// Invalid, stale and not-yet-visible encodings return None. Numeric IDs
+    /// remain pool-local; this performs the same visibility gates as get.
+    #[inline]
+    pub fn get_encoded(&self, encoded: u64) -> Option<&[u8]> {
+        // A zero low word maps to u32::MAX. Limits requires max_heads strictly
+        // below u32::MAX, and ensure_heads truncates its final chunk, so the
+        // ordinary bounded lookup rejects that index without a separate test.
+        // A zero generation cannot expose a record: untouched slots have
+        // end=0/link=0; allocated/reused links carry generation >= 1, and a
+        // private link's zero version word ends the traversal below.
+        let index = (encoded as u32).wrapping_sub(1) as usize;
+        let generation = (encoded >> 32) as u32;
         let head = self.shared.head(index)?;
         let epoch = self.epoch();
         // This ordering is essential: a reused end reset synchronizes its
@@ -349,20 +400,50 @@ impl View {
         if (link >> 32) as u32 != generation {
             return None;
         }
-        let mut current = link as u32;
+        let current = link as u32;
+        if current & LINK_MEDIUM != 0 && self.shared.fast_links {
+            return self.get_hinted(current, epoch);
+        }
+        // Unhinted links are canonical full-width version ordinals. Keep
+        // their ordinary birth walk independent of all medium hint state.
+        self.walk_versions(current, epoch)
+    }
+    #[inline(always)]
+    fn get_hinted(&self, descriptor: u32, epoch: u64) -> Option<&[u8]> {
+        let current = descriptor & LINK_VERSION_MASK;
+        if current == 0 {
+            return None;
+        }
+        let index = current as usize - 1;
+        let (chunk, version) = self.shared.version(index)?;
+        if chunk.medium_epoch.load(Ordering::Acquire) <= epoch {
+            // The captured incoming link follows this medium's stamp store
+            // (or birth0 initialization), so this record's birth is visible.
+            // The original head gates and View pin protect its exact sidecar.
+            let length = ((descriptor >> 24) & 0x7f) as usize;
+            return Some(cells::medium(
+                chunk.medium.get()?.get(index % VERSION_CHUNK)?,
+                length,
+            ));
+        }
+        // Reuse the already-resolved first slot on a conservative certificate
+        // miss; no second directory lookup or descriptor decoding is needed.
+        let record = cells::borrow(version)?;
+        if record.birth <= epoch {
+            return Self::record_value(record, chunk, index);
+        }
+        // The hint applies only to this head edge. Predecessors are canonical
+        // ordinals, and the ordinary walk stops at the first selected record.
+        self.walk_versions(record.previous, epoch)
+    }
+    #[inline(always)]
+    fn walk_versions(&self, mut current: u32, epoch: u64) -> Option<&[u8]> {
         while current != 0 {
             let index = current as usize - 1;
             let (chunk, version) = self.shared.version(index)?;
             let record = cells::borrow(version)?;
             if record.birth <= epoch {
-                return match &record.value {
-                    Value::Inline { length, bytes } => Some(&bytes[..usize::from(*length)]),
-                    Value::Medium { length } => Some(cells::medium(
-                        chunk.medium.get()?.get(index % VERSION_CHUNK)?,
-                        usize::from(*length),
-                    )),
-                    Value::Large(blob) => Some(&blob.bytes),
-                };
+                return Self::record_value(record, chunk, index);
             }
             // Never follow predecessors after finding this View's value: older
             // links can name reclaimed slots, while every traversed future
@@ -370,6 +451,21 @@ impl View {
             current = record.previous;
         }
         None
+    }
+    #[inline(always)]
+    fn record_value<'a>(
+        record: &'a Record,
+        chunk: &'a VersionChunk,
+        index: usize,
+    ) -> Option<&'a [u8]> {
+        match &record.value {
+            Value::Inline { length, bytes } => Some(&bytes[..usize::from(*length)]),
+            Value::Medium { length } => Some(cells::medium(
+                chunk.medium.get()?.get(index % VERSION_CHUNK)?,
+                usize::from(*length),
+            )),
+            Value::Large(blob) => Some(&blob.bytes),
+        }
     }
 }
 
@@ -386,11 +482,18 @@ pub struct ReadCache<'view> {
 }
 impl<'view> ReadCache<'view> {
     #[inline]
-    fn head(&mut self, index: usize) -> Option<&'view HeadSlot> {
+    fn head<const TRACK: bool>(
+        &mut self,
+        index: usize,
+        missed: &mut bool,
+    ) -> Option<&'view HeadSlot> {
         let chunk_id = index / HEAD_CHUNK;
         let slots = match self.heads {
             Some((cached, slots)) if cached == chunk_id => slots,
             _ => {
+                if TRACK {
+                    *missed = true;
+                }
                 let slots: &'view [HeadSlot] = self.view.shared.heads.get(chunk_id)?.get()?;
                 self.heads = Some((chunk_id, slots));
                 slots
@@ -399,11 +502,18 @@ impl<'view> ReadCache<'view> {
         slots.get(index % HEAD_CHUNK)
     }
     #[inline]
-    fn version(&mut self, index: usize) -> Option<(&'view VersionChunk, &'view VersionSlot)> {
+    fn version<const TRACK: bool>(
+        &mut self,
+        index: usize,
+        missed: &mut bool,
+    ) -> Option<(&'view VersionChunk, &'view VersionSlot)> {
         let chunk_id = index / VERSION_CHUNK;
         let chunk = match self.versions {
             Some((cached, chunk)) if cached == chunk_id => chunk,
             _ => {
+                if TRACK {
+                    *missed = true;
+                }
                 let chunk: &'view VersionChunk = self.view.shared.versions.get(chunk_id)?.get()?;
                 self.versions = Some((chunk_id, chunk));
                 chunk
@@ -411,12 +521,20 @@ impl<'view> ReadCache<'view> {
         };
         Some((chunk, chunk.slots.get(index % VERSION_CHUNK)?))
     }
-    #[inline]
-    fn medium(&mut self, index: usize, chunk: &'view VersionChunk) -> Option<&'view MediumCell> {
+    #[inline(always)]
+    fn medium<const TRACK: bool>(
+        &mut self,
+        index: usize,
+        chunk: &'view VersionChunk,
+        missed: &mut bool,
+    ) -> Option<&'view MediumCell> {
         let chunk_id = index / VERSION_CHUNK;
         let slots = match self.medium {
             Some((cached, slots)) if cached == chunk_id => slots,
             _ => {
+                if TRACK {
+                    *missed = true;
+                }
                 // Never remember absence: preparation can initialize this
                 // sidecar later while this old View/cache continues to exist.
                 let slots: &'view [MediumCell] = chunk.medium.get()?;
@@ -428,9 +546,30 @@ impl<'view> ReadCache<'view> {
     }
     #[inline]
     pub fn get(&mut self, head: Head) -> Option<&'view [u8]> {
-        let (index, generation) = slot_id(head.0)?;
+        self.get_inner::<false>(head.0, &mut false)
+    }
+    /// Resolve raw head bits and report whether any chunk/sidecar cache lookup
+    /// missed during this call, including failed lookups and future records.
+    /// A later hit never clears an earlier miss. The flag is call-local; only
+    /// positive addresses are cached, and all visibility gates remain active.
+    #[inline]
+    pub fn get_encoded_with_locality(&mut self, encoded: u64) -> (Option<&'view [u8]>, bool) {
+        let mut missed = false;
+        let value = self.get_inner::<true>(encoded, &mut missed);
+        (value, missed)
+    }
+    #[inline]
+    fn get_inner<const TRACK: bool>(
+        &mut self,
+        encoded: u64,
+        missed: &mut bool,
+    ) -> Option<&'view [u8]> {
+        // Same zero-word proof as View::get_encoded: wrapped low0 is beyond
+        // the bounded/truncated head directory; generation0 grants no record.
+        let index = (encoded as u32).wrapping_sub(1) as usize;
+        let generation = (encoded >> 32) as u32;
         let epoch = self.epoch;
-        let head = self.head(index)?;
+        let head = self.head::<TRACK>(index, missed)?;
         // Identical validation/order to View::get; cached addresses grant no
         // authority to skip generation, retirement or visible-birth checks.
         if epoch >= head.end.load(Ordering::Acquire) {
@@ -440,10 +579,19 @@ impl<'view> ReadCache<'view> {
         if (link >> 32) as u32 != generation {
             return None;
         }
-        let mut current = link as u32;
+        let (mut current, mut medium_len) = self.view.shared.link_parts(link);
         while current != 0 {
             let index = current as usize - 1;
-            let (chunk, slot) = self.version(index)?;
+            let (chunk, slot) = self.version::<TRACK>(index, missed)?;
+            if medium_len != 0 && chunk.medium_epoch.load(Ordering::Acquire) <= epoch {
+                // Same publication/birth proof as View::get_encoded. Cache
+                // addresses do not bypass the end/link/generation or stamp.
+                return Some(cells::medium(
+                    self.medium::<TRACK>(index, chunk, missed)?,
+                    usize::from(medium_len),
+                ));
+            }
+            medium_len = 0;
             // SAFETY argument is the same as View::get: published incoming
             // edges and the borrowed View pin all bodies actually traversed.
             let record = cells::borrow(slot)?;
@@ -451,7 +599,7 @@ impl<'view> ReadCache<'view> {
                 return match &record.value {
                     Value::Inline { length, bytes } => Some(&bytes[..usize::from(*length)]),
                     Value::Medium { length } => Some(cells::medium(
-                        self.medium(index, chunk)?,
+                        self.medium::<TRACK>(index, chunk, missed)?,
                         usize::from(*length),
                     )),
                     Value::Large(blob) => Some(&blob.bytes),
@@ -479,6 +627,7 @@ struct Pending {
     old_version: u64,
     new_head: bool,
     delete: bool,
+    medium_len: u8,
 }
 
 #[derive(Clone, Copy, Debug, Default)]
@@ -607,6 +756,7 @@ impl PoolWriter {
             })?
             .into_boxed_slice(),
             budget,
+            fast_links: limits.max_versions <= LINK_VERSION_MASK as usize,
         });
         Ok(Self {
             shared,
@@ -729,7 +879,8 @@ impl PoolWriter {
                 self.shared.versions[start / VERSION_CHUNK]
                     .set(VersionChunk {
                         slots,
-                        medium: OnceLock::new()
+                        medium: OnceLock::new(),
+                        medium_epoch: AtomicU64::new(0),
                     })
                     .is_ok()
             );
@@ -826,13 +977,14 @@ impl PoolWriter {
         let (index, generation) = slot_id(head.0).ok_or(Error::StaleHandle)?;
         let slot = self.shared.head(index).ok_or(Error::StaleHandle)?;
         let link = slot.link.load(Ordering::Acquire);
+        let (current, _) = self.shared.link_parts(link);
         if (link >> 32) as u32 != generation
-            || link as u32 == 0
+            || current == 0
             || slot.end.load(Ordering::Acquire) != FOREVER
         {
             return Err(Error::StaleHandle);
         }
-        let index = link as u32 as usize - 1;
+        let index = current as usize - 1;
         let (_, version) = self.shared.version(index).ok_or(Error::StaleHandle)?;
         Ok(identity(index, version.generation.load(Ordering::Relaxed)))
     }
@@ -938,6 +1090,10 @@ impl PoolWriter {
             old_version,
             new_head,
             delete: edit.value.is_none(),
+            medium_len: edit
+                .value
+                .filter(|bytes| bytes.len() > INLINE && bytes.len() <= MEDIUM)
+                .map_or(0, |bytes| bytes.len() as u8),
         })
     }
     fn abort_head(&mut self, head: Head) {
@@ -1093,15 +1249,29 @@ impl Ready<'_> {
                 self.pool.active_heads -= 1;
             } else {
                 let (index, _) = slot_id(pending.version).expect("prepared version");
-                self.pool
+                let (chunk, version) = self
+                    .pool
                     .shared
                     .version(index)
-                    .expect("initialized version")
-                    .1
-                    .state
-                    .store(PUBLISHED, Ordering::Relaxed);
+                    .expect("initialized version");
+                version.state.store(PUBLISHED, Ordering::Relaxed);
+                let current = self
+                    .pool
+                    .shared
+                    .version_link(pending.version as u32, pending.medium_len);
+                // Only a hinted medium incoming link can use the certificate.
+                // Its own publication advances this monotone stamp first;
+                // unhinted inline/large/full-width links retain the birth walk.
+                // Same-epoch medium links follow the first stamp store. Epoch0
+                // already equals the initial minimum birth0. Abort never stamps.
+                if current & LINK_MEDIUM != 0
+                    && self.pool.shared.fast_links
+                    && chunk.medium_epoch.load(Ordering::Relaxed) < self.epoch
+                {
+                    chunk.medium_epoch.store(self.epoch, Ordering::Release);
+                }
                 head.link.store(
-                    (u64::from(generation) << 32) | (pending.version as u32 as u64),
+                    (u64::from(generation) << 32) | u64::from(current),
                     Ordering::Release,
                 );
                 if pending.new_head {
@@ -1172,6 +1342,262 @@ mod tests {
         }
     }
     #[test]
+    fn medium_link_layout_and_zero_high_epoch_publications_are_bounded() {
+        #[cfg(target_pointer_width = "64")]
+        {
+            assert_eq!(size_of::<Head>(), 8);
+            assert_eq!(size_of::<HeadSlot>(), 16);
+            assert_eq!(size_of::<VersionSlot>(), 64);
+            assert_eq!(size_of::<Record>(), 48);
+            assert_eq!(size_of::<Pending>(), 32);
+            assert_eq!(size_of::<VersionChunk>(), 48);
+            assert_eq!(size_of::<OnceLock<VersionChunk>>(), 56);
+        }
+        for epoch in [0, 1 << 40, FOREVER - 2] {
+            let (mut pool, old, heads) =
+                PoolWriter::seed(epoch, &[&[1; 17], &[2; MEDIUM]], limits()).unwrap();
+            assert!(pool.shared.fast_links);
+            for (head, length) in [(heads[0], 17), (heads[1], MEDIUM)] {
+                let (index, _) = slot_id(head.to_u64()).unwrap();
+                let link = pool
+                    .shared
+                    .head(index)
+                    .unwrap()
+                    .link
+                    .load(Ordering::Acquire);
+                let (version, hint) = pool.shared.link_parts(link);
+                assert_eq!(usize::from(hint), length);
+                let (chunk, _) = pool.shared.version(version as usize - 1).unwrap();
+                assert_eq!(chunk.medium_epoch.load(Ordering::Acquire), epoch);
+                assert_eq!(old.get_encoded(head.to_u64()).unwrap().len(), length);
+            }
+            let latest = pool
+                .prepare(epoch + 1, &[replace(heads[0], &[3; MEDIUM])])
+                .unwrap()
+                .publish();
+            assert_eq!(latest.get(heads[0]), Some([3; MEDIUM].as_slice()));
+            assert_eq!(old.get(heads[0]), Some([1; 17].as_slice()));
+            let encoded = pool.shared.version_link(LINK_VERSION_MASK, MEDIUM as u8);
+            assert_eq!(
+                pool.shared.link_parts(u64::from(encoded)),
+                (LINK_VERSION_MASK, 64)
+            );
+            assert!(pool.stats().allocated_bytes <= pool.stats().limit_bytes);
+        }
+    }
+
+    #[test]
+    fn chunk_stamp_advances_only_on_publish_and_protects_all_old_value_kinds() {
+        let (mut pool, old, heads) =
+            PoolWriter::seed(5, &[&[1; MEDIUM], &[2; 17]], limits()).unwrap();
+        let shared = pool.shared.clone();
+        let (slot, _) = slot_id(heads[0].to_u64()).unwrap();
+        let (version, _) =
+            shared.link_parts(shared.head(slot).unwrap().link.load(Ordering::Acquire));
+        let (chunk, _) = shared.version(version as usize - 1).unwrap();
+        let borrowed = old.get(heads[0]).unwrap();
+        let address = borrowed.as_ptr();
+        let mut cache = old.read_cache();
+        assert_eq!(cache.get(heads[0]), Some([1; MEDIUM].as_slice()));
+        let ready = pool.prepare(6, &[replace(heads[0], &[9; 17])]).unwrap();
+        assert_eq!(chunk.medium_epoch.load(Ordering::Acquire), 5);
+        assert_eq!(old.get(heads[0]), Some([1; MEDIUM].as_slice()));
+        drop(ready);
+        assert_eq!(chunk.medium_epoch.load(Ordering::Acquire), 5);
+        // Unhinted publications need no certificate. They leave unchanged
+        // medium heads eligible for their already published certificate.
+        let inline = pool
+            .prepare(6, &[replace(heads[1], b"tiny")])
+            .unwrap()
+            .publish();
+        assert_eq!(chunk.medium_epoch.load(Ordering::Acquire), 5);
+        assert_eq!(old.get(heads[0]), Some([1; MEDIUM].as_slice()));
+        let large = pool
+            .prepare(7, &[replace(heads[0], &[4; 129])])
+            .unwrap()
+            .publish();
+        assert_eq!(chunk.medium_epoch.load(Ordering::Acquire), 5);
+        assert_eq!(old.get(heads[0]), Some([1; MEDIUM].as_slice()));
+        let medium = pool
+            .prepare(8, &[replace(heads[0], &[5; 17])])
+            .unwrap()
+            .publish();
+        assert_eq!(chunk.medium_epoch.load(Ordering::Acquire), 8);
+        assert_eq!(medium.get(heads[0]), Some([5; 17].as_slice()));
+        assert_eq!(large.get(heads[0]), Some([4; 129].as_slice()));
+        assert_eq!(old.get(heads[0]), Some([1; MEDIUM].as_slice()));
+        let last = pool
+            .prepare(9, &[replace(heads[0], b"end")])
+            .unwrap()
+            .publish();
+        assert_eq!(chunk.medium_epoch.load(Ordering::Acquire), 8);
+        assert_eq!(last.get(heads[0]), Some(b"end".as_slice()));
+        assert_eq!(medium.get(heads[0]), Some([5; 17].as_slice()));
+        assert_eq!(
+            cache.get_encoded_with_locality(heads[0].to_u64()).0,
+            Some([1; MEDIUM].as_slice())
+        );
+        assert_eq!(inline.get(heads[1]), Some(b"tiny".as_slice()));
+        pool.collect(1000);
+        assert_eq!(borrowed, &[1; MEDIUM]);
+        assert_eq!(old.get(heads[0]).unwrap().as_ptr(), address);
+    }
+
+    #[test]
+    fn large_custom_version_capacity_keeps_full_width_head_links() {
+        let l = Limits {
+            max_bytes: 16 << 20,
+            max_heads: 8,
+            max_versions: LINK_VERSION_MASK as usize + 1,
+            max_views: 8,
+        };
+        let (mut pool, old, heads) = PoolWriter::seed(3, &[&[1; MEDIUM]], l).unwrap();
+        assert!(!pool.shared.fast_links);
+        for version in [LINK_VERSION_MASK, LINK_VERSION_MASK + 1, u32::MAX - 1] {
+            assert_eq!(pool.shared.version_link(version, 64), version);
+            assert_eq!(
+                pool.shared.link_parts((7u64 << 32) | u64::from(version)),
+                (version, 0)
+            );
+        }
+        let newest = pool
+            .prepare(4, &[replace(heads[0], &[2; 17])])
+            .unwrap()
+            .publish();
+        assert_eq!(old.get(heads[0]), Some([1; MEDIUM].as_slice()));
+        assert_eq!(newest.get(heads[0]), Some([2; 17].as_slice()));
+        assert_eq!(
+            newest
+                .read_cache()
+                .get_encoded_with_locality(heads[0].to_u64())
+                .0,
+            Some([2; 17].as_slice())
+        );
+        assert!(
+            pool.shared
+                .versions
+                .iter()
+                .filter_map(OnceLock::get)
+                .all(|chunk| chunk.medium_epoch.load(Ordering::Acquire) == 0)
+        );
+        assert!(pool.stats().allocated_bytes <= l.max_bytes);
+    }
+
+    #[test]
+    fn concurrent_medium_borrow_survives_future_medium_inline_and_large_publications() {
+        use std::sync::{atomic::AtomicBool, mpsc};
+        let (mut pool, old, heads) = PoolWriter::seed(0, &[&[1; MEDIUM]], limits()).unwrap();
+        let head = heads[0];
+        std::thread::scope(|scope| {
+            let stop = Arc::new(AtomicBool::new(false));
+            let stopped = stop.clone();
+            let (tx, rx) = mpsc::channel();
+            let reader = scope.spawn(move || {
+                let mut cache = old.read_cache();
+                let borrowed = cache.get_encoded_with_locality(head.to_u64()).0.unwrap();
+                let address = borrowed.as_ptr();
+                tx.send(()).unwrap();
+                while !stopped.load(Ordering::Acquire) {
+                    assert_eq!(old.get(head), Some([1; MEDIUM].as_slice()));
+                    assert_eq!(
+                        cache.get_encoded_with_locality(head.to_u64()).0,
+                        Some([1; MEDIUM].as_slice())
+                    );
+                    std::hint::spin_loop();
+                }
+                assert_eq!(borrowed, &[1; MEDIUM]);
+                assert_eq!(borrowed.as_ptr(), address);
+            });
+            rx.recv().unwrap();
+            let updates: [&[u8]; 4] = [&[2; 17], &[3; 129], b"inline", &[4; MEDIUM]];
+            let mut current = None;
+            for (index, value) in updates.into_iter().enumerate() {
+                current = Some(
+                    pool.prepare(index as u64 + 1, &[replace(head, value)])
+                        .unwrap()
+                        .publish(),
+                );
+            }
+            pool.collect(1000);
+            assert_eq!(pool.stats().reclaimed_versions, 0);
+            assert_eq!(
+                current.as_ref().unwrap().get(head),
+                Some([4; MEDIUM].as_slice())
+            );
+            stop.store(true, Ordering::Release);
+            reader.join().unwrap();
+            pool.collect(1000);
+            assert_eq!(pool.stats().reclaimed_versions, 4);
+        });
+    }
+    #[test]
+    fn encoded_words_reject_bounds_uninitialized_private_and_future_records() {
+        let l = Limits {
+            max_bytes: 1 << 20,
+            max_heads: HEAD_CHUNK + 1,
+            max_versions: 8,
+            max_views: 8,
+        };
+        let (mut pool, old, _) = PoolWriter::seed(0, &[], l).unwrap();
+        let invalid = [0, 1, u64::from(u32::MAX), 1u64 << 32, u64::MAX];
+        for encoded in invalid {
+            assert!(old.get_encoded(encoded).is_none());
+        }
+        // A valid numeric ID can still name an uninitialized directory chunk.
+        let last = identity(HEAD_CHUNK, 1);
+        assert!(old.get_encoded(last).is_none());
+        pool.ensure_heads(l.max_heads).unwrap();
+        assert!(pool.shared.head(HEAD_CHUNK).is_some());
+        assert!(pool.shared.head(HEAD_CHUNK + 1).is_none());
+        assert!(old.get_encoded(last).is_none());
+        assert!(old.get_encoded(identity(HEAD_CHUNK + 1, 1)).is_none());
+        let ready = pool
+            .prepare(
+                1,
+                &[Mutation {
+                    head: None,
+                    value: Some(b"published only at epoch one"),
+                }],
+            )
+            .unwrap();
+        let fresh = ready.heads()[0];
+        assert_eq!(fresh.to_u64(), last);
+        assert!(old.get_encoded(fresh.to_u64()).is_none());
+        assert!(old.get_encoded(u64::from(fresh.to_u64() as u32)).is_none());
+        // Abort leaves neither the private head nor its record visible.
+        drop(ready);
+        assert!(old.get_encoded(fresh.to_u64()).is_none());
+        let ready = pool
+            .prepare(
+                1,
+                &[Mutation {
+                    head: None,
+                    value: Some(b"live"),
+                }],
+            )
+            .unwrap();
+        let live = ready.heads()[0];
+        assert_ne!(live, fresh);
+        let current = ready.publish();
+        assert_eq!(current.get_encoded(live.to_u64()), Some(b"live".as_slice()));
+        assert_eq!(current.get(live), current.get_encoded(live.to_u64()));
+        assert!(current.get_encoded(fresh.to_u64()).is_none());
+        assert!(old.get_encoded(live.to_u64()).is_none());
+        for encoded in invalid {
+            assert!(current.get_encoded(encoded).is_none());
+        }
+        assert!(
+            current
+                .get_encoded(u64::from(live.to_u64() as u32))
+                .is_none()
+        );
+        assert!(
+            current
+                .get_encoded(live.to_u64() & (u64::from(u32::MAX) << 32))
+                .is_none()
+        );
+    }
+    #[test]
     fn old_borrow_stays_stable_and_aborted_ready_never_publishes_future_view() {
         let (mut pool, old, heads) = PoolWriter::seed(0, &[b"original"], limits()).unwrap();
         let head = heads[0];
@@ -1220,8 +1646,14 @@ mod tests {
         assert_ne!(fresh, stale);
         let new = ready.publish();
         assert!(new.get(stale).is_none());
+        assert!(new.get_encoded(stale.to_u64()).is_none());
         assert_eq!(new.get(fresh), Some(b"replacement".as_slice()));
+        assert_eq!(
+            new.get_encoded(fresh.to_u64()),
+            Some(b"replacement".as_slice())
+        );
         assert!(deleted.get(fresh).is_none());
+        assert!(deleted.get_encoded(fresh.to_u64()).is_none());
     }
     #[test]
     fn duplicate_head_refuses_before_allocation_and_bounded_guard_queue_recovers() {
@@ -1547,8 +1979,28 @@ mod tests {
                     while !reader_stop.load(Ordering::Acquire) {
                         assert!(reader_view.get(stale).is_none());
                         assert!(reader_view.get(guessed).is_none());
+                        assert!(reader_view.get_encoded(stale.to_u64()).is_none());
+                        assert!(reader_view.get_encoded(guessed.to_u64()).is_none());
+                        assert!(
+                            reader_view
+                                .get_encoded(u64::from(stale.to_u64() as u32))
+                                .is_none()
+                        );
+                        assert!(
+                            reader_view
+                                .get_encoded(stale.to_u64() & (u64::from(u32::MAX) << 32))
+                                .is_none()
+                        );
+                        assert!(reader_view.get_encoded(u64::MAX).is_none());
                         assert!(cache.get(stale).is_none());
                         assert!(cache.get(guessed).is_none());
+                        assert!(cache.get_encoded_with_locality(stale.to_u64()).0.is_none());
+                        assert!(
+                            cache
+                                .get_encoded_with_locality(guessed.to_u64())
+                                .0
+                                .is_none()
+                        );
                         std::hint::spin_loop();
                     }
                     assert!(reader_view.get(stale).is_none());
@@ -1626,6 +2078,125 @@ mod tests {
         );
     }
     #[test]
+    fn tracked_cache_reports_cold_warm_and_cross_chunk_calls_without_allocating() {
+        let l = Limits {
+            max_bytes: 2 << 20,
+            max_heads: 512,
+            max_versions: 1024,
+            max_views: 16,
+        };
+        let values: Vec<_> = (0..HEAD_CHUNK + 1).map(|n| vec![n as u8; MEDIUM]).collect();
+        let refs: Vec<_> = values.iter().map(Vec::as_slice).collect();
+        let (pool, view, heads) = PoolWriter::seed(0, &refs, l).unwrap();
+        let charged = pool.stats().allocated_bytes;
+        let mut cache = view.read_cache();
+        let first = heads[0].to_u64();
+        let (borrowed, missed) = cache.get_encoded_with_locality(first);
+        let borrowed = borrowed.unwrap();
+        let address = borrowed.as_ptr();
+        assert!(missed);
+        assert_eq!(borrowed, values[0]);
+        assert_eq!(
+            cache.get_encoded_with_locality(first),
+            (Some(values[0].as_slice()), false)
+        );
+        // Adjacent records share all three cached positive addresses.
+        assert_eq!(
+            cache.get_encoded_with_locality(heads[1].to_u64()),
+            (Some(values[1].as_slice()), false)
+        );
+        let last = heads.len() - 1;
+        assert_eq!(
+            cache.get_encoded_with_locality(heads[last].to_u64()),
+            (Some(values[last].as_slice()), true)
+        );
+        assert_eq!(
+            cache.get_encoded_with_locality(first),
+            (Some(values[0].as_slice()), true)
+        );
+        // Missing directories are not cached, and do not erase positive hits.
+        assert_eq!(cache.get_encoded_with_locality(0), (None, true));
+        assert_eq!(
+            cache.get_encoded_with_locality(first),
+            (Some(values[0].as_slice()), false)
+        );
+        // Failing a visibility gate is not itself a chunk-cache miss.
+        assert_eq!(
+            cache.get_encoded_with_locality(u64::from(first as u32)),
+            (None, false)
+        );
+        assert_eq!(cache.get(heads[0]), Some(values[0].as_slice()));
+        assert_eq!(pool.stats().allocated_bytes, charged);
+        drop(cache);
+        assert_eq!(borrowed.as_ptr(), address);
+        assert_eq!(borrowed, values[0]);
+    }
+
+    #[test]
+    fn tracked_cache_keeps_earlier_future_chain_misses_when_final_steps_hit() {
+        let l = Limits {
+            max_bytes: 2 << 20,
+            max_heads: 512,
+            max_versions: 1024,
+            max_views: 16,
+        };
+        let (mut pool, old, heads) = PoolWriter::seed(0, &[&[1; MEDIUM]], l).unwrap();
+        let head = heads[0];
+        let mut cache = old.read_cache();
+        assert_eq!(
+            cache.get_encoded_with_locality(head.to_u64()),
+            (Some([1; MEDIUM].as_slice()), true)
+        );
+        assert_eq!(
+            cache.get_encoded_with_locality(head.to_u64()),
+            (Some([1; MEDIUM].as_slice()), false)
+        );
+        let first = pool
+            .prepare(1, &[replace(head, &[2; MEDIUM])])
+            .unwrap()
+            .publish();
+        // Fill the remainder of the first version chunk. The next replacement
+        // will precede two old versions that share this already-warmed chunk.
+        let fill = vec![
+            Mutation {
+                head: None,
+                value: Some(&[9; MEDIUM]),
+            };
+            VERSION_CHUNK - 2
+        ];
+        let filled = pool.prepare(2, &fill).unwrap().publish();
+        let latest = pool
+            .prepare(3, &[replace(head, &[3; MEDIUM])])
+            .unwrap()
+            .publish();
+        let (borrowed, missed) = cache.get_encoded_with_locality(head.to_u64());
+        let borrowed = borrowed.unwrap();
+        assert!(missed);
+        assert_eq!(borrowed, &[1; MEDIUM]);
+        // A hit on the final old record and its medium sidecar must not clear
+        // misses from earlier future records in a different chunk.
+        assert_eq!(
+            cache.get_encoded_with_locality(head.to_u64()),
+            (Some([1; MEDIUM].as_slice()), true)
+        );
+        let mut current = latest.read_cache();
+        assert_eq!(
+            current.get_encoded_with_locality(head.to_u64()),
+            (Some([3; MEDIUM].as_slice()), true)
+        );
+        assert_eq!(
+            current.get_encoded_with_locality(head.to_u64()),
+            (Some([3; MEDIUM].as_slice()), false)
+        );
+        drop(first);
+        drop(filled);
+        pool.collect(10000);
+        drop(cache);
+        assert_eq!(borrowed, &[1; MEDIUM]);
+        assert_eq!(old.get(head), Some([1; MEDIUM].as_slice()));
+    }
+
+    #[test]
     fn read_cache_borrows_survive_retargeting_lazy_growth_and_cache_drop() {
         let l = Limits {
             max_bytes: 8 << 20,
@@ -1700,16 +2271,39 @@ mod tests {
             .unwrap()
             .link
             .load(Ordering::Acquire);
-        let version_index = packed as u32 as usize - 1;
-        let (chunk, _) = cache.version(version_index).unwrap();
-        assert!(cache.medium(version_index, chunk).is_none());
+        let version_index = pool.shared.link_parts(packed).0 as usize - 1;
+        let mut missed = false;
+        let (chunk, _) = cache.version::<true>(version_index, &mut missed).unwrap();
+        assert!(missed);
+        missed = false;
+        assert!(
+            cache
+                .medium::<true>(version_index, chunk, &mut missed)
+                .is_none()
+        );
+        assert!(missed);
         assert!(cache.medium.is_none());
-        assert!(cache.head(HEAD_CHUNK + 1).is_none());
+        missed = false;
+        assert!(cache.head::<true>(HEAD_CHUNK + 1, &mut missed).is_none());
+        assert!(missed);
         let changed = pool
             .prepare(1, &[replace(head, &[99; 64])])
             .unwrap()
             .publish();
-        assert!(cache.medium(version_index, chunk).is_some());
+        missed = false;
+        assert!(
+            cache
+                .medium::<true>(version_index, chunk, &mut missed)
+                .is_some()
+        );
+        assert!(missed);
+        missed = false;
+        assert!(
+            cache
+                .medium::<true>(version_index, chunk, &mut missed)
+                .is_some()
+        );
+        assert!(!missed);
         assert_eq!(cache.get(head), Some(b"inline".as_slice()));
         assert_eq!(changed.read_cache().get(head), Some([99; 64].as_slice()));
         let edits = vec![
@@ -1720,7 +2314,12 @@ mod tests {
             HEAD_CHUNK + 1
         ];
         let new = pool.prepare(2, &edits).unwrap().publish();
-        assert!(cache.head(HEAD_CHUNK + 1).is_some());
+        missed = false;
+        assert!(cache.head::<true>(HEAD_CHUNK + 1, &mut missed).is_some());
+        assert!(missed);
+        missed = false;
+        assert!(cache.head::<true>(HEAD_CHUNK + 1, &mut missed).is_some());
+        assert!(!missed);
         assert_eq!(cache.get(head), Some(b"inline".as_slice()));
         assert_eq!(new.read_cache().get(head), Some([99; 64].as_slice()));
     }

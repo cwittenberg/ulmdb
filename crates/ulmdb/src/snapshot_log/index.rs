@@ -16,7 +16,6 @@ use crate::{Error, Result};
 use std::cell::Cell;
 use std::cmp::Ordering;
 use std::mem::size_of;
-use std::num::NonZeroUsize;
 use std::ops::Bound;
 use std::sync::{
     Arc,
@@ -180,14 +179,6 @@ enum EntryRef<'a> {
     Packed16(u64, &'a Packed16),
 }
 impl<'a> EntryRef<'a> {
-    fn identity(self) -> NonZeroUsize {
-        let address = match self {
-            Self::Generic(entry) => entry as *const Entry as usize,
-            Self::Packed8(_, entry) => entry as *const Packed8 as usize,
-            Self::Packed16(_, entry) => entry as *const Packed16 as usize,
-        };
-        NonZeroUsize::new(address).expect("borrowed row addresses are nonnull")
-    }
     #[inline(always)]
     fn row(self) -> (u64, &'a [u8], &'a [u8]) {
         match self {
@@ -872,10 +863,28 @@ impl Index {
         }
     }
 
+    /// The caller has checked a membership capability generated in key order.
+    /// Raw effects must continue through prepare_hybrid/prepare_grouped.
+    pub(super) fn prepare_ordered(&self, changes: &[Change], threshold: usize) -> Result<Self> {
+        if !changes.is_empty() && threshold != usize::MAX && changes.len() >= threshold {
+            debug_assert!(
+                changes
+                    .windows(2)
+                    .all(|pair| change_compare(&pair[0], &pair[1]) == Ordering::Less)
+            );
+            self.prepare_grouped_inner(changes, true)
+        } else {
+            self.prepare(changes)
+        }
+    }
+
     /// Sort/coalesce effects, visit each affected old branch/leaf once, merge
     /// each affected leaf once, then rebuild its changed ancestors once. This
     /// changes only private construction; published snapshots keep exact bytes.
     pub fn prepare_grouped(&self, changes: &[Change]) -> Result<Self> {
+        self.prepare_grouped_inner(changes, false)
+    }
+    fn prepare_grouped_inner(&self, changes: &[Change], ordered: bool) -> Result<Self> {
         if changes.is_empty() {
             return Ok(self.clone());
         }
@@ -910,13 +919,15 @@ impl Index {
         for index in 0..changes.len() {
             order.push(index)?;
         }
-        order.values.sort_unstable_by(|a, b| {
-            change_compare(&changes[*a], &changes[*b]).then_with(|| b.cmp(a))
-        });
-        // Descending input position within a key keeps its final effect first.
-        order
-            .values
-            .dedup_by(|a, b| change_compare(&changes[*a], &changes[*b]) == Ordering::Equal);
+        if !ordered {
+            order.values.sort_unstable_by(|a, b| {
+                change_compare(&changes[*a], &changes[*b]).then_with(|| b.cmp(a))
+            });
+            // Descending input position within a key keeps its final effect first.
+            order
+                .values
+                .dedup_by(|a, b| change_compare(&changes[*a], &changes[*b]) == Ordering::Equal);
+        }
         let mut accounting = GroupAccounting::default();
         let mut roots = ScratchVec::with_capacity(2, &scratch)?;
         grouped_edit(
@@ -1006,36 +1017,20 @@ impl Index {
         } else {
             (lower, upper)
         };
-        let mut cursor = Cursor::seek(self.root.as_deref(), database, start, reverse);
-        let first = cursor.next().filter(|entry| entry.database() == database);
-        let (first, terminal) = match terminal {
-            Bound::Unbounded => (first, None),
+        let cursor = Cursor::seek(self.root.as_deref(), database, start, reverse);
+        let terminal = match terminal {
+            Bound::Unbounded => None,
             bound => {
                 let mut end = Cursor::seek(self.root.as_deref(), database, bound, !reverse);
-                match (first, end.next()) {
-                    (Some(first), Some(last)) if last.database() == database => {
-                        let order = first
-                            .key()
-                            .compare(last.database(), last.key().bytes.as_slice());
-                        if (!reverse && order != Ordering::Greater)
-                            || (reverse && order != Ordering::Less)
-                        {
-                            (Some(first), Some(last))
-                        } else {
-                            (None, None)
-                        }
-                    }
-                    _ => (None, None),
+                match end.next() {
+                    Some(last) if last.database() == database => Some(last.key().bytes.as_slice()),
+                    _ => return ScanIter::empty(database, reverse),
                 }
             }
         };
-        ScanIter {
-            cursor,
-            first: first.map(ScanFirst::new),
-            terminal: terminal.map(EntryRef::identity),
-            database,
-        }
+        ScanIter::new(cursor, database, terminal)
     }
+
     pub fn stats(&self) -> Stats {
         let mut height = 0;
         let mut node = self.root.as_deref();
@@ -2148,71 +2143,211 @@ impl DoubleEndedIterator for RangeIter<'_> {
 }
 impl std::iter::FusedIterator for RangeIter<'_> {}
 
-/// A bounded iterator that advances in its construction-time direction.
-/// Unlike RangeIter it retains only one traversal stack.
-#[derive(Clone, Copy)]
-enum ScanFirst<'a> {
-    Generic(&'a Entry),
-    Packed8(&'a Packed8),
-    Packed16(&'a Packed16),
+// A span contains only rows already admitted to the scan's namespace and end
+// bound. Its slices borrow immutable Index rows, including generic empty keys.
+// No row lookahead, bound comparison, namespace test or allocation is needed
+// while advancing within the span.
+enum ScanSpan<'a> {
+    Generic(&'a [Entry]),
+    Packed8(&'a [Packed8]),
+    Packed16(&'a [Packed16]),
 }
-impl<'a> ScanFirst<'a> {
-    fn new(entry: EntryRef<'a>) -> Self {
-        match entry {
-            EntryRef::Generic(entry) => Self::Generic(entry),
-            EntryRef::Packed8(_, entry) => Self::Packed8(entry),
-            EntryRef::Packed16(_, entry) => Self::Packed16(entry),
+impl<'a> ScanSpan<'a> {
+    fn new(leaf: LeafSlice<'a>) -> Self {
+        match leaf {
+            LeafSlice::Generic(entries) => Self::Generic(entries),
+            LeafSlice::Packed8(_, entries) => Self::Packed8(entries),
+            LeafSlice::Packed16(_, entries) => Self::Packed16(entries),
         }
     }
-    #[inline(always)]
-    fn identity(self) -> NonZeroUsize {
-        let address = match self {
-            Self::Generic(entry) => entry as *const Entry as usize,
-            Self::Packed8(entry) => entry as *const Packed8 as usize,
-            Self::Packed16(entry) => entry as *const Packed16 as usize,
-        };
-        NonZeroUsize::new(address).expect("borrowed row addresses are nonnull")
-    }
-    #[inline(always)]
-    fn row(self, database: u64) -> (u64, &'a [u8], &'a [u8]) {
+    fn len(&self) -> usize {
         match self {
-            Self::Generic(entry) => (
-                entry.key.database,
+            Self::Generic(entries) => entries.len(),
+            Self::Packed8(entries) => entries.len(),
+            Self::Packed16(entries) => entries.len(),
+        }
+    }
+    #[inline(always)]
+    fn next(&mut self, reverse: bool, database: u64) -> Option<(u64, &'a [u8], &'a [u8])> {
+        macro_rules! advance {
+            ($entries:ident, $row:expr) => {{
+                let entries = *$entries;
+                let (entry, rest) = if reverse {
+                    entries.split_last()?
+                } else {
+                    entries.split_first()?
+                };
+                *$entries = rest;
+                Some(($row)(entry))
+            }};
+        }
+        match self {
+            Self::Generic(entries) => advance!(entries, |entry: &'a Entry| (
+                database,
                 entry.key.bytes.as_slice(),
-                entry.value.as_slice(),
-            ),
-            Self::Packed8(entry) => (database, &entry.key, &entry.value),
-            Self::Packed16(entry) => (database, &entry.key, &entry.value),
+                entry.value.as_slice()
+            )),
+            Self::Packed8(entries) => advance!(entries, |entry: &'a Packed8| (
+                database,
+                entry.key.as_slice(),
+                entry.value.as_slice()
+            )),
+            Self::Packed16(entries) => advance!(entries, |entry: &'a Packed16| (
+                database,
+                entry.key.as_slice(),
+                entry.value.as_slice()
+            )),
         }
     }
 }
+
+/// One-direction iteration over spans clipped once per immutable leaf.
+/// Endpoint keys borrow actual Index rows, so construction consumes temporary
+/// bounds without retaining them. Byte comparisons, including empty keys, occur
+/// only during admission, never by comparing key-buffer addresses.
 pub struct ScanIter<'a> {
-    cursor: Cursor<'a>,
-    first: Option<ScanFirst<'a>>,
-    terminal: Option<NonZeroUsize>,
+    stack: [Option<Frame<'a>>; DEPTH],
+    depth: usize,
+    span: ScanSpan<'a>,
     database: u64,
+    terminal: Option<&'a [u8]>,
+    reverse: bool,
+}
+impl<'a> ScanIter<'a> {
+    fn empty(database: u64, reverse: bool) -> Self {
+        Self {
+            stack: [None; DEPTH],
+            depth: 0,
+            span: ScanSpan::Generic(&[]),
+            database,
+            terminal: None,
+            reverse,
+        }
+    }
+    fn new(cursor: Cursor<'a>, database: u64, terminal: Option<&'a [u8]>) -> Self {
+        let Cursor {
+            stack,
+            depth,
+            leaf,
+            reverse,
+        } = cursor;
+        let mut scan = Self {
+            stack,
+            depth,
+            span: ScanSpan::Generic(&[]),
+            database,
+            terminal,
+            reverse,
+        };
+        scan.admit(leaf);
+        scan
+    }
+    // Every caller invokes admission before reading from a new leaf. Once a
+    // namespace or terminal boundary is reached, depth0 prevents any later
+    // refill while preserving the remaining admitted rows in this span.
+    fn admit(&mut self, leaf: LeafSlice<'a>) {
+        let length = leaf.len();
+        let (start, end) = match leaf {
+            LeafSlice::Generic(entries) => {
+                let start = entries.partition_point(|entry| entry.key.database < self.database);
+                let end = entries.partition_point(|entry| entry.key.database <= self.database);
+                if (self.reverse && start > 0) || (!self.reverse && end < length) {
+                    self.depth = 0;
+                }
+                (start, end)
+            }
+            LeafSlice::Packed8(database, _) | LeafSlice::Packed16(database, _) => {
+                if database == self.database {
+                    (0, length)
+                } else {
+                    if (self.reverse && database < self.database)
+                        || (!self.reverse && database > self.database)
+                    {
+                        self.depth = 0;
+                    }
+                    (0, 0)
+                }
+            }
+        };
+        let mut leaf = leaf.slice(start, end);
+        let length = leaf.len();
+        if let Some(terminal) = self.terminal.filter(|_| length != 0) {
+            if self.reverse {
+                let start = leaf.partition_point(|entry| entry.key().bytes.as_slice() < terminal);
+                if start > 0 || leaf.get(0).unwrap().key().bytes.as_slice() == terminal {
+                    self.depth = 0;
+                }
+                leaf = leaf.slice(start, length);
+            } else {
+                let end = leaf.partition_point(|entry| entry.key().bytes.as_slice() <= terminal);
+                if end < length || leaf.get(length - 1).unwrap().key().bytes.as_slice() == terminal
+                {
+                    self.depth = 0;
+                }
+                leaf = leaf.slice(0, end);
+            }
+        }
+        self.span = ScanSpan::new(leaf);
+    }
+    #[inline(never)]
+    fn refill(&mut self) -> Option<(u64, &'a [u8], &'a [u8])> {
+        while self.depth > 0 {
+            let frame = self.stack[self.depth - 1].as_mut().unwrap();
+            let Body::Branch(children) = &frame.node.body else {
+                unreachable!("scan stack contains branches only");
+            };
+            let index = if self.reverse {
+                if frame.next == 0 {
+                    self.depth -= 1;
+                    continue;
+                }
+                frame.next -= 1;
+                frame.next
+            } else {
+                if frame.next == children.len() {
+                    self.depth -= 1;
+                    continue;
+                }
+                let index = frame.next;
+                frame.next += 1;
+                index
+            };
+            let child = children[index].node.as_ref();
+            match &child.body {
+                Body::Leaf(entries) => self.admit(entries.view()),
+                Body::Branch(children) => {
+                    assert!(self.depth < DEPTH, "tree depth admitted before publication");
+                    self.stack[self.depth] = Some(Frame {
+                        node: child,
+                        next: if self.reverse { children.len() } else { 0 },
+                    });
+                    self.depth += 1;
+                    continue;
+                }
+            }
+            if let Some(row) = self.span.next(self.reverse, self.database) {
+                return Some(row);
+            }
+        }
+        None
+    }
 }
 impl<'a> Iterator for ScanIter<'a> {
     type Item = (u64, &'a [u8], &'a [u8]);
     #[inline(always)]
     fn next(&mut self) -> Option<Self::Item> {
-        let entry = self.first?;
-        self.first = match self.terminal {
-            Some(last) if entry.identity() == last => None,
-            Some(_) => self.cursor.next(),
-            None => self
-                .cursor
-                .next()
-                .filter(|next| next.database() == self.database),
+        if let Some(row) = self.span.next(self.reverse, self.database) {
+            return Some(row);
         }
-        .map(ScanFirst::new);
-        Some(entry.row(self.database))
+        self.refill()
     }
     fn size_hint(&self) -> (usize, Option<usize>) {
-        if self.first.is_some() {
+        if self.span.len() != 0 {
             (1, None)
-        } else {
+        } else if self.depth == 0 {
             (0, Some(0))
+        } else {
+            (0, None)
         }
     }
 }
@@ -2222,7 +2357,7 @@ impl std::iter::FusedIterator for ScanIter<'_> {}
 mod tests {
     use super::*;
     #[test]
-    fn compact_scan_preserves_empty_key_identity_old_borrows_and_auto_traits() {
+    fn leaf_span_preserves_empty_keys_old_borrows_and_auto_traits() {
         fn send_sync<T: Send + Sync>() {}
         send_sync::<Index>();
         send_sync::<ScanIter<'static>>();
@@ -2257,9 +2392,8 @@ mod tests {
         assert_eq!(next.get(2, b""), Some(b"other database".as_slice()));
         #[cfg(target_pointer_width = "64")]
         {
-            assert_eq!(size_of::<ScanFirst<'_>>(), 16);
-            assert_eq!(size_of::<Option<NonZeroUsize>>(), 8);
-            assert_eq!(size_of::<ScanIter<'_>>(), 592);
+            assert_eq!(size_of::<ScanSpan<'_>>(), 24);
+            assert_eq!(size_of::<ScanIter<'_>>(), 576);
             assert_eq!(size_of::<Node>(), 56);
         }
     }
@@ -2292,6 +2426,83 @@ mod tests {
             value: Bytes::new(b"value").unwrap(),
         };
         assert_eq!(EntryRef::Generic(&invalid_key).database(), u64::MAX);
+    }
+    #[test]
+    fn packed_scan_spans_clip_inside_across_and_between_leaf_boundaries() {
+        for database in [0, u64::MAX] {
+            for key_len in [8, 16] {
+                let make_key = |number: u64| {
+                    let mut key = vec![0x33; key_len];
+                    key[..8].copy_from_slice(&number.to_be_bytes());
+                    key
+                };
+                let count = LEAF * 4 + 11;
+                let changes: Vec<_> = (0..count)
+                    .map(|n| put(database, &make_key(2 * n as u64), &(n as u64).to_le_bytes()))
+                    .collect();
+                let index = Index::new(4 << 20)
+                    .unwrap()
+                    .prepare_grouped(&changes)
+                    .unwrap();
+                let shape = leaf_counts(index.root.as_deref().unwrap());
+                assert_eq!(shape.2, 0, "this fixture must exercise packed spans");
+                assert!(if key_len == 8 {
+                    shape.0 > 1
+                } else {
+                    shape.1 > 1
+                });
+                let all: Vec<_> = index.iter().collect();
+                let mut bounds = vec![Bound::Unbounded];
+                for number in [
+                    0,
+                    1,
+                    2,
+                    2 * (LEAF - 1) as u64,
+                    2 * LEAF as u64,
+                    2 * (LEAF + 1) as u64,
+                    2 * (count - 1) as u64,
+                    2 * count as u64,
+                    u64::MAX,
+                ] {
+                    let key = make_key(number);
+                    bounds.push(Bound::Included(key.clone()));
+                    bounds.push(Bound::Excluded(key));
+                }
+                let quota = index.stats().charged_bytes;
+                let peak = index.stats().peak_bytes;
+                for lower in &bounds {
+                    for upper in &bounds {
+                        let expected: Vec<_> = all
+                            .iter()
+                            .copied()
+                            .filter(|(_, key, _)| within_bounds(key, lower, upper))
+                            .collect();
+                        for reverse in [false, true] {
+                            let mut scan = index.scan(
+                                database,
+                                borrowed_bound(lower),
+                                borrowed_bound(upper),
+                                reverse,
+                            );
+                            let mut wanted = expected.clone();
+                            if reverse {
+                                wanted.reverse();
+                            }
+                            assert_eq!(
+                                scan.by_ref().collect::<Vec<_>>(),
+                                wanted,
+                                "len={key_len} db={database} reverse={reverse} lower={lower:?} upper={upper:?}"
+                            );
+                            assert_eq!(scan.next(), None);
+                            assert_eq!(scan.next(), None);
+                            assert_eq!(scan.size_hint(), (0, Some(0)));
+                        }
+                    }
+                }
+                assert_eq!(index.stats().charged_bytes, quota);
+                assert_eq!(index.stats().peak_bytes, peak);
+            }
+        }
     }
     fn leaf_counts(node: &Node) -> (usize, usize, usize) {
         match &node.body {

@@ -1,7 +1,7 @@
 # Ultra Low-Latency Memory-Mapped Database (ULMDB) 
 **A very fast Rust key-value database**
 
-**12.2 million successful lookups/second in RAM. 2.94x LMDB and 6.1x faster than SQLite in read performance**
+**11.7 million successful lookups/second in RAM. 2.83x LMDB with the snapshot-log backend**
 
 **Ultra Low-latency Memory-mapped Database** is based on the design of [LMDB](https://www.symas.com/lmdb.php), an
 embedded C key-value database with memory-mapped storage, transactions and
@@ -14,11 +14,51 @@ Its LMDB adapter provides compatible API calls and imports existing LMDB data. I
 
 ## Performance
 
+### ULMDB vs LMDB
+
+Linux snapshot-log backend, measured 8 November 2026. Operations per second;
+higher is better. Synchronous commits; RAM uses tmpfs. Lookups and scans are warm.
+Rates are medians of five fresh runs; differences use unrounded median rates.
+Batch-write rates count rows, including all 64 puts per batch-64 transaction.
+
+| Workload | ULMDB/s | LMDB/s | Difference | Wins vs LMDB |
+| --- | ---: | ---: | ---: | ---: |
+| Disk · single writes | 39,776 | 15,773 | +152.18% | 5/5 |
+| Disk · random writes, batch 1,000 | 521,448 | 177,492 | +193.79% | 5/5 |
+| Disk · lookup hits | 6,108,015 | 2,782,737 | +119.50% | 5/5 |
+| Disk · lookup misses | 9,703,226 | 2,995,386 | +223.94% | 5/5 |
+| Disk · begin/get/end | 5,059,189 | 2,188,654 | +131.16% | 5/5 |
+| Disk · ordered scan | 74,575,386 | 69,191,655 | +7.78% | 5/5 |
+| RAM · single writes | 562,645 | 139,507 | +303.31% | 5/5 |
+| RAM · writes, batch 64 | 2,390,771 | 761,530 | +213.94% | 5/5 |
+| RAM · lookup hits | 11,672,560 | 4,130,660 | +182.58% | 5/5 |
+| RAM · lookup misses | 18,223,450 | 4,183,085 | +335.65% | 5/5 |
+| RAM · begin/get/end | 8,825,075 | 2,303,870 | +283.05% | 5/5 |
+| RAM · ordered scan | 82,614,113 | 62,070,422 | +33.10% | 5/5 |
+| RAM · new-key inserts, batch 256 | 866,452 | 850,213 | +1.91% | 3/5 |
+
+![ULMDB throughput relative to LMDB](benchmark/graphs/snapshot-log-comparison.svg)
+
+Durable single-write latency: **25.14 µs mean / 42.54 µs p99**, versus
+63.40 µs / 322.02 µs for LMDB. Each value is the median of five per-run values.
+
+**All 13 rows lead LMDB on median throughput; the no-regression target remains
+unmet.** New-key insertion wins three of five paired runs. Against the retained
+ULMDB baseline, paired RAM hit/miss/begin-get-end latency increased 3.7% / 3.2% / 3.1%.
+Disk-hit latency also increased 10.4% against an earlier snapshot-log version.
+LMDB still leads on sorted loading, fresh ranges, reopening and peak memory use.
+
+These results use the optional `snapshot-log` feature and
+`ulmdb::snapshot_log::Environment`, with versioned values and exact lookup.
+The default `Environment` uses Legacy and has different performance.
+[Full results and configuration](benchmark/snapshot-log-20261108/REPORT.md).
+
 ### ULMDB vs LMDB vs SQLite
 
-**1.67× LMDB and 6.10x SQLite read throughput** with the Resident backend.
-One million keys, 1,000 writes per durable transaction. Operations per second,
-geometric means of three runs. SQLite uses WAL with `synchronous=FULL`.
+Separate Resident results from 5 November 2026: **1.67× LMDB and 6.10x SQLite
+read throughput**. One million keys, 1,000 writes per durable transaction.
+Operations per second, geometric means of three runs. SQLite uses WAL with
+`synchronous=FULL`.
 
 | Operation | ULMDB/s | LMDB/s | SQLite/s | ULMDB / SQLite |
 | --- | ---: | ---: | ---: | ---: |
@@ -28,40 +68,7 @@ geometric means of three runs. SQLite uses WAL with `synchronous=FULL`.
 
 ![ULMDB, LMDB and SQLite throughput](benchmark/graphs/resident-three-way-20261105.svg)
 
-Results depend on workload and backend. LMDB still leads on disk scans, new-key
-RAM inserts, startup/reopen times and some memory/storage costs.
 [Full three-way comparison](benchmark/ULMDB_VS_LMDB_VS_SQLITE.md).
-
-### ULMDB vs LMDB
-
-Linux snapshot-log backend. Operations per second; higher is better.
-Synchronous commits; RAM uses tmpfs. Medians of five runs.
-
-| Workload | ULMDB/s | LMDB/s | Difference |
-| --- | ---: | ---: | ---: |
-| Disk · single writes | 38,809 | 15,669 | +147.68% |
-| Disk · random writes, batch 1,000 | 358,476 | 182,084 | +96.87% |
-| Disk · lookup hits | 4,341,367 | 2,808,680 | +54.57% |
-| Disk · lookup misses | 8,547,995 | 3,018,764 | +183.16% |
-| Disk · begin/get/end | 3,659,570 | 2,175,540 | +68.21% |
-| Disk · ordered scan | 56,581,408 | 66,864,854 | −15.38% |
-| RAM · single writes | 556,530 | 138,180 | +302.76% |
-| RAM · writes, batch 64 | 2,335,260 | 773,569 | +201.88% |
-| RAM · lookup hits | 12,180,311 | 4,148,720 | +193.59% |
-| RAM · lookup misses | 18,741,171 | 4,141,560 | +352.51% |
-| RAM · begin/get/end | 9,049,584 | 2,406,847 | +275.99% |
-| RAM · ordered scan | 63,499,415 | 61,808,412 | +2.74% |
-| RAM · new-key inserts, batch 256 | 589,050 | 848,173 | −30.55% |
-
-![ULMDB throughput relative to LMDB](benchmark/graphs/snapshot-log-comparison.svg)
-
-Durable single-write latency: **25.77 µs average / 40.21 µs p99**, versus
-63.82 µs / 320.39 µs for LMDB.
-
-These results use the optional `snapshot-log` feature and
-`ulmdb::snapshot_log::Environment`, with versioned values and exact lookup.
-The default `Environment` uses Legacy and has different performance.
-[Full results and configuration](benchmark/snapshot-log-20261108/REPORT.md).
 
 ## Get started
 
@@ -121,20 +128,22 @@ flowchart LR
     end
 
     subgraph Engine["ULMDB engine"]
-        Tx["Transactions<br/>Snapshots"]
+        Tx["File engine<br/>Transactions / snapshots"]
         Indexes["Ordered KV<br/>Duplicates<br/>IPv4 / IPv6"]
+        Resident["Resident<br/>In-memory pages"]
         Snapshot["Snapshot-log<br/>Linux / opt-in"]
         Tx --> Indexes
     end
 
     subgraph Storage["Storage"]
         Files["Mapped files"]
-        Resident["Resident + WAL"]
+        WAL["Write-ahead log"]
         Journal["Commit log"]
     end
 
     Rust & C & LMDB --> Tx
-    Indexes --> Files & Resident
+    Indexes --> Files
+    Rust -.-> Resident --> WAL
     Rust -.-> Snapshot --> Journal
 ```
 
