@@ -30,6 +30,7 @@
 .vscode/
 .idea/
 /PERFORMANCE_PLAN.md
+/PERFORMANCE_RESULTS.md
 *.md
 !clients/php/README.md
 !clients/c/crypto/README.md

@@ -523,11 +523,6 @@ def update_readme():
     review = full_data.get('performance_review', {})
     if review.get('accepted_summary'):
         lines += ['', '**Last accepted progress:** ' + review['accepted_summary']]
-    lines += ['', 'The [complete performance results](PERFORMANCE_RESULTS.md) retain accepted '
-              'and held candidates, all sampled tails and uncertainty. The '
-              '[load optimization plan](PERFORMANCE_PLAN.md#focused-initial-load-plan-updated-from-current-measurements) '
-              'targets measured page zeroing/copying, with isolated ownership/corruption controls '
-              'and a complete disk/RAM/read/write benchmark gate before retention.']
     before, rest = text.split(start, 1)
     _, after = rest.split(end, 1)
     path.write_text(before + start + '\n' + '\n'.join(lines) + '\n' + end + after)
