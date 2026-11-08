@@ -22,9 +22,9 @@ geometric means of three runs. SQLite uses WAL with `synchronous=FULL`.
 
 | Operation | ULMDB/s | LMDB/s | SQLite/s | ULMDB / SQLite |
 | --- | ---: | ---: | ---: | ---: |
-| Load | 1,396,940 | 1,539,753 | 817,306 | 1.71× |
-| Read | 2,776,989 | 1,660,288 | 455,490 | 6.10× |
-| Update | 145,257 | 128,143 | 58,247 | 2.49× |
+| Load | 1,396,940 | 1,539,753 | 817,306 | 1.71x |
+| Read | 2,776,989 | 1,660,288 | 455,490 | 6.10x |
+| Update | 145,257 | 128,143 | 58,247 | 2.49x |
 
 ![ULMDB, LMDB and SQLite throughput](benchmark/graphs/resident-three-way-20261105.svg)
 
@@ -152,3 +152,7 @@ established. ipdon (an IP intelligence platform in development) is using it.
 
 More: [Engine source](crates/ulmdb) · [IPDon regional database](crates/ulmdb-ipdon/README.md) ·
 [Utilities](utility/README.md)
+
+## AI Disclosure
+
+AI has been used for benchmarking and scaffolding the clients. It's also been used for security review
