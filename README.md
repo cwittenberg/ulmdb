@@ -16,13 +16,29 @@ Its LMDB adapter provides compatible API calls and imports existing LMDB data. I
 ## Architecture
 
 ```mermaid
-flowchart TD
-    Apps["Applications<br/>Rust · C/C++ · Python · PHP · Node.js"]
-    API["Client APIs<br/>Rust API · C ABI · LMDB adapter"]
-    Engine["ULMDB engine<br/>Transactions · snapshots<br/>KV · duplicates · IPv4/IPv6"]
-    Storage["Storage<br/>Native files · memory maps · optional WAL"]
+flowchart LR
+    subgraph APIs["Client APIs"]
+        Rust["Rust API"]
+        C["C ABI"]
+        LMDB["LMDB adapter"]
+    end
 
-    Apps --> API --> Engine --> Storage
+    subgraph Engine["ULMDB engine"]
+        Tx["Transactions<br/>Snapshots"]
+        Indexes["Ordered KV<br/>Duplicates<br/>IPv4 / IPv6"]
+        Snapshot["Snapshot-log<br/>Linux / opt-in"]
+        Tx --> Indexes
+    end
+
+    subgraph Storage["Storage"]
+        Files["Mapped files"]
+        Resident["Resident + WAL"]
+        Journal["Commit log"]
+    end
+
+    Rust & C & LMDB --> Tx
+    Indexes --> Files & Resident
+    Rust -.-> Snapshot --> Journal
 ```
 
 ## Performance

@@ -57,3 +57,4 @@
 
 # Keep the GitHub-facing snapshot-log benchmark report reviewable.
 !benchmark/snapshot-log-20261108/REPORT.md
+.playwright-mcp/page-2026-11-08T19-55-14-821Z.yml
