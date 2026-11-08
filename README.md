@@ -13,34 +13,6 @@ IPv4/IPv6 CIDR indexes and optional backends for different workloads. It support
 ordered scans, named databases and duplicate values on disk or a RAM drive.
 Its LMDB adapter provides compatible API calls and imports existing LMDB data. It is capable of serving as drop-in replacement to where LMDB is used today.
 
-## Architecture
-
-```mermaid
-flowchart LR
-    subgraph APIs["Client APIs"]
-        Rust["Rust API"]
-        C["C ABI"]
-        LMDB["LMDB adapter"]
-    end
-
-    subgraph Engine["ULMDB engine"]
-        Tx["Transactions<br/>Snapshots"]
-        Indexes["Ordered KV<br/>Duplicates<br/>IPv4 / IPv6"]
-        Snapshot["Snapshot-log<br/>Linux / opt-in"]
-        Tx --> Indexes
-    end
-
-    subgraph Storage["Storage"]
-        Files["Mapped files"]
-        Resident["Resident + WAL"]
-        Journal["Commit log"]
-    end
-
-    Rust & C & LMDB --> Tx
-    Indexes --> Files & Resident
-    Rust -.-> Snapshot --> Journal
-```
-
 ## Performance
 
 ### ULMDB vs LMDB vs SQLite
@@ -137,6 +109,36 @@ cargo run --release --locked -p uexplorer -- /path/to/database
 Omit the path to open the file picker. Use `--read-only` to disable changes.
 Keyboard and mouse navigation are supported; press `?` for help.
 [Explorer guide and demo data](utility/explorer/README.md).
+
+
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph APIs["Client APIs"]
+        Rust["Rust API"]
+        C["C ABI"]
+        LMDB["LMDB adapter"]
+    end
+
+    subgraph Engine["ULMDB engine"]
+        Tx["Transactions<br/>Snapshots"]
+        Indexes["Ordered KV<br/>Duplicates<br/>IPv4 / IPv6"]
+        Snapshot["Snapshot-log<br/>Linux / opt-in"]
+        Tx --> Indexes
+    end
+
+    subgraph Storage["Storage"]
+        Files["Mapped files"]
+        Resident["Resident + WAL"]
+        Journal["Commit log"]
+    end
+
+    Rust & C & LMDB --> Tx
+    Indexes --> Files & Resident
+    Rust -.-> Snapshot --> Journal
+```
+
 
 ## LMDB compatibility
 
