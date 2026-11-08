@@ -27,9 +27,6 @@ Operations per second, geometric means of three runs. SQLite uses WAL with
 | Read | 2,776,989 | 1,660,288 | 455,490 | 6.10x |
 | Update | 145,257 | 128,143 | 58,247 | 2.49x |
 
-[Full three-way comparison](benchmark/ULMDB_VS_LMDB_VS_SQLITE.md).
-
-
 ### ULMDB vs LMDB
 
 Linux snapshot-log backend, measured 8 November 2026. Operations per second;
@@ -65,7 +62,6 @@ LMDB still leads on sorted loading, fresh ranges, reopening and peak memory use.
 These results use the optional `snapshot-log` feature and
 `ulmdb::snapshot_log::Environment`, with versioned values and exact lookup.
 The default `Environment` uses Legacy and has different performance.
-[Full results and configuration](benchmark/snapshot-log-20261108/REPORT.md).
 
 ### ULMDB vs LMDB vs SQLite
 
@@ -79,8 +75,6 @@ Operations per second, geometric means of three runs. SQLite uses WAL with
 | Load | 1,396,940 | 1,539,753 | 817,306 | 1.71x |
 | Read | 2,776,989 | 1,660,288 | 455,490 | 6.10x |
 | Update | 145,257 | 128,143 | 58,247 | 2.49x |
-
-[Full three-way comparison](benchmark/ULMDB_VS_LMDB_VS_SQLITE.md).
 
 ## Get started
 
