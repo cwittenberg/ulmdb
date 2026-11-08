@@ -1,0 +1,266 @@
+{
+  "scope": "Repository-relative frozen proper-use regression sources; origin paths are provenance only and never runtime dependencies",
+  "sources": {
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-write-views-probe/write_views.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-write-views-probe/write_views.c",
+      "sha256": "35a577bcd14ca48bee1ed45d00b9550d638759c6c4c6facd4417d0e2f33f3106"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-write-views-probe/named_fold_frozen.h": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-write-views-probe/attempt-v2/named_fold_frozen.h",
+      "sha256": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-named-probe/named_fold_aliases.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-named-probe/named_fold_aliases.c",
+      "sha256": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-probe/main_fold_collision.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-probe/main_fold_collision.c",
+      "sha256": "01a8fd81dc61e6ccf596d8b23eab3431055d99aa17c3a1e4e64e80e0773194bc"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-dual-writes-probe/dual_writes.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-dual-writes-probe/dual_writes.c",
+      "sha256": "ba5f0b7c810e21c5273080c96d19a197348252a8caad455828be486a9beb26af"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-dual-writes-probe/named_fold_frozen.h": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-dual-writes-probe/attempt-v1/named_fold_frozen.h",
+      "sha256": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-views-probe/clear_views_v2.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-clear-views-probe/clear_views_v2.c",
+      "sha256": "e725f302ea9515b14675240638f4cbb11bbb9445206634f4003f8fb4bf7060ed"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-views-probe/named_fold_frozen.h": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-clear-views-probe/observations-v2/named_fold_frozen.h",
+      "sha256": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-rearm-probe/clear_rearm.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-clear-rearm-probe/clear_rearm.c",
+      "sha256": "cf6beb39ac487efc54892c4981cdb84d79bc0560f55d3cb1d4b1d0f13dba22cb"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-rearm-probe/named_fold_frozen.h": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-clear-rearm-probe/observations-v1/named_fold_frozen.h",
+      "sha256": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-recreate-probe/clear_recreate.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-clear-recreate-probe/clear_recreate.c",
+      "sha256": "47e877674d2602a875cab83b88168be0dd78b01fe2721e28dd98f8ec28d62e0f"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-recreate-probe/named_fold_frozen.h": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-clear-recreate-probe/observations-v1/named_fold_frozen.h",
+      "sha256": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "sha256": "51b08586d4e0692bd50f48a19fc6cd693500c03c9c74fcb9ec00c4ffa8011cf4"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-refresh-probe/parity_named_refresh.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/parity_named_refresh.c",
+      "sha256": "50364ee9bbe1aac76158ede3f5f0b1d3b78f21d91b26844ca47188b879733e64"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-refresh-probe/named_refresh_helpers.h": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/named_refresh_helpers.h",
+      "sha256": "2dbacee2eb8ce0c0c4c11731dd85940896c3a19358d62b008977dda6dfeab1fc"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-refresh-probe/parity_projected_clear.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/parity_projected_clear.c",
+      "sha256": "c9566ab562a05f6ddd9934fd38eecf700503d5530b9f0c1e8c62efd6308ffb12"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-shared-probe/parity_previous_shared_named.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-shared-probe/parity_previous_shared_named.c",
+      "sha256": "f5628888e76b449bf34552a331ceb9494f37fa9558bc295a7701775aa4d2f274"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-probe/parity_previous_named.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-probe/parity_previous_named.c",
+      "sha256": "bb7d6f2455309b6e2ca0f3e1aaad276974fbdf24ccb6e4419bcdbdeb9b8bb3ec"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-recreated-probe/parity_previous_recreated_named.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-recreated-probe/parity_previous_recreated_named.c",
+      "sha256": "0b1a16be823e27eb8ef244a27f0a8689bac571978b338f06aeaec0d55735eb26"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-view-refresh-work/long-name-probe/parity_long_named_refresh.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-view-refresh-work/long-name-probe/parity_long_named_refresh.c",
+      "sha256": "15355684429e2307d944ef8a0783ad1d1785ff7ab8454b2ddcddc2927284a02d"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-combined-independent-review/retained-clean-prune/probe.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-combined-independent-review/retained-clean-prune/probe.c",
+      "sha256": "878607147cb75bf405428aa4e524885fcecd45553931d0dc67b3ac41d26e0391"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "sha256": "6b17b7ccdcd6b1dd4b5fe0571d13979250eba76a6371d5b7172024a7f579308c"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-previous-reference-expanded/previous_probe.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-previous-reference-expanded/previous_probe.c",
+      "sha256": "96587d3764066eb2c607af03c714beecab6980ab2a63211514d47b01fcb27602"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-previous-reference-expanded/previous_active_probe.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-previous-reference-expanded/previous_active_probe.c",
+      "sha256": "d2051f30eb2ebeaf8a09257260bd6dd394a1f50f0a1687f4353e71c2e07e63aa"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/legacy-prev-boundary/legacy_prev_boundary.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-logical-alias-work/legacy-prev-boundary/legacy_prev_boundary.c",
+      "sha256": "27b94098c20d2f9d751d3d909dbf4fca44e34c37fd6c7bd7ad28c557c9884c37"
+    },
+    "clients/lmdb-ulmdb/qualification/aliases/reference_pins.json": {
+      "origin": "/mnt/data3/ipdon/ulmdb/clients/lmdb-ulmdb/qualification/durability/reference_pins.json",
+      "sha256": "8fd9c6db6666b6d224a2fd1d0f3ce8fed4c03144dae8ec10b1d10e98b177c22d"
+    },
+    "clients/lmdb-ulmdb/qualification/aliases/processes.py": {
+      "origin": "/mnt/data3/ipdon/ulmdb/clients/lmdb-ulmdb/qualification/durability/processes.py",
+      "sha256": "a34d2c39bb45b326acaa4a47f8be7a823af5970b4bd647f59bc9436697239be3"
+    },
+    "clients/lmdb-ulmdb/tests/parity_runner.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/clients/lmdb-ulmdb/tests/parity_runner.c",
+      "origin_sha256": "963eb727df38e93f6c6d5961cbd680bb9b47bcf94e9a691484ce986d1308c276",
+      "sha256": "b4333a835e998221d407cae8cef085bc87ace59d33d3d05e18daf8237a4c58b8",
+      "delta": "Explicit frozen per-header patch role; persistedmajor semantics unchanged"
+    },
+    "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c": {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-copy-independent-review-work/main-dups-v3/probe.c",
+      "sha256": "f4d999d9e19075100fd4b8704f089c8dc681e5d114be7bc9cd463ba9a78a3110",
+      "handoff_sha256": "89537d6e493cee5f7397e0124ff906682be06ca9e2433fc27727f364ecfc40a2",
+      "source_scope": "Proper width4-only positive fixture; separate mixedwidth observations explicitlyexcluded",
+      "original_frozen_sha256": "9ee42e8ac4ec46408b77a3c3e0d4ca508887c0cf48c81a1aef1eb8e42275326e",
+      "adaptation": "Braces andnewline after argc guard only; preserve same publicMDBoperations and semantic traces; strictcc -Werror compilewarning prior failure retained"
+    }
+  },
+  "reference_origins": [
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-write-views-probe/attempt-v2/receipt.json",
+      "sha256": "9036c0f7205e35ba250e336b3f16a8ae2dbd264ff2b13aca4e9e70d77387494e"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-named-probe/attempt-v1/receipt.json",
+      "sha256": "0bd39ed4ee0cacd5929b052f1763d64af81dae76af89b2ca6521e68bdec65c7d"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-probe/attempt-v1/receipt.json",
+      "sha256": "585e05d00e7b4ca8c71af258010e795f403405dc225ce77d9076ae1c12914d39"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-dual-writes-probe/attempt-v1/receipt.json",
+      "sha256": "5f29ae50dbc801d4795e00641417719602ecdc7751e2d89373608735d43ae86d"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-clear-views-probe/observations-v2/receipt.json",
+      "sha256": "09026ed142267049abaa14d344e9ee05f99e865ac7b3fbf5559789b1061a8611"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-clear-rearm-probe/observations-v1/receipt.json",
+      "sha256": "d1f173bcf7fdeacb8694731163bf760dfefda1d956244fe7f757b5db52876e0a"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-clear-recreate-probe/observations-v1/receipt.json",
+      "sha256": "4f9064874866a89eef959a6a82b5d1a519d234d7ce1b0c2fa10abb7bf46d3b51"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-main-fold-kind-recreate-probe/observations-v1/receipt.json",
+      "sha256": "49a1228a1ac1ba2a17d62cde860ef92981c6425da0ed7e31f821902b1028e212"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/receipt.json",
+      "sha256": "a65efd7ec1fb0aa341541292d3a4dec15f862960e827e7497d9cd76bdbd5e4bd"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/projected-clear-groundwork/receipt.json",
+      "sha256": "8b8fefd11e983a9736ae2492cbced9541f87f0da0b60c72177abbedf3fa6b13f"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-shared-probe/reference-and-prechange/receipt.json",
+      "sha256": "17f0acf7fcdef09123f99de68daa3ee65d5fb5289500000a18f80230273202da"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-recreated-probe/reference-v3-frozen/receipt.json",
+      "sha256": "952de171306c715b2bfcb368a37606506acf3115ecb0ce2b1f6fb56ea0c51053"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-g14-view-refresh-work/long-name-probe/groundwork-v2/receipt.json",
+      "sha256": "7123d3817e76135faf3c01fe3b6ddd4fac2b41384f87e5f7f84756de849370b3"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-combined-independent-review/retained-clean-prune/receipt.json",
+      "sha256": "0b75095b4bff9115bdca574d9e55b4fd8bd6ba00306cc5a207f0f4690816bfb7"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-logical-alias-work/copy-empty-flags-reference/observations-v1/receipt.json",
+      "sha256": "bf5c933b008fead37676171cad472e6fbe05c856f9b78769934859e79afe7cce"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-previous-reference-expanded/run.py",
+      "sha256": "7fd142171cf3fa2a5129ceb76ccb99e819bf813f76e851a21484073e0046f576"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-previous-reference-expanded/run_more.py",
+      "sha256": "927b10eeec0b788f8de4e53b2ff35d0ffe6ca6798479f169b61dca5952eede7e"
+    },
+    {
+      "origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-previous-reference-expanded/run_active.py",
+      "sha256": "b2a5eb1d71669d67efcfa5c942b30614b029246481c0918a423bd54c54b46ec8"
+    }
+  ],
+  "scenario_fragments": {
+    "base": {
+      "source_origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-previous-reference-expanded/run.py",
+      "source_sha256": "7fd142171cf3fa2a5129ceb76ccb99e819bf813f76e851a21484073e0046f576",
+      "owned_sha256": "37772bc5c3c6221767b0d4628cdc9f143ea7819e42dad426d0e44192eac50cb0"
+    },
+    "followup": {
+      "source_origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-previous-reference-expanded/run_more.py",
+      "source_sha256": "927b10eeec0b788f8de4e53b2ff35d0ffe6ca6798479f169b61dca5952eede7e",
+      "owned_sha256": "39e73d8a9cd6b170b274893c49fea06c80b95019b44728bb9358be9b96e397ea"
+    },
+    "active": {
+      "source_origin": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-previous-reference-expanded/run_active.py",
+      "source_sha256": "b2a5eb1d71669d67efcfa5c942b30614b029246481c0918a423bd54c54b46ec8",
+      "owned_sha256": "ef5bfa2d9249e2032894c647ab677dd5b5034393872c86d200a3239ae0363980",
+      "adaptation": "Same24 command schedules adapted to common owned synchronous case controller; no old setup/ambient target dependencies"
+    }
+  },
+  "all_sources_sha256": {
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-combined-independent-review/retained-clean-prune/probe.c": "878607147cb75bf405428aa4e524885fcecd45553931d0dc67b3ac41d26e0391",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c": "6b17b7ccdcd6b1dd4b5fe0571d13979250eba76a6371d5b7172024a7f579308c",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/legacy-prev-boundary/legacy_prev_boundary.c": "27b94098c20d2f9d751d3d909dbf4fca44e34c37fd6c7bd7ad28c557c9884c37",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-probe/parity_previous_named.c": "bb7d6f2455309b6e2ca0f3e1aaad276974fbdf24ccb6e4419bcdbdeb9b8bb3ec",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-recreated-probe/parity_previous_recreated_named.c": "0b1a16be823e27eb8ef244a27f0a8689bac571978b338f06aeaec0d55735eb26",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-refresh-probe/named_refresh_helpers.h": "2dbacee2eb8ce0c0c4c11731dd85940896c3a19358d62b008977dda6dfeab1fc",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-refresh-probe/parity_named_refresh.c": "50364ee9bbe1aac76158ede3f5f0b1d3b78f21d91b26844ca47188b879733e64",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-refresh-probe/parity_projected_clear.c": "c9566ab562a05f6ddd9934fd38eecf700503d5530b9f0c1e8c62efd6308ffb12",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-shared-probe/parity_previous_shared_named.c": "f5628888e76b449bf34552a331ceb9494f37fa9558bc295a7701775aa4d2f274",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-rearm-probe/clear_rearm.c": "cf6beb39ac487efc54892c4981cdb84d79bc0560f55d3cb1d4b1d0f13dba22cb",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-rearm-probe/named_fold_frozen.h": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-recreate-probe/clear_recreate.c": "47e877674d2602a875cab83b88168be0dd78b01fe2721e28dd98f8ec28d62e0f",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-recreate-probe/named_fold_frozen.h": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-views-probe/clear_views_v2.c": "e725f302ea9515b14675240638f4cbb11bbb9445206634f4003f8fb4bf7060ed",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-views-probe/named_fold_frozen.h": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-dual-writes-probe/dual_writes.c": "ba5f0b7c810e21c5273080c96d19a197348252a8caad455828be486a9beb26af",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-dual-writes-probe/named_fold_frozen.h": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c": "51b08586d4e0692bd50f48a19fc6cd693500c03c9c74fcb9ec00c4ffa8011cf4",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-named-probe/named_fold_aliases.c": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-probe/main_fold_collision.c": "01a8fd81dc61e6ccf596d8b23eab3431055d99aa17c3a1e4e64e80e0773194bc",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-write-views-probe/named_fold_frozen.h": "e30b417df736f3b62d41d05a949c369771aff49acbd577f210d4bcfede8a2634",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-write-views-probe/write_views.c": "35a577bcd14ca48bee1ed45d00b9550d638759c6c4c6facd4417d0e2f33f3106",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-view-refresh-work/long-name-probe/parity_long_named_refresh.c": "15355684429e2307d944ef8a0783ad1d1785ff7ab8454b2ddcddc2927284a02d",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-previous-reference-expanded/previous_active_probe.c": "d2051f30eb2ebeaf8a09257260bd6dd394a1f50f0a1687f4353e71c2e07e63aa",
+    "clients/lmdb-ulmdb/tests/parity_aliases/m3-previous-reference-expanded/previous_probe.c": "96587d3764066eb2c607af03c714beecab6980ab2a63211514d47b01fcb27602",
+    "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c": "f4d999d9e19075100fd4b8704f089c8dc681e5d114be7bc9cd463ba9a78a3110"
+  },
+  "owned_tooling_sha256": {
+    "README.md": "5a67dddec3d9e5db84f8719ed4e361b5a0bc2dffb46512823d6067044aaf2653",
+    "active_cases.py": "ef5bfa2d9249e2032894c647ab677dd5b5034393872c86d200a3239ae0363980",
+    "actors.py": "88c27431f5d4c277db13c2550dc41cac053b57862d3a803f0181d83008ac5264",
+    "base_cases.py": "37772bc5c3c6221767b0d4628cdc9f143ea7819e42dad426d0e44192eac50cb0",
+    "cases.json": "1529f3192075fe8cc76639af315e8e34dccb3f610e2c776bd0621b636a955063",
+    "commands.py": "e79ff8ace9376f1d99d7557efea3a4d6b2d0d0c9385fa06c4696483de5f62430",
+    "followup_cases.py": "39e73d8a9cd6b170b274893c49fea06c80b95019b44728bb9358be9b96e397ea",
+    "processes.py": "0561934b8a605622eee6aa35069b5541399898631930ff91ee4ccc620dc13607",
+    "reference_pins.json": "8fd9c6db6666b6d224a2fd1d0f3ce8fed4c03144dae8ec10b1d10e98b177c22d",
+    "run.py": "f06f5aa8f21bdab77df3c4b1db3115b19d4e9fd7647b2031e5c05aacab7720e5",
+    "test_commands.py": "fde091c559619d2c3d26021bdbdcc93369fb4538703b158a7c11a3d907c1da6b",
+    "test_processes.py": "c33c45a5479deff99db32dbbb29b853c73521fc905897b1c842356e950809512"
+  },
+  "hardening_provenance": {
+    "previous_source_manifest_sha256": "7e5369555de77f3ddcca19f5548cbc3f3517588a801aade428d8e5edfeda69ab",
+    "independent_review_sha256": "a775c50c705d47f4f1b1fcb01a7e0414561182e65c86506e322fbc997ffa01cb",
+    "scope": "Tool inventory/hash admission, checked-source module execution, exact declared case-key classifications, explicit27safe read/writer predicates; publicCfixtures/providerunchanged"
+  }
+}

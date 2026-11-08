@@ -1,0 +1,32 @@
+scenario=G14-non-PREV-refresh-mode0
+refresh.flags.before=0
+refresh.get=0 value=B
+refresh.cursor=0
+callback.sign=-1 calls=1
+refresh.child.abort=-30798
+refresh.reserve=0 value=RR
+refresh.canonical=0 value=child
+refresh.reopen.flags=0
+refresh.reopen=0 value=B
+scenario=G14-non-PREV-refresh-mode1
+refresh.flags.before=0
+refresh.get=-30784
+refresh.cursor=-30784
+callback.sign=-1 calls=1
+refresh.reopen.flags=4
+refresh.reopen=0 value=B
+scenario=G14-non-PREV-refresh-mode2
+refresh.flags.before=20
+refresh.get=0 value=BB
+refresh.cursor=0
+callback.sign=-1 calls=1
+refresh.child.abort=-30798
+refresh.canonical=0 value=CC
+refresh.reopen.flags=20
+refresh.reopen=0 value=BB
+scenario=G14-non-PREV-refresh-mode3
+refresh.flags.before=0
+refresh.get=-30784
+refresh.cursor=-30784
+callback.sign=-1 calls=1
+named-refresh-complete journeys=4

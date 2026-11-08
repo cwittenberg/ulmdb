@@ -1,0 +1,47 @@
+{
+  "status": "approved protocol and staged inputs; not measured",
+  "recorded_utc": "2026-11-05T22:52:42.638029+00:00",
+  "root_approval": "Approved one-shot original full workload,30 candidate+30 identical-F02 controls,balanced process-pair schedule; conservative upper95<10 and control90 inside\u00b110; no retries/exclusions/subtraction; original scheduler/affinity policy preserved. Timing awaits coordinated Root START.",
+  "files": [
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/PROTOCOL.json",
+      "sha256": "a74a47b17d6bf65254afd22369475d0a1eabc561e6bd42ead1c7d17b0e60491f"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/PROTOCOL.md",
+      "sha256": "1ae80ff59a006802b93eac1c509ce2040dd0952aa084e0f564f29b5953ae704d"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/run_confirmation.py",
+      "sha256": "507aa5c4f5254022340634e676fe79b98c3ae7d3539718b3ae2fa54274358c94"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/analyze_confirmation.py",
+      "sha256": "434ad91180a83e6cd9ff7660d23c91d4f372b2e591ef0dad164a59c080891820"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/ANALYSIS_CONTROLS.json",
+      "sha256": "74b54d291dce4637d64c78e04630707988d1897e70329e70f5c40dbaa498d341"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/inputs/baseline-liblmdb.so.0",
+      "sha256": "1bc6751904f62652765610a5806831eb79369641b66767e730f439881460907a"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/inputs/candidate-liblmdb.so.0",
+      "sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/inputs/executable-journey",
+      "sha256": "372e94f61fd9bd114ebad842da21cdb49308f6ce72c8ac9815ef1169b71d3c7f"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/inputs/monitor-compare_performance.py",
+      "sha256": "66c9878e7b18c4f2498b23fd0292cb826ab1865cd139f43e78bfc73e1b409000"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/inputs/source-performance_journey.c",
+      "sha256": "2e8c51bb5d595e9d3f6960d69846f9508f385831a9e605b503c376df5c5a0a5c"
+    }
+  ]
+}

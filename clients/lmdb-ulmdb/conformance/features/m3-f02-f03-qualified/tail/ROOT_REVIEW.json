@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "scope": "Independent Root exact-artifact tail and source review; no broad performance/parity acceptance",
+  "recorded_utc": "2026-11-05T23:19:07.988714+00:00",
+  "complete": true,
+  "passed": true,
+  "same_script_recomputation_equals_original": true,
+  "independent_raw_sample_percentile_and_t_calculation": {
+    "candidate": {
+      "mean_percent": -2.5473873282232016,
+      "independent_t_upper95_percent": 0.3106074189605814,
+      "process_pairs": 30,
+      "individual_get_samples_per_process": 4096
+    },
+    "identical": {
+      "mean_percent": 3.78884625695426,
+      "independent_t_upper95_percent": 7.508292835394378,
+      "process_pairs": 30,
+      "individual_get_samples_per_process": 4096
+    }
+  },
+  "evidence_and_prefreeze_hashes_verified": 20,
+  "root_source_rows_verified": 525,
+  "full_gate_product_source_unchanged": true,
+  "full_gate_artifacts_verified": 8,
+  "native_artifacts_checked": true,
+  "original_analysis_sha256": "b3c7180b38672b6811260f6c0f6240cc965916631728e352831ce83a1abc53e9",
+  "recomputed_analysis_sha256": "b3c7180b38672b6811260f6c0f6240cc965916631728e352831ce83a1abc53e9",
+  "decision": "close_exact_artifact_repeated_tail_review",
+  "candidate_conservative_upper95_percent": 0.3106074189605823,
+  "identical_control_conservative_90_envelope_percent": [
+    -0.1572310732780579,
+    7.580921824896416
+  ],
+  "retained_limitations": [
+    "Original3 adverse full pairs and7 reduced-later-work focused pairs remain retained and separate",
+    "Candidate4/30 and identical-control8/30 individual process pairs exceeded10percent; none excluded",
+    "No universal tail-equivalence, startup-load acceptance, rollback-speed parity or G05 performance acceptance"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "kind": "read-only-performance-baseline-input",
+  "captured_utc": "2026-11-05T18:52:38.221133+00:00",
+  "artifact": {
+    "path": "/mnt/data3/ipdon/ulmdb/target/qualification/g14-qualified-baseline-25d1/liblmdb.so.0",
+    "bytes": 45225768,
+    "sha256": "25d1b7ba2e6ccabf0dcd82cbe9b2e491b49a8cb65ffcc3ca29c12609f770f800",
+    "original_frozen_path": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-m1-qualified-package-vs-m0/libraries/candidate/liblmdb.so.0",
+    "writable": false
+  },
+  "qualification": {
+    "path": "/mnt/data3/ipdon/ulmdb/target/qualification/g14-qualified-baseline-25d1/qualification.json",
+    "sha256": "1913f5d7a65e69f174bada8bf597ad25f622ad36f7e78707d8b89b897cfcfbd6",
+    "profile": "lmdb-linux-release-qualification-v1",
+    "passed": true
+  },
+  "predeclared_g14_budget": {
+    "path": "/mnt/data3/ipdon/ulmdb/clients/lmdb-ulmdb/features/G14_IMPLEMENTATION.md",
+    "sha256": "65baef608c4219fa688355616c70c9ba76fea3351c2851b773199059b8203ea3",
+    "throughput_loss_percent_max": 5,
+    "phases": [
+      "batched_get",
+      "single_get_transaction",
+      "update_batch1",
+      "update_batch16",
+      "close_reopen"
+    ],
+    "repeated_p99_increase_percent_review": 10,
+    "persistent_file_or_fd_class_increase_allowed": false,
+    "per_record_cache_or_whole_database_copy_allowed": false
+  },
+  "measurement_started": false
+}

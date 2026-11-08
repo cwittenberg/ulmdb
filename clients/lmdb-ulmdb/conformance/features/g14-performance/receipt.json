@@ -1,0 +1,1868 @@
+{
+  "schema": 1,
+  "scope": "Linux Legacy C adapter, local bounded journey",
+  "started_utc": "2026-11-05T20:20:08.828598+00:00",
+  "complete": true,
+  "passed": true,
+  "performance_acceptance": "requires review",
+  "runs": [
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-01-baseline",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 3.0466013941913843,
+      "database": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-01-baseline",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-01-baseline/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-01-baseline/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2739,
+      "fd_unavailable_observations": 1,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 77.18134350953912,
+          "elapsed_ns": 12956499,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 12956499,
+          "p95_ns": 12956499,
+          "p99_ns": 12956499
+        },
+        "initial_load": {
+          "operations_per_second": 11462.52660503917,
+          "elapsed_ns": 22333645,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 22333645,
+          "p95_ns": 22333645,
+          "p99_ns": 22333645
+        },
+        "batched_get": {
+          "operations_per_second": 93740.34218154282,
+          "elapsed_ns": 43695168,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 9347,
+          "p95_ns": 9759,
+          "p99_ns": 12143
+        },
+        "single_get_transaction": {
+          "operations_per_second": 214.26808499639964,
+          "elapsed_ns": 149345620,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4665270,
+          "p95_ns": 4723720,
+          "p99_ns": 4741622
+        },
+        "update_batch1": {
+          "operations_per_second": 57.9361118687515,
+          "elapsed_ns": 552332543,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 16864228,
+          "p95_ns": 26442772,
+          "p99_ns": 27530532
+        },
+        "update_batch16": {
+          "operations_per_second": 320.70873764685615,
+          "elapsed_ns": 1596464143,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 48046829,
+          "p95_ns": 69322701,
+          "p99_ns": 80576647
+        },
+        "close_reopen": {
+          "operations_per_second": 15.276001603124712,
+          "elapsed_ns": 261848624,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 65348518,
+          "p95_ns": 65817047,
+          "p99_ns": 65817047
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 2027520,
+        "files": 146
+      },
+      "filesystem": "disk",
+      "pair": 1,
+      "arm": "baseline"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-01-candidate",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.998764627147466,
+      "database": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-01-candidate",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-01-candidate/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-01-candidate/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2698,
+      "fd_unavailable_observations": 1,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 76.65992698141955,
+          "elapsed_ns": 13044625,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 13044625,
+          "p95_ns": 13044625,
+          "p99_ns": 13044625
+        },
+        "initial_load": {
+          "operations_per_second": 10669.410038722874,
+          "elapsed_ns": 23993829,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 23993829,
+          "p95_ns": 23993829,
+          "p99_ns": 23993829
+        },
+        "batched_get": {
+          "operations_per_second": 103346.02433950259,
+          "elapsed_ns": 39633842,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 8366,
+          "p95_ns": 8757,
+          "p99_ns": 11722
+        },
+        "single_get_transaction": {
+          "operations_per_second": 214.04137220398675,
+          "elapsed_ns": 149503807,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4663216,
+          "p95_ns": 4733027,
+          "p99_ns": 4739298
+        },
+        "update_batch1": {
+          "operations_per_second": 58.65133577445813,
+          "elapsed_ns": 545597122,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 16685873,
+          "p95_ns": 26275408,
+          "p99_ns": 27252941
+        },
+        "update_batch16": {
+          "operations_per_second": 327.12738292691586,
+          "elapsed_ns": 1565139535,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 48284455,
+          "p95_ns": 67828189,
+          "p99_ns": 68993644
+        },
+        "close_reopen": {
+          "operations_per_second": 15.081461761632369,
+          "elapsed_ns": 265226280,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 66290164,
+          "p95_ns": 66370455,
+          "p99_ns": 66370455
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 2027520,
+        "files": 146
+      },
+      "filesystem": "disk",
+      "pair": 1,
+      "arm": "candidate"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-01-baseline",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.8682965259067714,
+      "database": "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-01-baseline",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-01-baseline/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-01-baseline/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2584,
+      "fd_unavailable_observations": 0,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 285.5414923197905,
+          "elapsed_ns": 3502118,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 3502118,
+          "p95_ns": 3502118,
+          "p99_ns": 3502118
+        },
+        "initial_load": {
+          "operations_per_second": 20547.484514340136,
+          "elapsed_ns": 12458946,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 12458946,
+          "p95_ns": 12458946,
+          "p99_ns": 12458946
+        },
+        "batched_get": {
+          "operations_per_second": 94118.31964148457,
+          "elapsed_ns": 43519689,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 9367,
+          "p95_ns": 9729,
+          "p99_ns": 12143
+        },
+        "single_get_transaction": {
+          "operations_per_second": 220.70499493061317,
+          "elapsed_ns": 144989922,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4518945,
+          "p95_ns": 4593034,
+          "p99_ns": 4649911
+        },
+        "update_batch1": {
+          "operations_per_second": 65.43800272745595,
+          "elapsed_ns": 489012480,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 14972550,
+          "p95_ns": 24571041,
+          "p99_ns": 25183771
+        },
+        "update_batch16": {
+          "operations_per_second": 340.33205690953423,
+          "elapsed_ns": 1504413086,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 46446619,
+          "p95_ns": 65800917,
+          "p99_ns": 66884048
+        },
+        "close_reopen": {
+          "operations_per_second": 15.120057985422374,
+          "elapsed_ns": 264549250,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 66080441,
+          "p95_ns": 66269796,
+          "p99_ns": 66269796
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 1986560,
+        "files": 146
+      },
+      "filesystem": "ram",
+      "pair": 1,
+      "arm": "baseline"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-01-candidate",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.8477189110126346,
+      "database": "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-01-candidate",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-01-candidate/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-01-candidate/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2565,
+      "fd_unavailable_observations": 1,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 158.25286307123548,
+          "elapsed_ns": 6319001,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 6319001,
+          "p95_ns": 6319001,
+          "p99_ns": 6319001
+        },
+        "initial_load": {
+          "operations_per_second": 15572.731927403574,
+          "elapsed_ns": 16438991,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 16438991,
+          "p95_ns": 16438991,
+          "p99_ns": 16438991
+        },
+        "batched_get": {
+          "operations_per_second": 102572.7016577812,
+          "elapsed_ns": 39932652,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 8376,
+          "p95_ns": 10419,
+          "p99_ns": 10930
+        },
+        "single_get_transaction": {
+          "operations_per_second": 218.94735666703664,
+          "elapsed_ns": 146153854,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4557217,
+          "p95_ns": 4642206,
+          "p99_ns": 4683103
+        },
+        "update_batch1": {
+          "operations_per_second": 65.58249242573449,
+          "elapsed_ns": 487935100,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 14936913,
+          "p95_ns": 24502203,
+          "p99_ns": 25034791
+        },
+        "update_batch16": {
+          "operations_per_second": 342.5445956868931,
+          "elapsed_ns": 1494695892,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 46075512,
+          "p95_ns": 65162850,
+          "p99_ns": 66627347
+        },
+        "close_reopen": {
+          "operations_per_second": 15.236573496200572,
+          "elapsed_ns": 262526217,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 65546600,
+          "p95_ns": 65865087,
+          "p99_ns": 65865087
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 1986560,
+        "files": 146
+      },
+      "filesystem": "ram",
+      "pair": 1,
+      "arm": "candidate"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-02-candidate",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.992619762895629,
+      "database": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-02-candidate",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-02-candidate/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-02-candidate/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2700,
+      "fd_unavailable_observations": 0,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 80.20730701400066,
+          "elapsed_ns": 12467692,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 12467692,
+          "p95_ns": 12467692,
+          "p99_ns": 12467692
+        },
+        "initial_load": {
+          "operations_per_second": 10514.473172321701,
+          "elapsed_ns": 24347392,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 24347392,
+          "p95_ns": 24347392,
+          "p99_ns": 24347392
+        },
+        "batched_get": {
+          "operations_per_second": 104103.54785450238,
+          "elapsed_ns": 39345441,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 8335,
+          "p95_ns": 8706,
+          "p99_ns": 10840
+        },
+        "single_get_transaction": {
+          "operations_per_second": 213.523173940308,
+          "elapsed_ns": 149866637,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4680498,
+          "p95_ns": 4720513,
+          "p99_ns": 4734860
+        },
+        "update_batch1": {
+          "operations_per_second": 58.61771023950227,
+          "elapsed_ns": 545910099,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 16690752,
+          "p95_ns": 26490512,
+          "p99_ns": 27007281
+        },
+        "update_batch16": {
+          "operations_per_second": 328.4460939452053,
+          "elapsed_ns": 1558855500,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 47888513,
+          "p95_ns": 66921398,
+          "p99_ns": 70289365
+        },
+        "close_reopen": {
+          "operations_per_second": 15.107926608623472,
+          "elapsed_ns": 264761678,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 66198372,
+          "p95_ns": 66316012,
+          "p99_ns": 66316012
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 2027520,
+        "files": 146
+      },
+      "filesystem": "disk",
+      "pair": 2,
+      "arm": "candidate"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-02-baseline",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.9976707668974996,
+      "database": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-02-baseline",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-02-baseline/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-02-baseline/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2699,
+      "fd_unavailable_observations": 0,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 86.77427312879307,
+          "elapsed_ns": 11524153,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 11524153,
+          "p95_ns": 11524153,
+          "p99_ns": 11524153
+        },
+        "initial_load": {
+          "operations_per_second": 12125.756983536065,
+          "elapsed_ns": 21112084,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 21112084,
+          "p95_ns": 21112084,
+          "p99_ns": 21112084
+        },
+        "batched_get": {
+          "operations_per_second": 93402.35286820588,
+          "elapsed_ns": 43853285,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 9368,
+          "p95_ns": 9758,
+          "p99_ns": 12253
+        },
+        "single_get_transaction": {
+          "operations_per_second": 214.06296122833447,
+          "elapsed_ns": 149488729,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4669487,
+          "p95_ns": 4751321,
+          "p99_ns": 4756100
+        },
+        "update_batch1": {
+          "operations_per_second": 58.50797899546733,
+          "elapsed_ns": 546933949,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 16924320,
+          "p95_ns": 26711346,
+          "p99_ns": 27201886
+        },
+        "update_batch16": {
+          "operations_per_second": 327.8773410303666,
+          "elapsed_ns": 1561559571,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 48579178,
+          "p95_ns": 67512646,
+          "p99_ns": 68644620
+        },
+        "close_reopen": {
+          "operations_per_second": 15.519880153623069,
+          "elapsed_ns": 257733949,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 64404528,
+          "p95_ns": 64582632,
+          "p99_ns": 64582632
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 2027520,
+        "files": 146
+      },
+      "filesystem": "disk",
+      "pair": 2,
+      "arm": "baseline"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-02-candidate",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.849550473038107,
+      "database": "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-02-candidate",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-02-candidate/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-02-candidate/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2562,
+      "fd_unavailable_observations": 1,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 291.21831180744647,
+          "elapsed_ns": 3433850,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 3433850,
+          "p95_ns": 3433850,
+          "p99_ns": 3433850
+        },
+        "initial_load": {
+          "operations_per_second": 21212.786371580234,
+          "elapsed_ns": 12068193,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 12068193,
+          "p95_ns": 12068193,
+          "p99_ns": 12068193
+        },
+        "batched_get": {
+          "operations_per_second": 104140.88675456571,
+          "elapsed_ns": 39331334,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 8376,
+          "p95_ns": 8756,
+          "p99_ns": 10379
+        },
+        "single_get_transaction": {
+          "operations_per_second": 221.194128808295,
+          "elapsed_ns": 144669301,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4526199,
+          "p95_ns": 4574579,
+          "p99_ns": 4591621
+        },
+        "update_batch1": {
+          "operations_per_second": 65.16386865979536,
+          "elapsed_ns": 491069678,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 15019559,
+          "p95_ns": 24687410,
+          "p99_ns": 25157001
+        },
+        "update_batch16": {
+          "operations_per_second": 340.02883492336707,
+          "elapsed_ns": 1505754652,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 46477085,
+          "p95_ns": 65669590,
+          "p99_ns": 67102658
+        },
+        "close_reopen": {
+          "operations_per_second": 15.293272783697953,
+          "elapsed_ns": 261552910,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 65287193,
+          "p95_ns": 65511393,
+          "p99_ns": 65511393
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 1986560,
+        "files": 146
+      },
+      "filesystem": "ram",
+      "pair": 2,
+      "arm": "candidate"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-02-baseline",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.858823494054377,
+      "database": "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-02-baseline",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-02-baseline/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-02-baseline/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2568,
+      "fd_unavailable_observations": 0,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 161.67573667549416,
+          "elapsed_ns": 6185220,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 6185220,
+          "p95_ns": 6185220,
+          "p99_ns": 6185220
+        },
+        "initial_load": {
+          "operations_per_second": 12688.620557607379,
+          "elapsed_ns": 20175558,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 20175558,
+          "p95_ns": 20175558,
+          "p99_ns": 20175558
+        },
+        "batched_get": {
+          "operations_per_second": 94441.20366420803,
+          "elapsed_ns": 43370900,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 9348,
+          "p95_ns": 9718,
+          "p99_ns": 11852
+        },
+        "single_get_transaction": {
+          "operations_per_second": 219.57059169478217,
+          "elapsed_ns": 145739007,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4556235,
+          "p95_ns": 4612331,
+          "p99_ns": 4648548
+        },
+        "update_batch1": {
+          "operations_per_second": 65.93309736056356,
+          "elapsed_ns": 485340463,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 14821698,
+          "p95_ns": 24422303,
+          "p99_ns": 25211092
+        },
+        "update_batch16": {
+          "operations_per_second": 344.2166329799933,
+          "elapsed_ns": 1487435385,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 45890265,
+          "p95_ns": 64798336,
+          "p99_ns": 66243005
+        },
+        "close_reopen": {
+          "operations_per_second": 15.267791587117815,
+          "elapsed_ns": 261989429,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 65336556,
+          "p95_ns": 65753387,
+          "p99_ns": 65753387
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 1986560,
+        "files": 146
+      },
+      "filesystem": "ram",
+      "pair": 2,
+      "arm": "baseline"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-03-baseline",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 3.0081547400914133,
+      "database": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-03-baseline",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-03-baseline/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-03-baseline/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2712,
+      "fd_unavailable_observations": 0,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 75.56471970891866,
+          "elapsed_ns": 13233689,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 13233689,
+          "p95_ns": 13233689,
+          "p99_ns": 13233689
+        },
+        "initial_load": {
+          "operations_per_second": 10263.829738781124,
+          "elapsed_ns": 24941957,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 24941957,
+          "p95_ns": 24941957,
+          "p99_ns": 24941957
+        },
+        "batched_get": {
+          "operations_per_second": 93952.46817102093,
+          "elapsed_ns": 43596513,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 9378,
+          "p95_ns": 9748,
+          "p99_ns": 12183
+        },
+        "single_get_transaction": {
+          "operations_per_second": 214.52004103875646,
+          "elapsed_ns": 149170212,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4654720,
+          "p95_ns": 4742294,
+          "p99_ns": 4757803
+        },
+        "update_batch1": {
+          "operations_per_second": 58.442785087782056,
+          "elapsed_ns": 547544063,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 16838900,
+          "p95_ns": 26552929,
+          "p99_ns": 26922973
+        },
+        "update_batch16": {
+          "operations_per_second": 328.15683508863515,
+          "elapsed_ns": 1560229577,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 48248307,
+          "p95_ns": 67398562,
+          "p99_ns": 69061582
+        },
+        "close_reopen": {
+          "operations_per_second": 15.258915665212905,
+          "elapsed_ns": 262141825,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 65573289,
+          "p95_ns": 65602675,
+          "p99_ns": 65602675
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 2027520,
+        "files": 146
+      },
+      "filesystem": "disk",
+      "pair": 3,
+      "arm": "baseline"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-03-candidate",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.97805489692837,
+      "database": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data/disk-03-candidate",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-03-candidate/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/disk-03-candidate/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2684,
+      "fd_unavailable_observations": 1,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 76.22652480300589,
+          "elapsed_ns": 13118793,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 13118793,
+          "p95_ns": 13118793,
+          "p99_ns": 13118793
+        },
+        "initial_load": {
+          "operations_per_second": 10548.695332416586,
+          "elapsed_ns": 24268404,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 24268404,
+          "p95_ns": 24268404,
+          "p99_ns": 24268404
+        },
+        "batched_get": {
+          "operations_per_second": 103860.92596021848,
+          "elapsed_ns": 39437353,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 8356,
+          "p95_ns": 8727,
+          "p99_ns": 10881
+        },
+        "single_get_transaction": {
+          "operations_per_second": 213.46591843838152,
+          "elapsed_ns": 149906834,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4686570,
+          "p95_ns": 4733107,
+          "p99_ns": 4765638
+        },
+        "update_batch1": {
+          "operations_per_second": 58.80240345930277,
+          "elapsed_ns": 544195443,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 16766696,
+          "p95_ns": 26577955,
+          "p99_ns": 26771428
+        },
+        "update_batch16": {
+          "operations_per_second": 331.1145641718227,
+          "elapsed_ns": 1546292599,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 47765562,
+          "p95_ns": 66941155,
+          "p99_ns": 68300504
+        },
+        "close_reopen": {
+          "operations_per_second": 15.245274513730626,
+          "elapsed_ns": 262376384,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 65524798,
+          "p95_ns": 65703965,
+          "p99_ns": 65703965
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 2027520,
+        "files": 146
+      },
+      "filesystem": "disk",
+      "pair": 3,
+      "arm": "candidate"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-03-baseline",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.8827669359743595,
+      "database": "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-03-baseline",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-03-baseline/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-03-baseline/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2593,
+      "fd_unavailable_observations": 1,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 140.99597583385372,
+          "elapsed_ns": 7092401,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 7092401,
+          "p95_ns": 7092401,
+          "p99_ns": 7092401
+        },
+        "initial_load": {
+          "operations_per_second": 12968.465554944956,
+          "elapsed_ns": 19740192,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 19740192,
+          "p95_ns": 19740192,
+          "p99_ns": 19740192
+        },
+        "batched_get": {
+          "operations_per_second": 94629.3063265236,
+          "elapsed_ns": 43284688,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 9357,
+          "p95_ns": 9729,
+          "p99_ns": 9999
+        },
+        "single_get_transaction": {
+          "operations_per_second": 221.0662636591836,
+          "elapsed_ns": 144752978,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4523463,
+          "p95_ns": 4558700,
+          "p99_ns": 4582645
+        },
+        "update_batch1": {
+          "operations_per_second": 65.12439932510283,
+          "elapsed_ns": 491367296,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 15087496,
+          "p95_ns": 24638088,
+          "p99_ns": 25221011
+        },
+        "update_batch16": {
+          "operations_per_second": 339.7334679601517,
+          "elapsed_ns": 1507063767,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 46218490,
+          "p95_ns": 65597976,
+          "p99_ns": 67201503
+        },
+        "close_reopen": {
+          "operations_per_second": 15.178157935571079,
+          "elapsed_ns": 263536591,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 65856841,
+          "p95_ns": 66020489,
+          "p99_ns": 66020489
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 1986560,
+        "files": 146
+      },
+      "filesystem": "ram",
+      "pair": 3,
+      "arm": "baseline"
+    },
+    {
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+        "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-03-candidate",
+        "256",
+        "4096",
+        "32",
+        "32",
+        "4"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "process_seconds": 2.8316942050587386,
+      "database": "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-03-candidate",
+      "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-03-candidate/stdout.json",
+      "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-03-candidate/stderr.log",
+      "fd_peak_observed": 21,
+      "fd_observations": 2547,
+      "fd_unavailable_observations": 1,
+      "passed": true,
+      "metrics": {
+        "create_open": {
+          "operations_per_second": 145.33924650902398,
+          "elapsed_ns": 6880454,
+          "transactions": 0,
+          "sample_unit": "environment",
+          "sample_count": 1,
+          "p50_ns": 6880454,
+          "p95_ns": 6880454,
+          "p99_ns": 6880454
+        },
+        "initial_load": {
+          "operations_per_second": 13398.649656871574,
+          "elapsed_ns": 19106403,
+          "transactions": 1,
+          "sample_unit": "write_transaction",
+          "sample_count": 1,
+          "p50_ns": 19106403,
+          "p95_ns": 19106403,
+          "p99_ns": 19106403
+        },
+        "batched_get": {
+          "operations_per_second": 105072.4117196783,
+          "elapsed_ns": 38982640,
+          "transactions": 1,
+          "sample_unit": "get_with_value_oracle",
+          "sample_count": 4096,
+          "p50_ns": 8305,
+          "p95_ns": 8677,
+          "p99_ns": 9337
+        },
+        "single_get_transaction": {
+          "operations_per_second": 220.31093611507467,
+          "elapsed_ns": 145249258,
+          "transactions": 32,
+          "sample_unit": "read_transaction_with_get",
+          "sample_count": 32,
+          "p50_ns": 4541407,
+          "p95_ns": 4575331,
+          "p99_ns": 4575511
+        },
+        "update_batch1": {
+          "operations_per_second": 65.82144160488208,
+          "elapsed_ns": 486163767,
+          "transactions": 32,
+          "sample_unit": "write_transaction_1_record",
+          "sample_count": 32,
+          "p50_ns": 14850001,
+          "p95_ns": 24243467,
+          "p99_ns": 25105815
+        },
+        "update_batch16": {
+          "operations_per_second": 344.3525235138901,
+          "elapsed_ns": 1486848404,
+          "transactions": 32,
+          "sample_unit": "write_transaction_16_records",
+          "sample_count": 32,
+          "p50_ns": 46016893,
+          "p95_ns": 64706163,
+          "p99_ns": 66044954
+        },
+        "close_reopen": {
+          "operations_per_second": 15.573342796111705,
+          "elapsed_ns": 256849159,
+          "transactions": 0,
+          "sample_unit": "environment_close_and_open",
+          "sample_count": 4,
+          "p50_ns": 64127939,
+          "p95_ns": 64542156,
+          "p99_ns": 64542156
+        }
+      },
+      "checksums": {
+        "loaded": "22541afdfeebff25",
+        "after_batch1": "9b865e1019d5af65",
+        "final": "a17558801f9ec7c5"
+      },
+      "physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 1986560,
+        "files": 146
+      },
+      "filesystem": "ram",
+      "pair": 3,
+      "arm": "candidate"
+    }
+  ],
+  "comparisons": [
+    {
+      "filesystem": "disk",
+      "phase": "create_open",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 79.84011211575029,
+          "sample_unit": "environment",
+          "pooled_samples": 3,
+          "pooled_p50_ns": 12956499,
+          "pooled_p95_ns": 13233689,
+          "pooled_p99_ns": 13233689
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 77.69791959947537,
+          "sample_unit": "environment",
+          "pooled_samples": 3,
+          "pooled_p50_ns": 13044625,
+          "pooled_p95_ns": 13118793,
+          "pooled_p99_ns": 13118793
+        }
+      },
+      "paired_throughput_changes_percent": [
+        -0.675573272516472,
+        -7.567872225268324,
+        0.8758122793766088
+      ],
+      "mean_paired_change_percent": -2.455877739469396,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        0.6801683078121679,
+        8.187491089366826,
+        -0.8682084035675941
+      ],
+      "mean_paired_p99_change_percent": 2.6664836645371333,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "initial_load",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 11284.037775785453,
+          "sample_unit": "write_transaction",
+          "pooled_samples": 3,
+          "pooled_p50_ns": 22333645,
+          "pooled_p95_ns": 24941957,
+          "pooled_p99_ns": 24941957
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 10577.52618115372,
+          "sample_unit": "write_transaction",
+          "pooled_samples": 3,
+          "pooled_p50_ns": 24268404,
+          "pooled_p95_ns": 24347392,
+          "pooled_p99_ns": 24347392
+        }
+      },
+      "paired_throughput_changes_percent": [
+        -6.919212435830902,
+        -13.288109050858509,
+        2.7754317918887494
+      ],
+      "mean_paired_change_percent": -5.810629898266887,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        7.433555964554817,
+        15.324436943316444,
+        -2.7004817625176702
+      ],
+      "mean_paired_p99_change_percent": 6.685837048451197,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "batched_get",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 93698.38774025654,
+          "sample_unit": "get_with_value_oracle",
+          "pooled_samples": 12288,
+          "pooled_p50_ns": 9368,
+          "pooled_p95_ns": 9748,
+          "pooled_p99_ns": 12183
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 103770.16605140781,
+          "sample_unit": "get_with_value_oracle",
+          "pooled_samples": 12288,
+          "pooled_p50_ns": 8356,
+          "pooled_p95_ns": 8736,
+          "pooled_p99_ns": 10930
+        }
+      },
+      "paired_throughput_changes_percent": [
+        10.247116592935912,
+        11.45709359313065,
+        10.54624533243902
+      ],
+      "mean_paired_change_percent": 10.75015183950186,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        -3.467018035081937,
+        -11.531869746184608,
+        -10.687022900763354
+      ],
+      "mean_paired_p99_change_percent": -8.5619702273433,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "single_get_transaction",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 214.28369575449685,
+          "sample_unit": "read_transaction_with_get",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 4665270,
+          "pooled_p95_ns": 4742294,
+          "pooled_p99_ns": 4757803
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 213.67682152755876,
+          "sample_unit": "read_transaction_with_get",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 4680498,
+          "pooled_p95_ns": 4733027,
+          "pooled_p99_ns": 4765638
+        }
+      },
+      "paired_throughput_changes_percent": [
+        -0.10580800795260137,
+        -0.2521628613044835,
+        -0.49138653678725275
+      ],
+      "mean_paired_change_percent": -0.28311913534811256,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        -0.04901276398666665,
+        -0.44658438636697717,
+        0.16467684769629898
+      ],
+      "mean_paired_p99_change_percent": -0.11030676755244828,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "update_batch1",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 58.29562531733363,
+          "sample_unit": "write_transaction_1_record",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 16924320,
+          "pooled_p95_ns": 26552929,
+          "pooled_p99_ns": 27530532
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 58.69048315775439,
+          "sample_unit": "write_transaction_1_record",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 16766696,
+          "pooled_p95_ns": 26490512,
+          "pooled_p99_ns": 27252941
+        }
+      },
+      "paired_throughput_changes_percent": [
+        1.2345044957916773,
+        0.18754919571473128,
+        0.6153340758496606
+      ],
+      "mean_paired_change_percent": 0.6791292557853564,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        -1.0083023459190654,
+        -0.7154099535598424,
+        -0.5628836013021332
+      ],
+      "mean_paired_p99_change_percent": -0.7621986335936803,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "update_batch16",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 325.580971255286,
+          "sample_unit": "write_transaction_16_records",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 48579178,
+          "pooled_p95_ns": 67919961,
+          "pooled_p99_ns": 80576647
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 328.8960136813146,
+          "sample_unit": "write_transaction_16_records",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 48284455,
+          "pooled_p95_ns": 66941155,
+          "pooled_p99_ns": 70289365
+        }
+      },
+      "paired_throughput_changes_percent": [
+        2.0013939523928714,
+        0.17346514798837198,
+        0.90131570241061
+      ],
+      "mean_paired_change_percent": 1.0253916009306179,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        -14.375136508224273,
+        2.396028996882782,
+        -1.1020280421609852
+      ],
+      "mean_paired_p99_change_percent": -4.3603785178341585,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "close_reopen",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 15.351599140653562,
+          "sample_unit": "environment_close_and_open",
+          "pooled_samples": 12,
+          "pooled_p50_ns": 65348518,
+          "pooled_p95_ns": 65817047,
+          "pooled_p99_ns": 65817047
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 15.14488762799549,
+          "sample_unit": "environment_close_and_open",
+          "pooled_samples": 12,
+          "pooled_p50_ns": 66198372,
+          "pooled_p95_ns": 66370455,
+          "pooled_p99_ns": 66370455
+        }
+      },
+      "paired_throughput_changes_percent": [
+        -1.273499745198703,
+        -2.654360348932383,
+        -0.08939790861665076
+      ],
+      "mean_paired_change_percent": -1.3390860009159122,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        0.8408277569791345,
+        2.683972372014809,
+        0.15439919180124662
+      ],
+      "mean_paired_p99_change_percent": 1.2263997735983967,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "create_open",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 196.07106827637946,
+          "sample_unit": "environment",
+          "pooled_samples": 3,
+          "pooled_p50_ns": 6185220,
+          "pooled_p95_ns": 7092401,
+          "pooled_p99_ns": 7092401
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 198.27014046256863,
+          "sample_unit": "environment",
+          "pooled_samples": 3,
+          "pooled_p50_ns": 6319001,
+          "pooled_p95_ns": 6880454,
+          "pooled_p99_ns": 6880454
+        }
+      },
+      "paired_throughput_changes_percent": [
+        -44.5779799686691,
+        80.1249326557654,
+        3.0804217279848167
+      ],
+      "mean_paired_change_percent": 12.875791471693708,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        80.43369755102484,
+        -44.48297716168543,
+        -2.9883674090057766
+      ],
+      "mean_paired_p99_change_percent": 10.987450993444542,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "initial_load",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 15401.523542297491,
+          "sample_unit": "write_transaction",
+          "pooled_samples": 3,
+          "pooled_p50_ns": 19740192,
+          "pooled_p95_ns": 20175558,
+          "pooled_p99_ns": 20175558
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 16728.05598528513,
+          "sample_unit": "write_transaction",
+          "pooled_samples": 3,
+          "pooled_p50_ns": 16438991,
+          "pooled_p95_ns": 19106403,
+          "pooled_p99_ns": 19106403
+        }
+      },
+      "paired_throughput_changes_percent": [
+        -24.211005407813644,
+        67.17961007086974,
+        3.31715498725742
+      ],
+      "mean_paired_change_percent": 15.428586550104505,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        31.94527851713942,
+        -40.18409304961974,
+        -3.210652662344926
+      ],
+      "mean_paired_p99_change_percent": -3.816489064941748,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "batched_get",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 94396.27654407207,
+          "sample_unit": "get_with_value_oracle",
+          "pooled_samples": 12288,
+          "pooled_p50_ns": 9357,
+          "pooled_p95_ns": 9728,
+          "pooled_p99_ns": 12133
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 103928.66671067507,
+          "sample_unit": "get_with_value_oracle",
+          "pooled_samples": 12288,
+          "pooled_p50_ns": 8366,
+          "pooled_p95_ns": 8757,
+          "pooled_p99_ns": 10891
+        }
+      },
+      "paired_throughput_changes_percent": [
+        8.982716700107973,
+        10.270605110927589,
+        11.035804655610804
+      ],
+      "mean_paired_change_percent": 10.096375488882122,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        -9.989294243597136,
+        -12.428282146473169,
+        -6.620662066206617
+      ],
+      "mean_paired_p99_change_percent": -9.679412818758975,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "single_get_transaction",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 220.44728342819297,
+          "sample_unit": "read_transaction_with_get",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 4533432,
+          "pooled_p95_ns": 4583546,
+          "pooled_p99_ns": 4649911
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 220.1508071968021,
+          "sample_unit": "read_transaction_with_get",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 4540465,
+          "pooled_p95_ns": 4624704,
+          "pooled_p99_ns": 4683103
+        }
+      },
+      "paired_throughput_changes_percent": [
+        -0.7963744835630449,
+        0.7394146460969031,
+        -0.34167472304748037
+      ],
+      "mean_paired_change_percent": -0.13287818683787403,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        0.7138201139763822,
+        -1.2246189562848397,
+        -0.15567428853860976
+      ],
+      "mean_paired_p99_change_percent": -0.22215771028235576,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "update_batch1",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 65.49849980437412,
+          "sample_unit": "write_transaction_1_record",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 15087496,
+          "pooled_p95_ns": 24571041,
+          "pooled_p99_ns": 25221011
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 65.52260089680398,
+          "sample_unit": "write_transaction_1_record",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 15019559,
+          "pooled_p95_ns": 24502203,
+          "pooled_p99_ns": 25157001
+        }
+      },
+      "paired_throughput_changes_percent": [
+        0.22080395528012442,
+        -1.1666806680741604,
+        1.0703243131650275
+      ],
+      "mean_paired_change_percent": 0.041482533456997185,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        -0.5915714529011518,
+        -0.21455238829004575,
+        -0.45674616295120485
+      ],
+      "mean_paired_p99_change_percent": -0.42095666804746745,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "update_batch16",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 341.42738594989305,
+          "sample_unit": "write_transaction_16_records",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 46446619,
+          "pooled_p95_ns": 65597976,
+          "pooled_p99_ns": 67201503
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 342.30865137471676,
+          "sample_unit": "write_transaction_16_records",
+          "pooled_samples": 96,
+          "pooled_p50_ns": 46477085,
+          "pooled_p95_ns": 65162850,
+          "pooled_p99_ns": 67102658
+        }
+      },
+      "paired_throughput_changes_percent": [
+        0.6501117753791252,
+        -1.21661699505079,
+        1.3596115747654736
+      ],
+      "mean_paired_change_percent": 0.26436878503126965,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        -0.3838000355480875,
+        1.2977264542875178,
+        -1.72101656714434
+      ],
+      "mean_paired_p99_change_percent": -0.2690300494683033,
+      "latency_review_flag": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "close_reopen",
+      "arms": {
+        "baseline": {
+          "processes": 3,
+          "mean_operations_per_second": 15.188669169370423,
+          "sample_unit": "environment_close_and_open",
+          "pooled_samples": 12,
+          "pooled_p50_ns": 65856841,
+          "pooled_p95_ns": 66269796,
+          "pooled_p99_ns": 66269796
+        },
+        "candidate": {
+          "processes": 3,
+          "mean_operations_per_second": 15.36772969200341,
+          "sample_unit": "environment_close_and_open",
+          "pooled_samples": 12,
+          "pooled_p50_ns": 65287193,
+          "pooled_p95_ns": 65865087,
+          "pooled_p99_ns": 65865087
+        }
+      },
+      "paired_throughput_changes_percent": [
+        0.7706022747434815,
+        0.16689510355667458,
+        2.603641774042176
+      ],
+      "mean_paired_change_percent": 1.180379717447444,
+      "adverse_screen_flag": false,
+      "paired_p99_changes_percent": [
+        -0.6106990279553637,
+        -0.36803275244209344,
+        -2.2392033479182505
+      ],
+      "mean_paired_p99_change_percent": -1.0726450427719025,
+      "latency_review_flag": false
+    }
+  ],
+  "harness_sha256": {
+    "/mnt/data3/ipdon/ulmdb/clients/lmdb-ulmdb/qualification/performance_journey.c": "2e8c51bb5d595e9d3f6960d69846f9508f385831a9e605b503c376df5c5a0a5c",
+    "/mnt/data3/ipdon/ulmdb/clients/lmdb-ulmdb/qualification/compare_performance.py": "66c9878e7b18c4f2498b23fd0292cb826ab1865cd139f43e78bfc73e1b409000"
+  },
+  "artifacts": {
+    "baseline": {
+      "original": "/mnt/data3/ipdon/ulmdb/target/qualification/g14-qualified-baseline-25d1/liblmdb.so.0",
+      "sha256": "25d1b7ba2e6ccabf0dcd82cbe9b2e491b49a8cb65ffcc3ca29c12609f770f800"
+    },
+    "candidate": {
+      "original": "/mnt/data3/ipdon/ulmdb/target/lmdb-ulmdb/lib/liblmdb.so.0",
+      "sha256": "062fb159d59525c06d80411a2579dadcbaec88807075ea8a0a144046792bae64"
+    }
+  },
+  "configuration": {
+    "baseline": "/mnt/data3/ipdon/ulmdb/target/qualification/g14-qualified-baseline-25d1/liblmdb.so.0",
+    "baseline_sha256": "25d1b7ba2e6ccabf0dcd82cbe9b2e491b49a8cb65ffcc3ca29c12609f770f800",
+    "candidate": "/mnt/data3/ipdon/ulmdb/target/lmdb-ulmdb/lib/liblmdb.so.0",
+    "candidate_sha256": "062fb159d59525c06d80411a2579dadcbaec88807075ea8a0a144046792bae64",
+    "binary": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-vs-qualified/journey",
+    "control_receipt": null,
+    "header_dir": "/home/zs/.cache/ulmdb-compat/lmdb-0.9.31",
+    "reference_lib": "/mnt/data3/ipdon/ulmdb/target/qualification/reference-0.9.31/lib",
+    "output": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified",
+    "disk_root": null,
+    "ram_root": "/dev/shm",
+    "pairs": 3,
+    "keys": 256,
+    "batched_reads": 4096,
+    "single_reads": 32,
+    "write_transactions": 32,
+    "reopens": 4,
+    "timeout": 180
+  },
+  "host": {
+    "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "cpu_count": 128
+  },
+  "binary_origin": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-vs-qualified/journey",
+  "binary_sha256": "372e94f61fd9bd114ebad842da21cdb49308f6ce72c8ac9815ef1169b71d3c7f",
+  "filesystems": {
+    "disk": {
+      "root": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/disk-data",
+      "type": "ext2/ext3"
+    },
+    "ram": {
+      "root": "/dev/shm/ulmdb-c-performance-999073-1793910009244452589",
+      "type": "tmpfs"
+    }
+  },
+  "finished_utc": "2026-11-05T20:20:44.729897+00:00"
+}

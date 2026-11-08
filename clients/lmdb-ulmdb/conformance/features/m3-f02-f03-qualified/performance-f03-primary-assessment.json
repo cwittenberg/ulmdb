@@ -1,0 +1,410 @@
+{
+  "schema": 1,
+  "scope": "Exact Root F03 ordinary-path delta against tested F02 stage; not operation-speed parity or full release qualification",
+  "primary_receipt_sha256": "31a6ca039ed65f2bd79baa99908f142071cb5105c877b3b1171fdb9fd129b169",
+  "predeclared_budget_input_sha256": "fa6a4086b1b0b67df7de8f918b9c8b5a9e7a856ef40c516f5812a0751ab574ab",
+  "baseline_sha256": "1bc6751904f62652765610a5806831eb79369641b66767e730f439881460907a",
+  "candidate_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+  "logical_oracles_passed": true,
+  "source_unchanged": true,
+  "ordinary_throughput_budget_passed": true,
+  "observed_ordinary_resources_not_increased": true,
+  "tail_review_resolved": false,
+  "f03_change_budget_accepted": false,
+  "phases": [
+    {
+      "filesystem": "disk",
+      "phase": "create_open",
+      "budgeted": false,
+      "mean_paired_throughput_change_percent": -11.592071097073779,
+      "paired_throughput_changes_percent": [
+        7.729518689385206,
+        -2.62531463574881,
+        -39.88041734485773
+      ],
+      "throughput_budget_passed": null,
+      "paired_p99_changes_percent": [
+        -7.174931052715106,
+        2.6960956288877735,
+        66.3351533453245
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "initial_load",
+      "budgeted": false,
+      "mean_paired_throughput_change_percent": -13.94045410738443,
+      "paired_throughput_changes_percent": [
+        1.4611912250071413,
+        0.24815972352898452,
+        -43.53071327068941
+      ],
+      "throughput_budget_passed": null,
+      "paired_p99_changes_percent": [
+        -1.4401479101173842,
+        -0.2475454155102419,
+        77.0874147558422
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "batched_get",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 1.103796247791089,
+      "paired_throughput_changes_percent": [
+        1.638842371426974,
+        1.1589488443302542,
+        0.5135975276160387
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -1.2844036697247652,
+        -5.248161764705883,
+        11.697176543592924
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "single_get_transaction",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 0.7940824896693011,
+      "paired_throughput_changes_percent": [
+        0.2856372491993442,
+        1.6654844436340355,
+        0.4311257761745235
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        0.17608359002332374,
+        -1.582403525303977,
+        0.44641601657497976
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "update_batch1",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 1.495824694958492,
+      "paired_throughput_changes_percent": [
+        5.680215158957536,
+        0.5067823709624886,
+        -1.6995234450445484
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -4.409424454650834,
+        -1.1108628156111355,
+        1.7968329586839138
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "update_batch16",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 0.3163370501877168,
+      "paired_throughput_changes_percent": [
+        2.801949211257182,
+        0.5763103495060928,
+        -2.4292484102001244
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        12.695014342959542,
+        1.5821697787532063,
+        2.646178626878859
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "close_reopen",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 1.855563027036955,
+      "paired_throughput_changes_percent": [
+        2.316622330891205,
+        0.3963506160387542,
+        2.853716134180906
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -2.2311052635257567,
+        -0.2524558584193759,
+        -2.8599542656844834
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "create_open",
+      "budgeted": false,
+      "mean_paired_throughput_change_percent": 63.43441469865496,
+      "paired_throughput_changes_percent": [
+        -0.22224809728741413,
+        100.00865640408327,
+        90.51683578916902
+      ],
+      "throughput_budget_passed": null,
+      "paired_p99_changes_percent": [
+        0.22274313967718395,
+        -50.00216400735821,
+        -47.511200474344086
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "initial_load",
+      "budgeted": false,
+      "mean_paired_throughput_change_percent": 50.49781900641886,
+      "paired_throughput_changes_percent": [
+        0.1196281662017018,
+        74.46022903212261,
+        76.91359982093226
+      ],
+      "throughput_budget_passed": null,
+      "paired_p99_changes_percent": [
+        -0.11948522821429997,
+        -42.68034579870496,
+        -43.475233050925645
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "batched_get",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 0.03449127773852423,
+      "paired_throughput_changes_percent": [
+        -0.5323772622036205,
+        0.37532752235038824,
+        0.2605235730688049
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        19.8581560283688,
+        11.341919401744915,
+        0.8411214953271129
+      ],
+      "repeated_paired_p99_above_10_percent": true
+    },
+    {
+      "filesystem": "ram",
+      "phase": "single_get_transaction",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": -0.25005384093008676,
+      "paired_throughput_changes_percent": [
+        -1.213671520553794,
+        -0.39467491860299964,
+        0.8581849163665334
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        8.060676141305766,
+        0.6659938216879047,
+        -0.4721017159529106
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "update_batch1",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 1.305057995410867,
+      "paired_throughput_changes_percent": [
+        0.44505943240122914,
+        1.3971668478446997,
+        2.072947705986672
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -1.562307542187158,
+        -1.5286618706100485,
+        -2.0128931845352804
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "update_batch16",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 1.6836575679798942,
+      "paired_throughput_changes_percent": [
+        1.3957182644642074,
+        1.804994288206263,
+        1.8502601512692118
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -1.4320135490643482,
+        -1.3338832954203128,
+        -1.8503420795212722
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "close_reopen",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 2.4563292197005517,
+      "paired_throughput_changes_percent": [
+        2.1773159096554418,
+        2.36475300492458,
+        2.8269187445216337
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -2.3354756146669264,
+        -2.863334302303433,
+        -3.0716192110016194
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    }
+  ],
+  "resources": [
+    {
+      "filesystem": "disk",
+      "pair": 1,
+      "both_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 2011136,
+        "files": 144
+      },
+      "baseline_fd_peak_observed": 21,
+      "candidate_fd_peak_observed": 21
+    },
+    {
+      "filesystem": "disk",
+      "pair": 2,
+      "both_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 2011136,
+        "files": 144
+      },
+      "baseline_fd_peak_observed": 21,
+      "candidate_fd_peak_observed": 21
+    },
+    {
+      "filesystem": "disk",
+      "pair": 3,
+      "both_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 2011136,
+        "files": 144
+      },
+      "baseline_fd_peak_observed": 21,
+      "candidate_fd_peak_observed": 21
+    },
+    {
+      "filesystem": "ram",
+      "pair": 1,
+      "both_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 1970176,
+        "files": 144
+      },
+      "baseline_fd_peak_observed": 21,
+      "candidate_fd_peak_observed": 21
+    },
+    {
+      "filesystem": "ram",
+      "pair": 2,
+      "both_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 1970176,
+        "files": 144
+      },
+      "baseline_fd_peak_observed": 21,
+      "candidate_fd_peak_observed": 21
+    },
+    {
+      "filesystem": "ram",
+      "pair": 3,
+      "both_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 1970176,
+        "files": 144
+      },
+      "baseline_fd_peak_observed": 21,
+      "candidate_fd_peak_observed": 21
+    }
+  ],
+  "focused_review": {
+    "input_sha256": "e60b76c8a7a5232707a73f5455600c246b2b2573209d0aaf327509ad5acaae09",
+    "receipt_sha256": "d32d168d5b839e33225bb1fe3270889ba02a228470791bd26d84ba00b9153fe9",
+    "results": [
+      {
+        "capture": "identical-baseline",
+        "filesystem": "disk",
+        "mean_paired_throughput_change_percent": 0.19608402310615622,
+        "paired_p99_changes_percent": [
+          -18.394833948339485,
+          0.730061916643554,
+          0.4629629629629539,
+          -8.658053761200247,
+          -9.559192690029118,
+          -12.557359689375225,
+          8.09855138587887
+        ],
+        "receipt_sha256": "1e0e0036d30532a68c0b1722ceae3da0fc1dbff32b4c9ebd9350923fb31a6e00"
+      },
+      {
+        "capture": "identical-baseline",
+        "filesystem": "ram",
+        "mean_paired_throughput_change_percent": -0.05235313932687565,
+        "paired_p99_changes_percent": [
+          -1.990950226244348,
+          0.0828652978547062,
+          0.6451612903225712,
+          -16.389413988657843,
+          1.6278359955234523,
+          11.871158661506943,
+          4.421355145352046
+        ],
+        "receipt_sha256": "1e0e0036d30532a68c0b1722ceae3da0fc1dbff32b4c9ebd9350923fb31a6e00"
+      },
+      {
+        "capture": "candidate",
+        "filesystem": "disk",
+        "mean_paired_throughput_change_percent": 1.4261582578414034,
+        "paired_p99_changes_percent": [
+          -3.5546161975213764,
+          -2.823315118397085,
+          -1.01289134438306,
+          -19.57603686635945,
+          -11.325301204819283,
+          -1.4613970588235325,
+          11.042439225381129
+        ],
+        "receipt_sha256": "2d5a336d95c49bd2962ab7643fd95e794c4c1794bc1e6caae9411e9eaa7048d5"
+      },
+      {
+        "capture": "candidate",
+        "filesystem": "ram",
+        "mean_paired_throughput_change_percent": 1.2665212360255116,
+        "paired_p99_changes_percent": [
+          -6.876100454082101,
+          -1.7479300827966893,
+          20.869171570846532,
+          -1.8365472910927494,
+          -1.481004507405026,
+          12.544149481599632,
+          -0.27906976744186407
+        ],
+        "receipt_sha256": "2d5a336d95c49bd2962ab7643fd95e794c4c1794bc1e6caae9411e9eaa7048d5"
+      }
+    ],
+    "decision": "Open. The primary capture has two adverse tmpfs sampled-p99 pairs; the focused seven-pair candidate repeats two increases above10%. Identical-library controls vary too. Improved means/p50/p95 do not establish tail nonregression; no safety fence or production code was changed on this evidence.",
+    "source_review": "Successful database gets do not acquire rollback_invalid: that mutex is consulted only in the MissingDatabase branch of resolve_handle. OpeningTransaction counts transaction setup and does not run for each get.",
+    "limits": "Focused captures preserve the key/get phase and executable but reduce work after the target phase. They supplement the original full journey and cannot replace it. Process samples are the units; pooled gets are not independent process replications."
+  },
+  "startup_load_acceptance": false,
+  "host_isolation_claimed": false,
+  "prior_m1_regression_accepted": false,
+  "product_release_qualified": false,
+  "broad_performance_accepted": false
+}

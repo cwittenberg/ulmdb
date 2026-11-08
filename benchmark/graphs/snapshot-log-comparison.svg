@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="558" viewBox="0 0 1100 558" role="img" aria-labelledby="title desc">
+<title id="title">ULMDB throughput relative to LMDB</title>
+<desc id="desc">Linux snapshot-log comparison. Positive percentages mean higher ULMDB throughput. Disk ordered scans and RAM new-key insertions are slower than LMDB.</desc>
+<rect width="1100" height="558" fill="white"/>
+<g font-family="system-ui, sans-serif" fill="#17212b">
+<text x="24" y="31" font-size="21" font-weight="600">ULMDB throughput relative to LMDB</text>
+<text x="24" y="55" font-size="13">Linux snapshot-log profile · higher is better</text>
+<line x1="420.0" x2="420.0" y1="81" y2="527" stroke="#71808c"/>
+<text x="420.0" y="76" text-anchor="middle" font-size="11">+0%</text>
+<line x1="555.0" x2="555.0" y1="81" y2="527" stroke="#e5eaf0"/>
+<text x="555.0" y="76" text-anchor="middle" font-size="11">+100%</text>
+<line x1="690.0" x2="690.0" y1="81" y2="527" stroke="#e5eaf0"/>
+<text x="690.0" y="76" text-anchor="middle" font-size="11">+200%</text>
+<line x1="825.0" x2="825.0" y1="81" y2="527" stroke="#e5eaf0"/>
+<text x="825.0" y="76" text-anchor="middle" font-size="11">+300%</text>
+<line x1="960.0" x2="960.0" y1="81" y2="527" stroke="#e5eaf0"/>
+<text x="960.0" y="76" text-anchor="middle" font-size="11">+400%</text>
+<text x="24" y="110" font-size="13">DISK / Single writes</text>
+<rect x="420.000" y="94" width="199.368" height="23" rx="2" fill="#2875b9"/>
+<text x="628.368" y="110" font-size="12">+147.68%</text>
+<text x="24" y="144" font-size="13">DISK / Random writes, batch 1000</text>
+<rect x="420.000" y="128" width="130.780" height="23" rx="2" fill="#2875b9"/>
+<text x="559.780" y="144" font-size="12">+96.87%</text>
+<text x="24" y="178" font-size="13">DISK / Lookups, hits</text>
+<rect x="420.000" y="162" width="73.669" height="23" rx="2" fill="#2875b9"/>
+<text x="502.669" y="178" font-size="12">+54.57%</text>
+<text x="24" y="212" font-size="13">DISK / Lookups, misses</text>
+<rect x="420.000" y="196" width="247.269" height="23" rx="2" fill="#2875b9"/>
+<text x="676.269" y="212" font-size="12">+183.16%</text>
+<text x="24" y="246" font-size="13">DISK / Begin/get/end</text>
+<rect x="420.000" y="230" width="92.089" height="23" rx="2" fill="#2875b9"/>
+<text x="521.089" y="246" font-size="12">+68.21%</text>
+<text x="24" y="280" font-size="13">DISK / Ordered scan</text>
+<rect x="399.238" y="264" width="20.762" height="23" rx="2" fill="#c56235"/>
+<text x="429.000" y="280" font-size="12">-15.38%</text>
+<text x="24" y="314" font-size="13">RAM / Single writes</text>
+<rect x="420.000" y="298" width="408.722" height="23" rx="2" fill="#2875b9"/>
+<text x="837.722" y="314" font-size="12">+302.76%</text>
+<text x="24" y="348" font-size="13">RAM / Writes, batch 64</text>
+<rect x="420.000" y="332" width="272.540" height="23" rx="2" fill="#2875b9"/>
+<text x="701.540" y="348" font-size="12">+201.88%</text>
+<text x="24" y="382" font-size="13">RAM / Lookups, hits</text>
+<rect x="420.000" y="366" width="261.349" height="23" rx="2" fill="#2875b9"/>
+<text x="690.349" y="382" font-size="12">+193.59%</text>
+<text x="24" y="416" font-size="13">RAM / Lookups, misses</text>
+<rect x="420.000" y="400" width="475.895" height="23" rx="2" fill="#2875b9"/>
+<text x="904.895" y="416" font-size="12">+352.51%</text>
+<text x="24" y="450" font-size="13">RAM / Begin/get/end</text>
+<rect x="420.000" y="434" width="372.591" height="23" rx="2" fill="#2875b9"/>
+<text x="801.591" y="450" font-size="12">+275.99%</text>
+<text x="24" y="484" font-size="13">RAM / Ordered scan</text>
+<rect x="420.000" y="468" width="3.693" height="23" rx="2" fill="#2875b9"/>
+<text x="432.693" y="484" font-size="12">+2.74%</text>
+<text x="24" y="518" font-size="13">RAM / New-key inserts, batch 256</text>
+<rect x="378.757" y="502" width="41.243" height="23" rx="2" fill="#c56235"/>
+<text x="429.000" y="518" font-size="12">-30.55%</text>
+</g>
+</svg>

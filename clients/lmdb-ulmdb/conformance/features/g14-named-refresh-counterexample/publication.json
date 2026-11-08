@@ -1,0 +1,150 @@
+{
+  "schema": 1,
+  "scope": "Current-artifact G14 correctness counterexample and target reopening; historical finite passes and F02/F03 scopes remain unchanged",
+  "recorded_utc": "2026-11-05T23:50:32.315315+00:00",
+  "complete": true,
+  "counterexample_confirmed": true,
+  "adapter_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+  "reference_completed_journeys": 12,
+  "root_actual_failures": 3,
+  "root_other_modes_reached": false,
+  "target_change": {
+    "G14": {
+      "before": "supported",
+      "after": "unqualified",
+      "implementation": "partial"
+    }
+  },
+  "matrix_before_sha256": "3ca20985c129e566600b4e57aa78dcf2426011b8136b8c2a22251e50e7826405",
+  "matrix_after_sha256": "c88a97edf751008f62f151694090c05a49d4b0dcd89a48955fc507fc652310c0",
+  "files": [
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/receipt.json",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/receipt.json",
+      "sha256": "71f3080a103e9bd1fb1fed6ed53b720aacbc371ec41be66cd2e0ada13ee5a8e4"
+    },
+    {
+      "source": "target/qualification/m3-c-previous-work/named-refresh-probe/parity_named_refresh.c",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/parity_named_refresh.c",
+      "sha256": "50364ee9bbe1aac76158ede3f5f0b1d3b78f21d91b26844ca47188b879733e64"
+    },
+    {
+      "source": "target/qualification/m3-c-previous-work/named-refresh-probe/named_refresh_helpers.h",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/named_refresh_helpers.h",
+      "sha256": "2dbacee2eb8ce0c0c4c11731dd85940896c3a19358d62b008977dda6dfeab1fc"
+    },
+    {
+      "source": "target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/receipt.json",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/reference-groundwork.json",
+      "sha256": "a65efd7ec1fb0aa341541292d3a4dec15f862960e827e7497d9cd76bdbd5e4bd"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.31/reference/stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.31/reference/stdout",
+      "sha256": "83f5607df1288df0a95540d76e7f1e4d93b84172fbb5f2bd1bb2a6c52dd4f445"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.31/reference/stderr",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.31/reference/stderr",
+      "sha256": "294ba7694973101e0b132352a228f93022f84438b6cdf12fc65f30b2fee2e5aa"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.31/reference/loader.stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.31/reference/loader.stdout",
+      "sha256": "e00850313026325631c616aa760171020809e331ebeb44776f077c8f521b6cf6"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.31/qualified-root/stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.31/qualified-root/stdout",
+      "sha256": "ed699a031059fea107c44b0eb986702381b14e1b6914cdfb0a9884d3eba62d4f"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.31/qualified-root/stderr",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.31/qualified-root/stderr",
+      "sha256": "3bb60ed5eb80f3b72e58a05fd7006a9903c60d9287eb7b55eca5d51e17d9ac66"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.31/qualified-root/loader.stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.31/qualified-root/loader.stdout",
+      "sha256": "3e463516e385a891df7b1bb8fc22f30772620552606c1c447b9f60086c40e032"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.36/reference/stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.36/reference/stdout",
+      "sha256": "83f5607df1288df0a95540d76e7f1e4d93b84172fbb5f2bd1bb2a6c52dd4f445"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.36/reference/stderr",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.36/reference/stderr",
+      "sha256": "fe5242f6da2b3d52b78018365ca10031baaddc5e0253c3b6f46f91a09e70160e"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.36/reference/loader.stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.36/reference/loader.stdout",
+      "sha256": "4637ffa07be8174f9c912433a8c769ec9aadd45b80144ce6c3b61fdc229543aa"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.36/qualified-root/stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.36/qualified-root/stdout",
+      "sha256": "ed699a031059fea107c44b0eb986702381b14e1b6914cdfb0a9884d3eba62d4f"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.36/qualified-root/stderr",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.36/qualified-root/stderr",
+      "sha256": "118861ac47f358dc28fb14db65cca330ed123247136bddac9b55c9eded3ba0ef"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.36/qualified-root/loader.stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/0.9.36/qualified-root/loader.stdout",
+      "sha256": "b4ec9d52d901d3c9123392a0ef92d642a62ca6a34383592ff266f7676c6b93a6"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/1.0.2/reference/stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/1.0.2/reference/stdout",
+      "sha256": "83f5607df1288df0a95540d76e7f1e4d93b84172fbb5f2bd1bb2a6c52dd4f445"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/1.0.2/reference/stderr",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/1.0.2/reference/stderr",
+      "sha256": "d1ff0562bf715c6d0293fd5e69daa65a46779b35087d149aeb6afa4478d690da"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/1.0.2/reference/loader.stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/1.0.2/reference/loader.stdout",
+      "sha256": "585bbc11cc1701f67f77f645fa2ef5114cb712aa0ccfee1cc8da20b2cd9b7dcc"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/1.0.2/qualified-root/stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/1.0.2/qualified-root/stdout",
+      "sha256": "ed699a031059fea107c44b0eb986702381b14e1b6914cdfb0a9884d3eba62d4f"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/1.0.2/qualified-root/stderr",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/1.0.2/qualified-root/stderr",
+      "sha256": "5d949e2c574b5ec97c28fa348af9068472cd8b10e742ac1a347ce410f8dd7988"
+    },
+    {
+      "source": "target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/1.0.2/qualified-root/loader.stdout",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/1.0.2/qualified-root/loader.stdout",
+      "sha256": "5d1bcdff3475409491a26c689427d311379b28e05642656c4e8680bd7efdfcc1"
+    },
+    {
+      "source": "clients/lmdb-ulmdb/features/matrix.json",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/matrix-before.json",
+      "sha256": "3ca20985c129e566600b4e57aa78dcf2426011b8136b8c2a22251e50e7826405"
+    },
+    {
+      "source": "clients/lmdb-ulmdb/conformance/features/revalidation.json",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/prior-revalidation-features.json",
+      "sha256": "d85c5ed1aabe0262224536cc55bef1008683bccb4235b35c8e68781e8df24884"
+    },
+    {
+      "source": "clients/lmdb-ulmdb/conformance/native-coordination/revalidation.json",
+      "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/prior-revalidation-native.json",
+      "sha256": "d85c5ed1aabe0262224536cc55bef1008683bccb4235b35c8e68781e8df24884"
+    }
+  ],
+  "root_product_source_changed": false,
+  "f02_f03_supported_scopes_changed": false,
+  "full_parity_complete": false
+}

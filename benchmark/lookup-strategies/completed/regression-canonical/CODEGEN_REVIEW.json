@@ -1,0 +1,404 @@
+{
+  "schema": 1,
+  "binaries": {
+    "baseline": {
+      "path": "/mnt/data3/ipdon/ulmdb/benchmark/work/lookup-completion-20261106T134645Z/regression-canonical/target/baseline/release/ulmdb-engine-benchmark",
+      "sha256": "b2c167dddf139f7ff378dd93a5c363d323a3caa821c85770770b23682f3667f9"
+    },
+    "candidate": {
+      "path": "/mnt/data3/ipdon/ulmdb/benchmark/work/lookup-completion-20261106T134645Z/regression-canonical/target/candidate/release/ulmdb-engine-benchmark",
+      "sha256": "cee203c02305dc7af45b0e7a70d7ce937559ac4547db15f28c1b8b31e94f939c"
+    }
+  },
+  "text_sections": {
+    "baseline": {
+      "address": 363344,
+      "size": 1383690,
+      "sha256": "94040058e16a1dccf760cdef0e9a4e982ca1c7d3341cf287c26d4099df2f7201"
+    },
+    "candidate": {
+      "address": 363920,
+      "size": 1383690,
+      "sha256": "cb5f6e1c859ce6be0e3f69c69b73129c4a998ee3cd7634892879940900ac62fd"
+    }
+  },
+  "selected_functions": {
+    "baseline": [
+      {
+        "name": "ulmdb_prefix::scalar_lookup::search_from",
+        "start": 703488,
+        "offset_in_64_byte_line": 0,
+        "instructions": 616,
+        "normalized_sha256": "66d0d756f4b70333071882bd5a6b8b994f4fd6be69a8eb3fdc5c913145a77782"
+      },
+      {
+        "name": "ulmdb_prefix::scalar_lookup::search_from",
+        "start": 706224,
+        "offset_in_64_byte_line": 48,
+        "instructions": 619,
+        "normalized_sha256": "692ea5f923e8f2d0c99f28e72ac0be0fd939c56c963ed1089a7192e4077e77a5"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::run::read_cases",
+        "start": 1113232,
+        "offset_in_64_byte_line": 16,
+        "instructions": 1340,
+        "normalized_sha256": "aba295dae6d4fb012f82bbf3426f12f282803f07e74ec819e14a633c4c057bb6"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::run::read_cases::{{closure}}",
+        "start": 1120192,
+        "offset_in_64_byte_line": 0,
+        "instructions": 18,
+        "normalized_sha256": "993d3d77e9f4bb5a128e283863faf3cf565563f7bef6543d5efbdd974e9c2f87"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1233936,
+        "offset_in_64_byte_line": 16,
+        "instructions": 120,
+        "normalized_sha256": "792d69ea9a621192f4bb181a9b97059668a338639da282ed9459e050ea06154c"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1234432,
+        "offset_in_64_byte_line": 0,
+        "instructions": 156,
+        "normalized_sha256": "1a21963fc0b19c0cb4e2d006e8d9366169163b30721ab86812f295bb59cf3731"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1235136,
+        "offset_in_64_byte_line": 0,
+        "instructions": 164,
+        "normalized_sha256": "8fcee82c060fd1abd3131c9e6ab06f0a3735e30be22fed801639551106f9bc67"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1235776,
+        "offset_in_64_byte_line": 0,
+        "instructions": 158,
+        "normalized_sha256": "d0b7bb714eea2bbdc3bad6d136a5922f7af2ea7ba931fc4618b76fac0f90d410"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1236480,
+        "offset_in_64_byte_line": 0,
+        "instructions": 124,
+        "normalized_sha256": "4b73dcdd3be61728534734765719106a490b3e5d364d5a979bad62851f4ef24f"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1236976,
+        "offset_in_64_byte_line": 48,
+        "instructions": 202,
+        "normalized_sha256": "320a04a342457d449d59a7862362f41a99474b38c921d564b200429302467fb5"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1237792,
+        "offset_in_64_byte_line": 32,
+        "instructions": 211,
+        "normalized_sha256": "25f48f02bf59ec14cdc911b1ebe507c747ba0e8c6ca88f9d1cdcaa0937e9f7f0"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1238688,
+        "offset_in_64_byte_line": 32,
+        "instructions": 167,
+        "normalized_sha256": "eecfd523363246b66640f36164f03f553dcf41e2e0d02c7f86d5608783ac1459"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1239392,
+        "offset_in_64_byte_line": 32,
+        "instructions": 201,
+        "normalized_sha256": "fef61d347321af36e83c2b837293b65584fd745a2dae4d3758d2379ee527c3a3"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1240368,
+        "offset_in_64_byte_line": 48,
+        "instructions": 163,
+        "normalized_sha256": "96541660497e1ccb3bc7809617b58f93e01d8c8ecb1f96f4d261d5e14196b3ed"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1241072,
+        "offset_in_64_byte_line": 48,
+        "instructions": 201,
+        "normalized_sha256": "729e40bb7612166c6d151d5752491ce9c30c39d022906b3199a51f4f8f1c5331"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1242048,
+        "offset_in_64_byte_line": 0,
+        "instructions": 235,
+        "normalized_sha256": "fd6c93e4dc6a99a1e6408f428a9ffffbb09e7c66eb846dc1153f87c072abb434"
+      }
+    ],
+    "candidate": [
+      {
+        "name": "ulmdb_prefix::scalar_lookup::search_from",
+        "start": 704064,
+        "offset_in_64_byte_line": 0,
+        "instructions": 616,
+        "normalized_sha256": "66d0d756f4b70333071882bd5a6b8b994f4fd6be69a8eb3fdc5c913145a77782"
+      },
+      {
+        "name": "ulmdb_prefix::scalar_lookup::search_from",
+        "start": 706800,
+        "offset_in_64_byte_line": 48,
+        "instructions": 619,
+        "normalized_sha256": "692ea5f923e8f2d0c99f28e72ac0be0fd939c56c963ed1089a7192e4077e77a5"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::run::read_cases",
+        "start": 1113808,
+        "offset_in_64_byte_line": 16,
+        "instructions": 1340,
+        "normalized_sha256": "aba295dae6d4fb012f82bbf3426f12f282803f07e74ec819e14a633c4c057bb6"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::run::read_cases::{{closure}}",
+        "start": 1120768,
+        "offset_in_64_byte_line": 0,
+        "instructions": 18,
+        "normalized_sha256": "993d3d77e9f4bb5a128e283863faf3cf565563f7bef6543d5efbdd974e9c2f87"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1234512,
+        "offset_in_64_byte_line": 16,
+        "instructions": 120,
+        "normalized_sha256": "792d69ea9a621192f4bb181a9b97059668a338639da282ed9459e050ea06154c"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1235008,
+        "offset_in_64_byte_line": 0,
+        "instructions": 156,
+        "normalized_sha256": "1a21963fc0b19c0cb4e2d006e8d9366169163b30721ab86812f295bb59cf3731"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1235712,
+        "offset_in_64_byte_line": 0,
+        "instructions": 164,
+        "normalized_sha256": "8fcee82c060fd1abd3131c9e6ab06f0a3735e30be22fed801639551106f9bc67"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1236352,
+        "offset_in_64_byte_line": 0,
+        "instructions": 158,
+        "normalized_sha256": "d0b7bb714eea2bbdc3bad6d136a5922f7af2ea7ba931fc4618b76fac0f90d410"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1237056,
+        "offset_in_64_byte_line": 0,
+        "instructions": 124,
+        "normalized_sha256": "4b73dcdd3be61728534734765719106a490b3e5d364d5a979bad62851f4ef24f"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::average",
+        "start": 1237552,
+        "offset_in_64_byte_line": 48,
+        "instructions": 202,
+        "normalized_sha256": "320a04a342457d449d59a7862362f41a99474b38c921d564b200429302467fb5"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1238368,
+        "offset_in_64_byte_line": 32,
+        "instructions": 211,
+        "normalized_sha256": "25f48f02bf59ec14cdc911b1ebe507c747ba0e8c6ca88f9d1cdcaa0937e9f7f0"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1239264,
+        "offset_in_64_byte_line": 32,
+        "instructions": 167,
+        "normalized_sha256": "eecfd523363246b66640f36164f03f553dcf41e2e0d02c7f86d5608783ac1459"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1239968,
+        "offset_in_64_byte_line": 32,
+        "instructions": 201,
+        "normalized_sha256": "fef61d347321af36e83c2b837293b65584fd745a2dae4d3758d2379ee527c3a3"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1240944,
+        "offset_in_64_byte_line": 48,
+        "instructions": 163,
+        "normalized_sha256": "96541660497e1ccb3bc7809617b58f93e01d8c8ecb1f96f4d261d5e14196b3ed"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1241648,
+        "offset_in_64_byte_line": 48,
+        "instructions": 201,
+        "normalized_sha256": "729e40bb7612166c6d151d5752491ce9c30c39d022906b3199a51f4f8f1c5331"
+      },
+      {
+        "name": "ulmdb_engine_benchmark::harness::latency",
+        "start": 1242624,
+        "offset_in_64_byte_line": 0,
+        "instructions": 235,
+        "normalized_sha256": "fd6c93e4dc6a99a1e6408f428a9ffffbb09e7c66eb846dc1153f87c072abb434"
+      }
+    ]
+  },
+  "normalized_multiset_equal": true,
+  "fingerprints": {
+    "ulmdb-core": {
+      "baseline": {
+        "release/.fingerprint/ulmdb-core-98fa11411be8b0e7/lib-ulmdb_core.json": {
+          "rustc": 18276270781310494267,
+          "features": "[]",
+          "declared_features": "[\"range-chunks\"]",
+          "target": 16741559767674204024,
+          "profile": 13492937627226449551,
+          "path": 15142500175582790525,
+          "deps": [
+            [
+              15508231546243048693,
+              "verus_builtin_macros",
+              false,
+              9600377475583738031
+            ]
+          ],
+          "local": [
+            {
+              "CheckDepInfo": {
+                "dep_info": "release/.fingerprint/ulmdb-core-98fa11411be8b0e7/dep-lib-ulmdb_core",
+                "checksum": false
+              }
+            }
+          ],
+          "rustflags": [],
+          "config": 8247474407144887393,
+          "compile_kind": 0
+        }
+      },
+      "candidate": {
+        "release/.fingerprint/ulmdb-core-98fa11411be8b0e7/lib-ulmdb_core.json": {
+          "rustc": 18276270781310494267,
+          "features": "[]",
+          "declared_features": "[\"range-chunks\"]",
+          "target": 16741559767674204024,
+          "profile": 13492937627226449551,
+          "path": 15142500175582790525,
+          "deps": [
+            [
+              15508231546243048693,
+              "verus_builtin_macros",
+              false,
+              9600377475583738031
+            ]
+          ],
+          "local": [
+            {
+              "CheckDepInfo": {
+                "dep_info": "release/.fingerprint/ulmdb-core-98fa11411be8b0e7/dep-lib-ulmdb_core",
+                "checksum": false
+              }
+            }
+          ],
+          "rustflags": [],
+          "config": 8247474407144887393,
+          "compile_kind": 0
+        }
+      },
+      "identical": true
+    },
+    "ulmdb-prefix": {
+      "baseline": {
+        "release/.fingerprint/ulmdb-prefix-9d2ff0aff5e8fc50/lib-ulmdb_prefix.json": {
+          "rustc": 18276270781310494267,
+          "features": "[\"scalar-family\"]",
+          "declared_features": "[\"scalar-family\"]",
+          "target": 3266102484841814751,
+          "profile": 13492937627226449551,
+          "path": 3467251777215471998,
+          "deps": [
+            [
+              3630419694360889403,
+              "ulmdb_core",
+              false,
+              4896350330766855070
+            ]
+          ],
+          "local": [
+            {
+              "CheckDepInfo": {
+                "dep_info": "release/.fingerprint/ulmdb-prefix-9d2ff0aff5e8fc50/dep-lib-ulmdb_prefix",
+                "checksum": false
+              }
+            }
+          ],
+          "rustflags": [],
+          "config": 8247474407144887393,
+          "compile_kind": 0
+        }
+      },
+      "candidate": {
+        "release/.fingerprint/ulmdb-prefix-9d2ff0aff5e8fc50/lib-ulmdb_prefix.json": {
+          "rustc": 18276270781310494267,
+          "features": "[\"scalar-family\"]",
+          "declared_features": "[\"scalar-family\"]",
+          "target": 3266102484841814751,
+          "profile": 13492937627226449551,
+          "path": 3467251777215471998,
+          "deps": [
+            [
+              3630419694360889403,
+              "ulmdb_core",
+              false,
+              4896350330766855070
+            ]
+          ],
+          "local": [
+            {
+              "CheckDepInfo": {
+                "dep_info": "release/.fingerprint/ulmdb-prefix-9d2ff0aff5e8fc50/dep-lib-ulmdb_prefix",
+                "checksum": false
+              }
+            }
+          ],
+          "rustflags": [],
+          "config": 8247474407144887393,
+          "compile_kind": 0
+        }
+      },
+      "identical": true
+    }
+  },
+  "symbol_positions": {
+    "baseline": [
+      "00000000000abc00 0000000000000aa1 t ulmdb_prefix::scalar_lookup::search_from",
+      "00000000000ac6b0 0000000000000ad4 t ulmdb_prefix::scalar_lookup::search_from",
+      "000000000012e320 0000000000000372 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012e6a0 00000000000002b2 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012e960 00000000000003c7 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012ed30 00000000000002b7 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012eff0 00000000000003c7 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012f3c0 000000000000045f t ulmdb_engine_benchmark::harness::latency"
+    ],
+    "candidate": [
+      "00000000000abe40 0000000000000aa1 t ulmdb_prefix::scalar_lookup::search_from",
+      "00000000000ac8f0 0000000000000ad4 t ulmdb_prefix::scalar_lookup::search_from",
+      "000000000012e560 0000000000000372 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012e8e0 00000000000002b2 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012eba0 00000000000003c7 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012ef70 00000000000002b7 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012f230 00000000000003c7 t ulmdb_engine_benchmark::harness::latency",
+      "000000000012f600 000000000000045f t ulmdb_engine_benchmark::harness::latency"
+    ]
+  },
+  "normalization": "Remove instruction addresses, relocation operands, RIP-relative displacements and address comments. Preserve opcodes/registers/immediates and symbolic branch targets. Compare every selected function as a multiset, including duplicate-length wrappers.",
+  "scope": "Static code-layout control only. Equality after relocation normalization does not prove identical timing and does not clear the performance gate. Frozen binary bytes and canonical build contexts remain authoritative; previous path-separated adverse observations remain retained."
+}

@@ -1,0 +1,13 @@
+#include "../../m3-c-previous-work/named-refresh-probe/named_refresh_helpers.h"
+#include <sys/wait.h>
+#include <unistd.h>
+static char long_name[301];
+static void peer_change(const char *path,int mode){MDB_env*e=open_env(path,MDB_NOTLS);MDB_txn*t=begin(e,0);MDB_dbi old=db(t,long_name,0);if(mode!=3)ok(mdb_drop(t,old,1),"peer long delete");if(mode==0||mode==3){MDB_dbi x=db(t,long_name,MDB_CREATE);ok(mdb_set_compare(t,x,bytes_compare),"peer long comparator");put(t,x,"k","B");}else if(mode==1){MDB_dbi other=db(t,"other",MDB_CREATE);put(t,other,"k","other");}else{MDB_dbi main=db(t,NULL,0);MDB_val k={strlen(long_name)+(MDB_VERSION_MAJOR>=1),long_name},v=val("ordinary");ok(mdb_put(t,main,&k,&v,0),"peer long raw row");}ok(mdb_txn_commit(t),"peer long commit");mdb_env_close(e);}
+static void long_case(const char*self,const char*path,int mode){need(!mkdir(path,0700),"long mkdir");MDB_env*e=open_env(path,MDB_NOTLS);MDB_txn*t=begin(e,0);MDB_dbi x=db(t,long_name,MDB_CREATE);ok(mdb_set_compare(t,x,bytes_compare),"long seed comparator");put(t,x,"k","A");ok(mdb_txn_commit(t),"long A commit");fflush(stdout);pid_t p=fork();need(p>=0,"long fork");if(!p){char m[16];snprintf(m,sizeof m,"%d",mode);execl(self,self,"--peer",path,m,(char*)NULL);_exit(127);}int status;need(waitpid(p,&status,0)==p&&WIFEXITED(status)&&!WEXITSTATUS(status),"long peer");t=begin(e,0);MDB_dbi alias=db(t,long_name,0);need(alias==x,"long alias");flags(t,x,0,"long.flags");if(mode==0||mode==3){value(t,x,"k","B","long.projected");comparator(t,x);MDB_dbi main=db(t,NULL,0);int rc=mdb_drop(t,main,0);printf("long.main.clear=%d\n",rc);
+#if MDB_VERSION_MAJOR>=1
+need(rc==MDB_DBIS_BUSY,"modern long busy");
+#else
+need(!rc,"legacy long clear");value(t,x,"k","B","long.retained");MDB_val k=val("new"),v=val("forbidden");rc=mdb_put(t,x,&k,&v,0);printf("long.clear.put=%d\n",rc);need(rc==MDB_NOTFOUND,"legacy long cached write error");
+#endif
+}else{MDB_val k=val("k"),v;int rc=mdb_get(t,x,&k,&v);printf("long.missing.get=%d\n",rc);int absent=(MDB_VERSION_MAJOR==0&&MDB_VERSION_MINOR==9&&MDB_VERSION_PATCH<36)?MDB_NOTFOUND:MDB_BAD_DBI;need(rc==(mode==1?absent:MDB_INCOMPATIBLE),"long missing/raw-row error");}mdb_txn_abort(t);mdb_env_close(e);}
+int main(int argc,char**argv){memset(long_name,'n',sizeof long_name-1);if(argc==4&&!strcmp(argv[1],"--peer")){peer_change(argv[2],atoi(argv[3]));return 0;}if(argc!=2)return 2;need(!mkdir(argv[1],0700)||errno==EEXIST,"long root");for(int index=0;index<4;index++){int mode=index==0?3:index-1;char path[4096];int n=snprintf(path,sizeof path,"%s/mode%d",argv[1],mode);need(n>0&&(size_t)n<sizeof path,"long path");printf("scenario=long-named-refresh-mode%d\n",mode);long_case(argv[0],path,mode);}puts("long-named-refresh-complete journeys=4");return 0;}

@@ -1,0 +1,42 @@
+[workspace]
+members = ["crates/ulmdb-platform", "crates/ulmdb-core", "crates/ulmdb-reference", "crates/ulmdb-storage", "crates/ulmdb-prefix", "crates/ulmdb-kv", "crates/ulmdb", "crates/ulmdb-ipdon", "clients/c", "clients/rust", "utility/explorer"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94"
+publish = false
+
+[workspace.dependencies]
+ulmdb-platform = { path = "crates/ulmdb-platform" }
+ulmdb = { path = "crates/ulmdb" }
+ulmdb-core = { path = "crates/ulmdb-core" }
+ulmdb-storage = { path = "crates/ulmdb-storage" }
+ulmdb-prefix = { path = "crates/ulmdb-prefix" }
+ulmdb-kv = { path = "crates/ulmdb-kv" }
+memmap2 = "=0.9.12"
+arc-swap = "=1.9.3"
+verus_builtin_macros = "=0.0.0-2026-10-25-0158"
+sha2 = "=0.10.9"
+hmac = "=0.12.1"
+libc = "=0.2.191"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(verus_keep_ghost)", "cfg(verus_keep_ghost_body)"] }
+
+[workspace.lints.clippy]
+all = "warn"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+debug = 1
+
+# Keep the complete verification corpus practical without disabling checks.
+[profile.test]
+opt-level = 1
+debug-assertions = true
+overflow-checks = true
+

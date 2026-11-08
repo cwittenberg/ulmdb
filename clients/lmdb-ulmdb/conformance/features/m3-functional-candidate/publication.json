@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "scope": "Additive unqualified F02/F03 functional candidate; qualified G14 canonical feature receipt is unchanged",
+  "candidate_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+  "complete": true,
+  "functional_gate_passed": true,
+  "functional_gate_stages": 14,
+  "feature_checks": 61,
+  "performance_accepted": false,
+  "tail_review_resolved": false,
+  "feature_states_changed": false,
+  "qualified_canonical_feature_receipt_sha256": "2bbeac21a573e85e4192f2a8f4d339c9cf0909d0ee1f395ef8bc87c082b2f14c",
+  "files": {
+    "qualification.json": {
+      "source": "target/qualification/runs/m3-f02-f03-final-v1/receipt.json",
+      "sha256": "91a330f14af1a66b59ec9dd5443bcdcbfd77ec09c10b5088d870685766196fb2"
+    },
+    "features-receipt.json": {
+      "source": "target/qualification/runs/m3-f02-f03-final-v1/features/receipt.json",
+      "sha256": "097ac2a08d36efd3f982e0eb7004489803c546b5989ec79fdbbba8f342062f79"
+    },
+    "REPORT.md": {
+      "source": "target/qualification/runs/m3-f02-f03-final-v1/features/REPORT.md",
+      "sha256": "ef740e4543121a68c20a883c77686ada58f5b1933df9ba839da59a687087b9e2"
+    },
+    "native-coordination.json": {
+      "source": "target/qualification/runs/m3-f02-f03-final-v1/native-coordination/receipt.json",
+      "sha256": "9dbc37e65ee3de6421ea7379d60d52ade6d3f3fbadf046642cbc3187efdcf480"
+    },
+    "STATUS.md": {
+      "source": "target/qualification/runs/m3-f02-f03-final-v1/FEATURE_STATUS.md",
+      "sha256": "c90fce71a9e01a4101b21d5eda94fe5815634c2c9184b6c2e06ba150aa906292"
+    },
+    "performance-assessment.json": {
+      "source": "target/qualification/performance-m3-f03-vs-f02-final/BUDGET_ASSESSMENT.json",
+      "sha256": "f98db724c45a6d00ad772b17836ab66a7132948a40197aac24a0208ec309b7f8"
+    },
+    "PERFORMANCE_REVIEW.md": {
+      "source": "target/qualification/performance-m3-f03-vs-f02-final/BUDGET_ASSESSMENT.md",
+      "sha256": "b412e206e14e99ae6c7d4598cf31c48434e14c89190f55594c63e2220fc8d9e3"
+    }
+  }
+}

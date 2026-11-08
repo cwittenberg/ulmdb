@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "scope": "Exact Linux Legacy-backed adapter F02/F03 qualification evidence; remaining parity goal active",
+  "complete": true,
+  "candidate_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+  "full_gate_stages": 14,
+  "feature_checks": 61,
+  "qualified_targets": [
+    "F02",
+    "F03"
+  ],
+  "abi_selection": "ULMDB_LMDB_ABI=1.0 or existing per-environment LMDB-ABI selection",
+  "nine_additional_apis_still_absent": true,
+  "m3_complete": false,
+  "full_parity_qualified": false,
+  "inputs": {
+    "README.md": {
+      "source": "target/qualification/m3-f02-f03-promotion/README_FOR_PUBLICATION.md",
+      "sha256": "4e94b116f08ce08fe2e76420be964d35715a3474ed270a13c46b092f725e40f8"
+    },
+    "qualification.json": {
+      "source": "target/qualification/runs/m3-f02-f03-final-v1/receipt.json",
+      "sha256": "91a330f14af1a66b59ec9dd5443bcdcbfd77ec09c10b5088d870685766196fb2"
+    },
+    "receipt.json": {
+      "source": "target/qualification/runs/m3-f02-f03-final-v1/features/receipt.json",
+      "sha256": "097ac2a08d36efd3f982e0eb7004489803c546b5989ec79fdbbba8f342062f79"
+    },
+    "REPORT.md": {
+      "source": "target/qualification/runs/m3-f02-f03-final-v1/features/REPORT.md",
+      "sha256": "ef740e4543121a68c20a883c77686ada58f5b1933df9ba839da59a687087b9e2"
+    },
+    "native-coordination.json": {
+      "source": "target/qualification/runs/m3-f02-f03-final-v1/native-coordination/receipt.json",
+      "sha256": "9dbc37e65ee3de6421ea7379d60d52ade6d3f3fbadf046642cbc3187efdcf480"
+    },
+    "operation-replay.json": {
+      "source": "target/qualification/m3-root-rollback-final-replay/HANDOFF.json",
+      "sha256": "bf85ad10371b0695204904eb2c4ec042c082be4d485473e76fc212824f69aa43"
+    },
+    "OPERATION_REVIEW.md": {
+      "source": "clients/lmdb-ulmdb/conformance/features/m3-functional-candidate/OPERATION_REVIEW.md",
+      "sha256": "3ea9225e466fd671f1e364aaef1c751b0174948e5325eb75d9415850e0abaf22"
+    },
+    "performance-f02-assessment.json": {
+      "source": "target/qualification/performance-m3-f02-vs-qualified/BUDGET_ASSESSMENT.json",
+      "sha256": "29356289faea07d0d645a453f6437c4833ee1b7fe256e52037d793e79f6d2363"
+    },
+    "PERFORMANCE_F02.md": {
+      "source": "target/qualification/performance-m3-f02-vs-qualified/BUDGET_ASSESSMENT.md",
+      "sha256": "0956a3fe7c7fcc8fdcfeb5291ec2ed860fef033e52d7ddaaecf2858f8b3d927f"
+    },
+    "performance-f03-primary-assessment.json": {
+      "source": "target/qualification/performance-m3-f03-vs-f02-final/BUDGET_ASSESSMENT.json",
+      "sha256": "f98db724c45a6d00ad772b17836ab66a7132948a40197aac24a0208ec309b7f8"
+    },
+    "PERFORMANCE_F03_PRIMARY.md": {
+      "source": "target/qualification/performance-m3-f03-vs-f02-final/BUDGET_ASSESSMENT.md",
+      "sha256": "b412e206e14e99ae6c7d4598cf31c48434e14c89190f55594c63e2220fc8d9e3"
+    },
+    "tail/PROTOCOL.json": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/PROTOCOL.json",
+      "sha256": "a74a47b17d6bf65254afd22369475d0a1eabc561e6bd42ead1c7d17b0e60491f"
+    },
+    "tail/PROTOCOL.md": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/PROTOCOL.md",
+      "sha256": "1ae80ff59a006802b93eac1c509ce2040dd0952aa084e0f564f29b5953ae704d"
+    },
+    "tail/PROTOCOL_FREEZE.json": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/PROTOCOL_FREEZE.json",
+      "sha256": "b21e4140653ce4428dc4e5b4d4077a1d2a2ae5067f61be5e96d8dddaf1bc2db9"
+    },
+    "tail/ANALYSIS.json": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/ANALYSIS.json",
+      "sha256": "b3c7180b38672b6811260f6c0f6240cc965916631728e352831ce83a1abc53e9"
+    },
+    "tail/ANALYSIS_CONTROLS.json": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/ANALYSIS_CONTROLS.json",
+      "sha256": "74b54d291dce4637d64c78e04630707988d1897e70329e70f5c40dbaa498d341"
+    },
+    "tail/PAIRS.csv": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/PAIRS.csv",
+      "sha256": "bad7fec575f0a7f986d7b81c0f6f116773b79bd1da4ed4b5fc56ad2740f1b15b"
+    },
+    "tail/REPORT.md": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/REPORT.md",
+      "sha256": "df7ee9dc299a94ab46ab1f5e09d618a041052417cc2425ce61575efdd9f418c1"
+    },
+    "tail/EVIDENCE.json": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/EVIDENCE.json",
+      "sha256": "aaad95523d004ce8d289a9970cb804c5d72bb68b1eca8b3965e0a5509bc0f56f"
+    },
+    "tail/ROOT_REVIEW.json": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/ROOT_REVIEW.json",
+      "sha256": "f81c84f5e4523f3d6483b1ffd040b10780e7e491ce9f7eabac9ea4ec452b5732"
+    },
+    "tail/ROOT_RECOMPUTED_ANALYSIS.json": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/ROOT_RECOMPUTED_ANALYSIS.json",
+      "sha256": "b3c7180b38672b6811260f6c0f6240cc965916631728e352831ce83a1abc53e9"
+    },
+    "tail/analyze_confirmation.py": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/analyze_confirmation.py",
+      "sha256": "434ad91180a83e6cd9ff7660d23c91d4f372b2e591ef0dad164a59c080891820"
+    },
+    "tail/run_confirmation.py": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/run_confirmation.py",
+      "sha256": "507aa5c4f5254022340634e676fe79b98c3ae7d3539718b3ae2fa54274358c94"
+    },
+    "tail/capture/receipt.json": {
+      "source": "target/qualification/m3-f03-full-tail-confirmation/capture/receipt.json",
+      "sha256": "e6a49bc6b1775346b669d18776c399426dbd40e77857d63baea8ba6f31322c67"
+    }
+  },
+  "change_budget_acceptance_sha256": "d08f28c04ea6256cb1d422367dfc6750c488276a69de45a874a0086b63a6b84d",
+  "g14_archive_sha256": "17172ba90648efab6dda6103f7b445b0b86d31cb90a4b16af85c965d4e899166"
+}

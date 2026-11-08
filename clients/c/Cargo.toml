@@ -1,0 +1,23 @@
+[package]
+name = "ulmdb-c"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+name = "ulmdb_c"
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+ulmdb-platform.workspace = true
+ulmdb.workspace = true
+ulmdb-storage.workspace = true
+libc.workspace = true
+sha2.workspace = true
+
+[dev-dependencies]
+ulmdb-kv.workspace = true
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "warn"

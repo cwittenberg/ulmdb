@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "kind": "qualification-evidence-revalidation",
+  "complete": true,
+  "passed": true,
+  "scope": "Native evidence portability and feature-state publication; product Rust/C source and exact packaged library are unchanged since the passed full Linux gate.",
+  "full_gate": {
+    "path": "clients/lmdb-ulmdb/conformance/features/qualification.json",
+    "sha256": "1913f5d7a65e69f174bada8bf597ad25f622ad36f7e78707d8b89b897cfcfbd6"
+  },
+  "native_receipt": {
+    "path": "clients/lmdb-ulmdb/conformance/native-coordination/receipt.json",
+    "sha256": "771f2ac8653bb374da49cc80550a308c928b8e33cf9ca305181b901810e82616",
+    "source_sha256": "1b99513d7cc7fc9f9e017f3f5fbe0af01846459dbf3bb1242b7076a95d690471"
+  },
+  "adapter_sha256": "25d1b7ba2e6ccabf0dcd82cbe9b2e491b49a8cb65ffcc3ca29c12609f770f800",
+  "source_changes_since_full_gate": {
+    "clients/lmdb-ulmdb/features/matrix.json": {
+      "before": "8e868cf7646a4bdf1857214debdbeb554e8c957be6830be9df96d71b86073bf7",
+      "after": "aadfae14cf03b2a407c76478428d5ac411e3bd5144ac95fac7d62f11e8a6300b"
+    },
+    "clients/lmdb-ulmdb/qualification/native_evidence.py": {
+      "before": "0a3b904c79251b9051f381062a92dcdd94371811afee88e2031e42ff127cddf4",
+      "after": "15908a0ef17085edef3ec8da4a5b392dc8f603462513f1d7b58b2e0d1ea1fd8b"
+    },
+    "clients/lmdb-ulmdb/qualification/run_native.py": {
+      "before": "54c26ca149d2bcd70d7d8a96f5a88279fc9eec8943762ad76073ccbbeb32f1ad",
+      "after": "5fbb02fca1564adf39f49159744f821fe601d6eeadfe9bd19d27c7bd02aed41c"
+    },
+    "clients/lmdb-ulmdb/features/test_registry.py": {
+      "before": "3a957ce0933b6c483cea658c9a4b5d97ebaa240d1891b4093d40c63ced1e7d42",
+      "after": "7905a9666ee6f850bcdbf74fa5e88b597a6c24e4d9477d5f3f3c90aadea61817"
+    }
+  },
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/features/registry.py",
+        "render"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.39280185801908374,
+      "log": "target/qualification/native-coordination-portable-capture/publication-render.log",
+      "log_sha256": "b8214419097363350fc78db6449cb318490d19bc8058fdd0deb2fb6a5eb3f08f"
+    },
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/features/registry.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.3951301551423967,
+      "log": "target/qualification/native-coordination-portable-capture/publication-check.log",
+      "log_sha256": "7ec4219d11e33b80771aa6525f055bf0fd8254ee4a36718b881e8dcc22235856"
+    },
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/features/test_registry.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 6.315896550891921,
+      "log": "target/qualification/native-coordination-portable-capture/publication-registry-controls.log",
+      "log_sha256": "457b061c2c890408fc0ffc59f2c45c01b86692da6aecfc8d86ffec4b085e6408"
+    },
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/qualification/test_native_runner.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.9915121691301465,
+      "log": "target/qualification/native-coordination-portable-capture/publication-cancellation-controls.log",
+      "log_sha256": "fbfd68dcaceefd90617b109c5b950f15e819efbe9705d89d4438ba9db959a44b"
+    }
+  ],
+  "performance_acceptance": "pending; G05 remains unqualified"
+}

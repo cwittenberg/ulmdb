@@ -1,0 +1,146 @@
+[
+  {
+    "engine": "ulmdb",
+    "operation": "load",
+    "status": "completed",
+    "operations_per_run": 1000000,
+    "transactions_per_run": 1000,
+    "completed_runs": 3,
+    "required_runs": 3,
+    "ops_s": 1396939.833043501,
+    "observed_completed_run_rates": [
+      1384111.0758661067,
+      1403636.7776939007,
+      1403160.7270197235
+    ],
+    "failures": []
+  },
+  {
+    "engine": "lmdb",
+    "operation": "load",
+    "status": "completed",
+    "operations_per_run": 1000000,
+    "transactions_per_run": 1000,
+    "completed_runs": 3,
+    "required_runs": 3,
+    "ops_s": 1539753.3863336681,
+    "observed_completed_run_rates": [
+      1556534.128154034,
+      1556623.2098613214,
+      1506646.4570936612
+    ],
+    "failures": []
+  },
+  {
+    "engine": "sqlite",
+    "operation": "load",
+    "status": "completed",
+    "operations_per_run": 1000000,
+    "transactions_per_run": 1000,
+    "completed_runs": 3,
+    "required_runs": 3,
+    "ops_s": 817306.3537725103,
+    "observed_completed_run_rates": [
+      816640.3238233676,
+      816423.9869769532,
+      818856.9677616593
+    ],
+    "failures": []
+  },
+  {
+    "engine": "ulmdb",
+    "operation": "read",
+    "status": "completed",
+    "operations_per_run": 10000000,
+    "transactions_per_run": 1,
+    "completed_runs": 3,
+    "required_runs": 3,
+    "ops_s": 2776988.785147825,
+    "observed_completed_run_rates": [
+      2706428.887662415,
+      2825810.8637428307,
+      2800158.835201711
+    ],
+    "failures": []
+  },
+  {
+    "engine": "lmdb",
+    "operation": "read",
+    "status": "completed",
+    "operations_per_run": 10000000,
+    "transactions_per_run": 1,
+    "completed_runs": 3,
+    "required_runs": 3,
+    "ops_s": 1660287.7967886361,
+    "observed_completed_run_rates": [
+      1635402.0158154953,
+      1655032.8370439382,
+      1690904.1258611905
+    ],
+    "failures": []
+  },
+  {
+    "engine": "sqlite",
+    "operation": "read",
+    "status": "completed",
+    "operations_per_run": 10000000,
+    "transactions_per_run": 1,
+    "completed_runs": 3,
+    "required_runs": 3,
+    "ops_s": 455490.1923149346,
+    "observed_completed_run_rates": [
+      455075.2164167963,
+      453326.4287463011,
+      458081.62052909535
+    ],
+    "failures": []
+  },
+  {
+    "engine": "ulmdb",
+    "operation": "update",
+    "status": "completed",
+    "operations_per_run": 1000000,
+    "transactions_per_run": 1000,
+    "completed_runs": 3,
+    "required_runs": 3,
+    "ops_s": 145257.23609548467,
+    "observed_completed_run_rates": [
+      144496.45712424073,
+      145770.541406241,
+      145507.82974452508
+    ],
+    "failures": []
+  },
+  {
+    "engine": "lmdb",
+    "operation": "update",
+    "status": "completed",
+    "operations_per_run": 1000000,
+    "transactions_per_run": 1000,
+    "completed_runs": 3,
+    "required_runs": 3,
+    "ops_s": 128142.68328745986,
+    "observed_completed_run_rates": [
+      127159.55339749009,
+      128422.72953854145,
+      128851.81820132142
+    ],
+    "failures": []
+  },
+  {
+    "engine": "sqlite",
+    "operation": "update",
+    "status": "completed",
+    "operations_per_run": 1000000,
+    "transactions_per_run": 1000,
+    "completed_runs": 3,
+    "required_runs": 3,
+    "ops_s": 58246.50926800318,
+    "observed_completed_run_rates": [
+      58115.43774319009,
+      58382.45802563435,
+      58241.93831802326
+    ],
+    "failures": []
+  }
+]

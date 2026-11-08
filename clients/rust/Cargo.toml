@@ -1,0 +1,13 @@
+[package]
+name = "ulmdb-rs"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+description = "Safe Rust client for ULMDB with ordered bytes and IPv4/IPv6 prefix indexes"
+
+[dependencies]
+ulmdb.workspace = true
+
+[lints]
+workspace = true

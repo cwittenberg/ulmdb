@@ -1,0 +1,676 @@
+{
+  "schema": 1,
+  "profile": "ulmdb-file-coordination-v1",
+  "kind": "native-test",
+  "platform": "Linux",
+  "allowed_features": [
+    "G05"
+  ],
+  "scope": "Native file coordination only; assertions and real process/filesystem state are self-oracles, not LMDB differential or performance evidence. Mixed C/native input uses an exact frozen shared-library artifact with process-lifetime RTLD_NODELETE; no Rust dynamic-unload contract is qualified.",
+  "suites": [
+    {
+      "id": "native",
+      "package": "ulmdb",
+      "target": "coordinated",
+      "features": [
+        "fault-injection"
+      ],
+      "source": "crates/ulmdb/tests/coordinated.rs",
+      "cases": [
+        {
+          "test": "long_lived_wrappers_refresh_reads_and_alternate_updates",
+          "roles": [
+            "positive",
+            "negative"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "independent_writers_serialize_without_lost_updates",
+          "roles": [
+            "positive"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "simultaneous_independent_opens_succeed_without_maintenance",
+          "roles": [
+            "positive"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "independent_capture_does_not_wait_for_private_writer_and_pins_old_bytes",
+          "roles": [
+            "positive"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "snapshot_outlives_native_or_coordinated_owner_and_exports_after_foreign_maintenance",
+          "roles": [
+            "positive",
+            "reopen",
+            "resource"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "process_death_releases_its_snapshot_pin_for_reclaim",
+          "roles": [
+            "positive",
+            "resource"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "recursion_and_existing_exclusive_native_owner_fail_promptly",
+          "roles": [
+            "negative"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        }
+      ]
+    },
+    {
+      "id": "native-faults",
+      "package": "ulmdb",
+      "target": "coordinated_faults",
+      "features": [
+        "fault-injection"
+      ],
+      "source": "crates/ulmdb/tests/coordinated_faults.rs",
+      "cases": [
+        {
+          "test": "malformed_live_physical_pin_stops_reclaim_before_any_unlink",
+          "roles": [
+            "negative",
+            "resource"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "capture_window_excludes_native_deletion_without_blocking_on_itself",
+          "roles": [
+            "negative"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "exhausted_physical_registry_fails_before_publication_then_recovers",
+          "roles": [
+            "negative",
+            "resource"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "physical_export_rejects_a_copied_environment_with_identical_uuid_and_root",
+          "roles": [
+            "negative"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "selected_head_drift_poisoning_precedes_a_corrupt_physical_pin",
+          "roles": [
+            "negative"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "coordinated_capture_rejects_damaged_publication_without_repair",
+          "roles": [
+            "negative"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "valid_physical_pin_does_not_bypass_logical_graph_validation",
+          "roles": [
+            "negative"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        },
+        {
+          "test": "failed_residency_admission_releases_pin_and_capture",
+          "roles": [
+            "negative",
+            "resource",
+            "reopen"
+          ],
+          "backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        }
+      ]
+    },
+    {
+      "id": "storage-pins",
+      "package": "ulmdb-storage",
+      "target": "coordination",
+      "features": [
+        "fault-injection"
+      ],
+      "source": "crates/ulmdb-storage/tests/coordination.rs",
+      "cases": [
+        {
+          "test": "live_root_has_exact_persisted_binding_and_survives_capture_release",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "legacy_cohort_and_indexed_descriptors_keep_their_exact_typed_checkpoint",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "directory_gate_covers_realm_lookup_and_binding_without_unlock_gap",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "prepared_pins_bind_real_tokens_without_cold_inventory_decoding",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "foreign_realm_or_directory_record_cannot_mark_a_root",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "corrupt_live_pin_blocks_all_cleanup_but_corrupt_stale_pins_are_cleanable",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "symlink_nonregular_and_unknown_records_fail_closed",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "registry_and_live_inventory_budgets_fail_before_removal",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "simultaneous_process_registration_serializes_without_busy_or_lost_pins",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "independent_process_capture_exclusion_then_owner_death_releases_stale_pin",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "forked_drop_cannot_unlock_or_unlink_creators_capture_or_root_pin",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        }
+      ]
+    },
+    {
+      "id": "storage-writers",
+      "package": "ulmdb-storage",
+      "target": "coordination_writer",
+      "features": [
+        "fault-injection"
+      ],
+      "source": "crates/ulmdb-storage/tests/coordination_writer.rs",
+      "cases": [
+        {
+          "test": "independent_compiled_copy_reentry_fails_without_tls_or_deadlock",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "another_thread_blocks_until_owner_releases_then_makes_progress",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "independent_process_waits_and_progresses_after_creator_release",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "locked_empty_and_short_publication_transitions_wait_without_busy",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "locked_complete_malformed_record_fails_closed_promptly",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "unlocked_stale_and_partial_state_is_superseded_after_kernel_ownership",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "dead_process_releases_kernel_lock_and_stale_owner_record_is_replaced",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "symlinks_hardlinks_nonregular_and_oversized_paths_are_rejected_without_rewrite",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "blocked_waiter_rechecks_inode_and_never_rewrites_replacement",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "foreign_fork_drop_preserves_creator_record_and_lock",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "creator_release_progresses_despite_inherited_fd_then_foreign_drop_keeps_new_owner",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "second_copy::writer_record::tests::darwin_owner_retains_high_thread_bits_and_rejects_damage",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "second_copy::writer_record::tests::linux_owner_wire_is_v1_exact",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        }
+      ]
+    },
+    {
+      "id": "legacy-publication",
+      "package": "ulmdb",
+      "target": "crash_recovery",
+      "features": [
+        "fault-injection"
+      ],
+      "source": "crates/ulmdb/tests/crash_recovery.rs",
+      "cases": [
+        {
+          "test": "every_publication_boundary_reopens_a_complete_snapshot_on_disk",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "every_publication_boundary_reopens_a_complete_snapshot_on_ramdrive",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "native_publication_trace_matches_the_model_schedule",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "every_injected_io_error_preserves_atomicity_and_writer_poisoning_on_disk",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "every_injected_io_error_preserves_atomicity_and_writer_poisoning_on_ramdrive",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        }
+      ]
+    },
+    {
+      "id": "cohort-publication",
+      "package": "ulmdb",
+      "target": "cohort_crash",
+      "features": [
+        "fault-injection"
+      ],
+      "source": "crates/ulmdb/tests/cohort_crash.rs",
+      "cases": [
+        {
+          "test": "every_publication_boundary_reopens_a_complete_snapshot_on_disk",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "every_publication_boundary_reopens_a_complete_snapshot_on_ramdrive",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "native_publication_trace_matches_the_model_schedule",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "every_injected_io_error_preserves_atomicity_and_writer_poisoning_on_disk",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "every_injected_io_error_preserves_atomicity_and_writer_poisoning_on_ramdrive",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "indexed_every_publication_boundary_reopens_a_complete_snapshot_on_disk",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "indexed_every_publication_boundary_reopens_a_complete_snapshot_on_ramdrive",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "indexed_injected_io_errors_preserve_atomicity_and_writer_poisoning_on_disk",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        },
+        {
+          "test": "indexed_injected_io_errors_preserve_atomicity_and_writer_poisoning_on_ramdrive",
+          "roles": [
+            "prerequisite"
+          ],
+          "backends": [
+            "storage-primitive"
+          ],
+          "markers": false
+        }
+      ]
+    },
+    {
+      "id": "mixed-adapter",
+      "package": "ulmdb-c",
+      "target": "lib",
+      "artifact_target": "ulmdb_c",
+      "enumeration": "selected",
+      "features": [],
+      "source": "clients/c/src/coordination_tests.rs",
+      "requires_adapter": true,
+      "cases": [
+        {
+          "test": "coordination_tests::mixed_native_c_and_snapshot_lifetimes",
+          "roles": [
+            "positive",
+            "negative",
+            "reopen",
+            "resource"
+          ],
+          "backends": [
+            "adapter-file"
+          ],
+          "marker_backends": [
+            "file-legacy",
+            "file-cohort",
+            "file-indexed"
+          ],
+          "markers": true
+        }
+      ]
+    }
+  ]
+}

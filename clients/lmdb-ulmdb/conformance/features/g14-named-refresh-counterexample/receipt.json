@@ -1,0 +1,297 @@
+{
+  "profile": "independent-NON-PREV-all-header-qualified-Root-counterexamples",
+  "complete": true,
+  "root_product_edited": false,
+  "upstream_reference_receipt": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/receipt.json",
+  "upstream_reference_receipt_sha256": "a65efd7ec1fb0aa341541292d3a4dec15f862960e827e7497d9cd76bdbd5e4bd",
+  "source_sha256": {
+    "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/parity_named_refresh.c": "50364ee9bbe1aac76158ede3f5f0b1d3b78f21d91b26844ca47188b879733e64",
+    "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/named_refresh_helpers.h": "2dbacee2eb8ce0c0c4c11731dd85940896c3a19358d62b008977dda6dfeab1fc"
+  },
+  "runner_sha256": "ab805f9d1b8e52f7e4a6a918eaba7b6c358d600063d419fc693eeba9f09f8148",
+  "root_provider_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+  "scope": "Ordinary independent-process same-name drop/recreate; no PREVSNAPSHOT or rollback API is called",
+  "source_safety_review": [
+    "Peer closes/deletes only its own DBI, never parent alias",
+    "Parent held RO never dbi_opens; other parent DBI-open transactions end sequentially",
+    "Every environment registers the same comparator ordering before data access",
+    "Consistent fixed duplicate widths within A and separately recreated B",
+    "Raw MAIN row inserted after named deletion, never over an existing F_SUBDATA row",
+    "Held cursor closes before held RO abort; borrowed bytes checked while held remains alive",
+    "Fresh handles opened after environment reopen"
+  ],
+  "runs": [
+    {
+      "reference_version": "0.9.31",
+      "arm": "reference",
+      "runtime_role": "default0.9",
+      "provider": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.31/provider/liblmdb.so.0",
+      "provider_sha256": "6ad6f6049e4b981990ae06b9017c3fd7ad8751f19bde90cb6c1f61f2dc2a4788",
+      "executable": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.31/named-refresh",
+      "executable_sha256": "3b7f7876bf93b812b8dac72f29c2489645eb42ebab883e5985df23966b302939",
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.31/named-refresh",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.31/reference/database"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "83f5607df1288df0a95540d76e7f1e4d93b84172fbb5f2bd1bb2a6c52dd4f445",
+      "stderr_sha256": "294ba7694973101e0b132352a228f93022f84438b6cdf12fc65f30b2fee2e5aa",
+      "actual_loader_bindings": [
+        "mdb_cmp",
+        "mdb_cursor_close",
+        "mdb_cursor_get",
+        "mdb_cursor_open",
+        "mdb_dbi_flags",
+        "mdb_dbi_open",
+        "mdb_drop",
+        "mdb_env_close",
+        "mdb_env_create",
+        "mdb_env_open",
+        "mdb_env_set_mapsize",
+        "mdb_env_set_maxdbs",
+        "mdb_get",
+        "mdb_put",
+        "mdb_set_compare",
+        "mdb_set_dupsort",
+        "mdb_strerror",
+        "mdb_txn_abort",
+        "mdb_txn_begin",
+        "mdb_txn_commit"
+      ],
+      "scenario_markers": [
+        "G14-non-PREV-refresh-mode0",
+        "G14-non-PREV-refresh-mode1",
+        "G14-non-PREV-refresh-mode2",
+        "G14-non-PREV-refresh-mode3"
+      ],
+      "oracle_errors": []
+    },
+    {
+      "reference_version": "0.9.31",
+      "arm": "qualified-root",
+      "runtime_role": "default0.9",
+      "provider": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-root-rollback-final-replay/provider/liblmdb.so.0",
+      "provider_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+      "executable": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.31/named-refresh",
+      "executable_sha256": "3b7f7876bf93b812b8dac72f29c2489645eb42ebab883e5985df23966b302939",
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.31/named-refresh",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.31/qualified-root/database"
+      ],
+      "returncode": 1,
+      "stdout_sha256": "ed699a031059fea107c44b0eb986702381b14e1b6914cdfb0a9884d3eba62d4f",
+      "stderr_sha256": "3bb60ed5eb80f3b72e58a05fd7006a9903c60d9287eb7b55eca5d51e17d9ac66",
+      "actual_loader_bindings": [
+        "mdb_cmp",
+        "mdb_cursor_close",
+        "mdb_cursor_get",
+        "mdb_cursor_open",
+        "mdb_dbi_flags",
+        "mdb_dbi_open",
+        "mdb_drop",
+        "mdb_env_close",
+        "mdb_env_create",
+        "mdb_env_open",
+        "mdb_env_set_mapsize",
+        "mdb_env_set_maxdbs",
+        "mdb_get",
+        "mdb_put",
+        "mdb_set_compare",
+        "mdb_set_dupsort",
+        "mdb_strerror",
+        "mdb_txn_abort",
+        "mdb_txn_begin",
+        "mdb_txn_commit"
+      ],
+      "scenario_markers": [
+        "G14-non-PREV-refresh-mode0"
+      ],
+      "oracle_errors": [
+        "flags: -30780 MDB_BAD_DBI: Invalid database handle"
+      ]
+    },
+    {
+      "reference_version": "0.9.36",
+      "arm": "reference",
+      "runtime_role": "default0.9",
+      "provider": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.36/provider/liblmdb.so.0",
+      "provider_sha256": "3a89620fa24cb0d7b1f87f8b89c3153914dc445c29a52bbe6ad753fe376f8476",
+      "executable": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.36/named-refresh",
+      "executable_sha256": "3b7f7876bf93b812b8dac72f29c2489645eb42ebab883e5985df23966b302939",
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.36/named-refresh",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.36/reference/database"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "83f5607df1288df0a95540d76e7f1e4d93b84172fbb5f2bd1bb2a6c52dd4f445",
+      "stderr_sha256": "fe5242f6da2b3d52b78018365ca10031baaddc5e0253c3b6f46f91a09e70160e",
+      "actual_loader_bindings": [
+        "mdb_cmp",
+        "mdb_cursor_close",
+        "mdb_cursor_get",
+        "mdb_cursor_open",
+        "mdb_dbi_flags",
+        "mdb_dbi_open",
+        "mdb_drop",
+        "mdb_env_close",
+        "mdb_env_create",
+        "mdb_env_open",
+        "mdb_env_set_mapsize",
+        "mdb_env_set_maxdbs",
+        "mdb_get",
+        "mdb_put",
+        "mdb_set_compare",
+        "mdb_set_dupsort",
+        "mdb_strerror",
+        "mdb_txn_abort",
+        "mdb_txn_begin",
+        "mdb_txn_commit"
+      ],
+      "scenario_markers": [
+        "G14-non-PREV-refresh-mode0",
+        "G14-non-PREV-refresh-mode1",
+        "G14-non-PREV-refresh-mode2",
+        "G14-non-PREV-refresh-mode3"
+      ],
+      "oracle_errors": []
+    },
+    {
+      "reference_version": "0.9.36",
+      "arm": "qualified-root",
+      "runtime_role": "default0.9",
+      "provider": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-root-rollback-final-replay/provider/liblmdb.so.0",
+      "provider_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+      "executable": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.36/named-refresh",
+      "executable_sha256": "3b7f7876bf93b812b8dac72f29c2489645eb42ebab883e5985df23966b302939",
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/0.9.36/named-refresh",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/0.9.36/qualified-root/database"
+      ],
+      "returncode": 1,
+      "stdout_sha256": "ed699a031059fea107c44b0eb986702381b14e1b6914cdfb0a9884d3eba62d4f",
+      "stderr_sha256": "118861ac47f358dc28fb14db65cca330ed123247136bddac9b55c9eded3ba0ef",
+      "actual_loader_bindings": [
+        "mdb_cmp",
+        "mdb_cursor_close",
+        "mdb_cursor_get",
+        "mdb_cursor_open",
+        "mdb_dbi_flags",
+        "mdb_dbi_open",
+        "mdb_drop",
+        "mdb_env_close",
+        "mdb_env_create",
+        "mdb_env_open",
+        "mdb_env_set_mapsize",
+        "mdb_env_set_maxdbs",
+        "mdb_get",
+        "mdb_put",
+        "mdb_set_compare",
+        "mdb_set_dupsort",
+        "mdb_strerror",
+        "mdb_txn_abort",
+        "mdb_txn_begin",
+        "mdb_txn_commit"
+      ],
+      "scenario_markers": [
+        "G14-non-PREV-refresh-mode0"
+      ],
+      "oracle_errors": [
+        "flags: -30780 MDB_BAD_DBI: Invalid database handle"
+      ]
+    },
+    {
+      "reference_version": "1.0.2",
+      "arm": "reference",
+      "runtime_role": "explicit1.0",
+      "provider": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/1.0.2/provider/liblmdb.so.0",
+      "provider_sha256": "ec7d3ce907744850d00577f7548bd0ba99f9d3e1cc4614b0cccebc5af2c20756",
+      "executable": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/1.0.2/named-refresh",
+      "executable_sha256": "a208f1707c141df2e3a42209e0e0c55e6df7db2f373d83d10e0565e684aebdf5",
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/1.0.2/named-refresh",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/1.0.2/reference/database"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "83f5607df1288df0a95540d76e7f1e4d93b84172fbb5f2bd1bb2a6c52dd4f445",
+      "stderr_sha256": "d1ff0562bf715c6d0293fd5e69daa65a46779b35087d149aeb6afa4478d690da",
+      "actual_loader_bindings": [
+        "mdb_cmp",
+        "mdb_cursor_close",
+        "mdb_cursor_get",
+        "mdb_cursor_open",
+        "mdb_dbi_flags",
+        "mdb_dbi_open",
+        "mdb_drop",
+        "mdb_env_close",
+        "mdb_env_create",
+        "mdb_env_open",
+        "mdb_env_set_mapsize",
+        "mdb_env_set_maxdbs",
+        "mdb_get",
+        "mdb_put",
+        "mdb_set_compare",
+        "mdb_set_dupsort",
+        "mdb_strerror",
+        "mdb_txn_abort",
+        "mdb_txn_begin",
+        "mdb_txn_commit"
+      ],
+      "scenario_markers": [
+        "G14-non-PREV-refresh-mode0",
+        "G14-non-PREV-refresh-mode1",
+        "G14-non-PREV-refresh-mode2",
+        "G14-non-PREV-refresh-mode3"
+      ],
+      "oracle_errors": []
+    },
+    {
+      "reference_version": "1.0.2",
+      "arm": "qualified-root",
+      "runtime_role": "explicit1.0",
+      "provider": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-root-rollback-final-replay/provider/liblmdb.so.0",
+      "provider_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+      "executable": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/1.0.2/named-refresh",
+      "executable_sha256": "a208f1707c141df2e3a42209e0e0c55e6df7db2f373d83d10e0565e684aebdf5",
+      "command": [
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-c-previous-work/named-refresh-probe/all-reference-groundwork/1.0.2/named-refresh",
+        "/mnt/data3/ipdon/ulmdb/target/qualification/m3-named-refresh-independent-work/current-root-allrefs-v1/1.0.2/qualified-root/database"
+      ],
+      "returncode": 1,
+      "stdout_sha256": "ed699a031059fea107c44b0eb986702381b14e1b6914cdfb0a9884d3eba62d4f",
+      "stderr_sha256": "5d949e2c574b5ec97c28fa348af9068472cd8b10e742ac1a347ce410f8dd7988",
+      "actual_loader_bindings": [
+        "mdb_cmp",
+        "mdb_cursor_close",
+        "mdb_cursor_get",
+        "mdb_cursor_open",
+        "mdb_dbi_flags",
+        "mdb_dbi_open",
+        "mdb_drop",
+        "mdb_env_close",
+        "mdb_env_create",
+        "mdb_env_open",
+        "mdb_env_set_mapsize",
+        "mdb_env_set_maxdbs",
+        "mdb_get",
+        "mdb_put",
+        "mdb_set_compare",
+        "mdb_set_dupsort",
+        "mdb_strerror",
+        "mdb_txn_abort",
+        "mdb_txn_begin",
+        "mdb_txn_commit"
+      ],
+      "scenario_markers": [
+        "G14-non-PREV-refresh-mode0"
+      ],
+      "oracle_errors": [
+        "flags: -30780 MDB_BAD_DBI: Invalid database handle"
+      ]
+    }
+  ],
+  "references_completed_cases": 12,
+  "qualified_root_independent_failures": 3,
+  "qualified_root_failure": "On all three unchanged per-header applications, same-flags peer drop/recreate makes flags() return MDB_BAD_DBI; upstream returns flags0 then readsB.",
+  "unreached_root_cases": "Root stops at first mode0 failure in each executable; changed-flags, DUPFIXED-width and raw-MAIN modes passed references but were not reached on Root. No inferred Root results.",
+  "broad_G14_support": "Known valid current-artifact counterexample; finite historical profile passes remain preserved, not a broad completion claim"
+}

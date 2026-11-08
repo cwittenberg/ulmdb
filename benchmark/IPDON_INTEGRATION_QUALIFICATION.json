@@ -1,0 +1,257 @@
+{
+  "format": "ipdon-integration-enhancements-qualification-v1",
+  "captured_at_utc": "2026-11-05T21:26:54.668279+00:00",
+  "reviewed_attachment_baseline": "e388003cdb7117922326ab90fe79b56976109ea5",
+  "git_head": "e388003cdb7117922326ab90fe79b56976109ea5",
+  "source_state": "working tree; no commit created; pre-existing LMDB parity changes preserved",
+  "implemented": [
+    "Bounded covering candidate pages/batches with explicit truncation and no repeated candidate examinations.",
+    "Public chain checkpoints, exact event length helper and atomic verified page application with typed protocol errors.",
+    "Explicit new-realm baseline import with application activation verification and deterministic retained anchors.",
+    "Concrete typed baseline copy with actual app-table digest verification and guarded cross-realm cutover.",
+    "Original snapshot format01 retained; baseline provenance format02 supported."
+  ],
+  "package_source_sha256": "3fc75fb7cbea1870bffb8f1e8b0a3ea3a2e39ca23e6cc31c6d41056172d6415c",
+  "source_file_sha256": {
+    "crates/ulmdb-ipdon/Cargo.toml": "547ca118e46aec0bbd20b427382c1408e966466048ac6e40dbd61668ba340a76",
+    "crates/ulmdb-ipdon/examples/profile_candidates.rs": "64d97b2fcf9476e60f6bb33dbb725808213a2ea5974b835d12e443ab418e091b",
+    "crates/ulmdb-ipdon/examples/regional_efficiency.rs": "03618784e0a921a1ea0c3570d6398b364ea3e07530f8738a2f610035abc7df69",
+    "crates/ulmdb-ipdon/src/bin/ipdon-regional.rs": "15e6e4ecf7d52ea7f86eec11d5150a3db43f9850d1fff422e65ed7e3ba34b8f3",
+    "crates/ulmdb-ipdon/src/bin/ipdon.rs": "7844b659682e91b5a62809d7a45aaa4ea715795f49b901bab724eccfd29394b4",
+    "crates/ulmdb-ipdon/src/codec.rs": "ce51c7980bd83828703fe6fdfc6f9376a7154c40f81b5768f2322ad4379d940a",
+    "crates/ulmdb-ipdon/src/journal/baseline.rs": "ce4414a331ce733a81d932dafa06ffb9254c7a55a7ad85fe81fa1d7b363b437a",
+    "crates/ulmdb-ipdon/src/journal/error.rs": "37fd9eff75cf31090e995a50c4bce233b3fd86f28754b0273ff6d8ddebd978bd",
+    "crates/ulmdb-ipdon/src/journal/snapshot.rs": "f1cb15ec2b3e8d2b2013c075bdf1800db7c062bc08e8a03354c535c101e90176",
+    "crates/ulmdb-ipdon/src/journal/store.rs": "12847186ecebb16f5063d9de46171d265a699386f673655e082215aff06bd56e",
+    "crates/ulmdb-ipdon/src/journal/verified.rs": "09a25ad4e1f76aceceaf53aa411a3cc7e4e66184ae1cb988339d942846b09517",
+    "crates/ulmdb-ipdon/src/journal/wire.rs": "08064ee78627b69550621a7a0c8fbc781e174550cb61a2ed270eb9af9c0bbc56",
+    "crates/ulmdb-ipdon/src/journal.rs": "f97ed198b9dc734eff2c76e71b9746b4a97bd628f6763cde30287bc39c6322b7",
+    "crates/ulmdb-ipdon/src/lib.rs": "b3aab036c51cc455c73f506bd61281df27f198c127970f274be6343855195192",
+    "crates/ulmdb-ipdon/src/model.rs": "9cfcb10c1d57fcf38f1d03da1cb516b55583d8ab9ff18060a3de1b39979d7879",
+    "crates/ulmdb-ipdon/src/profiles/codec.rs": "968f792b03c9476a4c654fd827cde6789004fc47d13b4d3964dd5aaee71f0000",
+    "crates/ulmdb-ipdon/src/profiles/read.rs": "6cce94086ee8088573e5d3bc217c9173a11ee5e53a64ee1ff3adeae26487b599",
+    "crates/ulmdb-ipdon/src/profiles.rs": "d98d48526913dfd1155ed2fd40787a325ed71c6210f57e9b46faf743c9561348",
+    "crates/ulmdb-ipdon/src/read.rs": "2d2057aa82690ede25378187a9a331a6a03ced6235b74a1ec5a675f0ceee33f4",
+    "crates/ulmdb-ipdon/src/reconcile.rs": "281b8f2feadcee25834f0271461101ee761666105070387cc698fabd192ffc2d",
+    "crates/ulmdb-ipdon/src/regional/baseline.rs": "fbfb27ba0a7138231c857f23e014d2cfa575c973932810a869d176eb7825d3ec",
+    "crates/ulmdb-ipdon/src/regional/wire.rs": "96f32af55b7d43101a6a09b51dcc1854b8991644964bc9abf7fbdb6031e22cf8",
+    "crates/ulmdb-ipdon/src/regional.rs": "6d5ac18315ce29bf2675b4963a1c241e50a757706b8cbbfccd19af5ead9605a5",
+    "crates/ulmdb-ipdon/src/rrsets/codec.rs": "7aa5cf52666c0876f08e2d55192103dbdc35ed102dbffe32304e64cd986a6c3f",
+    "crates/ulmdb-ipdon/src/rrsets/read.rs": "950fd50bb2b0360d74eeaae60e7cc6f913600fd37bb2a2c8adf5e44038b55f35",
+    "crates/ulmdb-ipdon/src/rrsets/write.rs": "454e49b9b5b8fd6680e21717a29662dea80f2735f708623cf5e457bb9f562d2c",
+    "crates/ulmdb-ipdon/src/rrsets.rs": "885ac307fb05d6894be6697ff3063eb043e63e2e925fe51eef1bd47b1c0b8c53",
+    "crates/ulmdb-ipdon/src/schema.rs": "6d9f9b0b90a38c690d5b9f6a860eb937f1a3eb97a6312a234c724872838eb1d5",
+    "crates/ulmdb-ipdon/src/write.rs": "1c45891a944b27bbd7b796cc3259db45d785d4fb450e121fc2da707a0e6d18ed",
+    "crates/ulmdb-ipdon/tests/baseline_faults.rs": "2ec3b190f7c119ef18fc424ac1189a9b3751fd90f4c86ea762b6f8df4d008818",
+    "crates/ulmdb-ipdon/tests/baseline_handover.rs": "00a9853d6de953742c01cfe144b705c6b72ec16b683d0316bf9a3710d1b7b85f",
+    "crates/ulmdb-ipdon/tests/baseline_import.rs": "278c888a5f9f3964e4c57032fded53959b52d0fc8dea51d810f86e6e99deb470",
+    "crates/ulmdb-ipdon/tests/ipdon_integration.rs": "e466e1f972e86c81e056051c62a0dd79de695653787a43e192b2689f19d56775",
+    "crates/ulmdb-ipdon/tests/journal.rs": "051351e3a1418dd9333bedf69cf4c48fb8b89c097493e7b07463ae0de4313151",
+    "crates/ulmdb-ipdon/tests/maintenance.rs": "82ba87ac9ef3d4bb8273641c1b8168c447df687e65e50135f2fcd4191f11551a",
+    "crates/ulmdb-ipdon/tests/profile_candidates.rs": "a32b69411d87322b2c7362e16cee38521c7acc91df49e92298745d421fd7c498",
+    "crates/ulmdb-ipdon/tests/profiles.rs": "4457f5d12879456f51433623958f59664deb12f4e662ddb4e2bfa4e50924cace",
+    "crates/ulmdb-ipdon/tests/projection.rs": "24ff6b5a6983e9d0bcf70dbc35a0a769e4336c45c9a34c0e51600dce91327543",
+    "crates/ulmdb-ipdon/tests/regional.rs": "96554b7e1173e3d61a7d0dbf0c98144760c0f788c4c24c02f60d1f90ac4ad2f8",
+    "crates/ulmdb-ipdon/tests/regional_faults.rs": "d13472461f868772aadfdb8388c1a7a5f9a8170e8dac3b282ceeec54b885edf6",
+    "crates/ulmdb-ipdon/tests/regional_fleet.rs": "88cd4b7104654a168b4921b354252372ccf22400a1acabd205bedcff5d0c0d73",
+    "crates/ulmdb-ipdon/tests/regional_process.rs": "d36ebd6e83d901a3b3414fa3956ae3c357772c41ec3709b883de6816a1a3a2bd",
+    "crates/ulmdb-ipdon/tests/rrsets.rs": "11d67ff8e611fd136ce4730f57b8c4444249bff4dfa97b7e14125f3b0aa9e745",
+    "crates/ulmdb-ipdon/tests/verified_journal.rs": "ab3f696c1fc6232d3ff79de80535c0bf0d1f46f8e8be0807afa095e787c5ac7d",
+    "crates/ulmdb-ipdon/README.md": "fd832163a724c7d96d3c2f10e26f01eb46843cdd90c7838dd5358296d36c4648",
+    "Cargo.toml": "ff60eb72c2bd158ea7c2988ab1439922fddbc8247fa8fc073f3f111f7ab09714",
+    "Cargo.lock": "a27f05431e824ed3608e9b94dcc2d77a8d66b66246744aca606eb4e90bc5063e"
+  },
+  "checks": [
+    {
+      "name": "ipdon-default",
+      "command": "cargo test --locked -p ulmdb-ipdon",
+      "exit_code": 0,
+      "tests_passed": 87,
+      "log": "target/ipdon-integration-tests.log",
+      "log_sha256": "c30fc06e42e0456eca2137a3867daa4f1948ab6e8baf9fb887bf894570715fe9"
+    },
+    {
+      "name": "workspace",
+      "command": "cargo test --workspace --locked",
+      "exit_code": 0,
+      "tests_passed": 804,
+      "log": "target/ipdon-integration-workspace-tests.log",
+      "log_sha256": "0cb7ee7cfef5e034940d5938973b86e0e4af8bf2e5179d9c990aab0fdd0c30cc"
+    },
+    {
+      "name": "native-faults",
+      "command": "cargo test --locked -p ulmdb-ipdon --features fault-injection --test regional_faults --test baseline_faults",
+      "exit_code": 0,
+      "tests_passed": 9,
+      "log": "target/ipdon-integration-faults.log",
+      "log_sha256": "72fe498f09dab31a9523b8eb387d06bd4c93ad575e19f554301bc0f14848d995"
+    },
+    {
+      "name": "strict-clippy",
+      "command": "cargo clippy --locked -p ulmdb-ipdon --all-targets --features fault-injection --no-deps -- -D warnings",
+      "exit_code": 0,
+      "tests_passed": 0,
+      "log": "target/ipdon-integration-clippy.log",
+      "log_sha256": "fe967507947e0194e5cdf33787b33a3e74b1f3ce4ec0eb2f4b173a94ee4454fe"
+    },
+    {
+      "name": "release-cli-build",
+      "command": "cargo build --release --locked -p ulmdb-ipdon --bin ipdon-regional",
+      "exit_code": 0,
+      "tests_passed": 0,
+      "log": "target/ipdon-integration-release-build.log",
+      "log_sha256": "b95d8cb4e2e91693048e7970a1f0c5780c9a286711f5317648a363f6e6b64f01"
+    },
+    {
+      "name": "rustdoc",
+      "command": "cargo doc --locked -p ulmdb-ipdon --no-deps",
+      "exit_code": 0,
+      "tests_passed": 0,
+      "log": "target/ipdon-integration-rustdoc.log",
+      "log_sha256": "27c68f2f861ba2c06a319c80b3c4d5cdf311a6574530174022a6404013a1256b"
+    }
+  ],
+  "candidate_release_probe": {
+    "path": "benchmark/IPDON_CANDIDATES_RESULTS.json",
+    "sha256": "c6b71c3c88d33df26bd732c4f2fd8fccea95d7ee152db8e7d0674820f0cfcb3d",
+    "qualification": "synthetic counters and bounds; no statistical speedup or deployed-service claim"
+  },
+  "binary_sha256": {
+    "target/release/ipdon-regional": "da56427b8e16dff4c5fafe6ee1a92fd031532a8e25fad04a7d7f0d0489e3f974",
+    "target/release/examples/profile_candidates": "740a3b9542e951ba8c733864ba77173274a2f93c66693d62cb1489e4787f3383"
+  },
+  "fault_qualification": {
+    "tests": 9,
+    "child_processes": 99,
+    "new_baseline_tests": 4,
+    "new_baseline_child_processes": 30,
+    "new_baseline_native_fault_injections": 27,
+    "publication_modes": [
+      "Legacy",
+      "Cohort",
+      "Indexed"
+    ],
+    "physical_power_loss_tested": false
+  },
+  "application_responsibilities": [
+    "Source-global ordering and conflicting-evidence inference.",
+    "Authentication of peers, manifests, transport metadata and acknowledgements.",
+    "Actual installed-state verifier for non-Regional legacy baseline models.",
+    "Local-only metadata rebinding and queued writer/maintenance rerouting.",
+    "Active-handle switch while retaining the appropriate handover guard."
+  ],
+  "baseline_cutover_cost": "Native pinned file copy; logical state hash uses bounded-memory streaming and is linear in app size. Full digest checks while fenced can pause acquisition; reads continue.",
+  "cli_journey": {
+    "directory": "target/ipdon-enhancements-journey-10pKnI",
+    "commands": [
+      {
+        "command": "target/release/ipdon-regional demo target/ipdon-enhancements-journey-10pKnI/source",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "initial ApplyReport { journal: ApplyReport { applied: 5, replayed: 0, encoded_bytes: 1205 }, work: Work { added_members: 2, removed_members: 0, retained_members: 0, refreshes: 0, claim_changes: 4 } }; native commit 1\ncompact refresh payload 98 bytes\nrefresh ApplyReport { journal: ApplyReport { applied: 1, replayed: 0, encoded_bytes: 191 }, work: Work { added_members: 0, removed_members: 0, retained_members: 0, refreshes: 1, claim_changes: 0 } }; native commit 2\nexample.test -> 192.0.2.1 revision=1 expires=1700000360\nexample.test -> 192.0.2.2 revision=1 expires=1700000360\n192.0.2.1 [Some(\"NL\"), Some(\"AS64500\"), Some(\"false\")]\n2001:db8::1 [Some(\"NL\"), None, None]\nwatermarks {1: Cursor { applied: 2, serving: 2, floor: 0 }, 2: Cursor { applied: 4, serving: 4, floor: 0 }}; use query time 1700000070\n"
+      },
+      {
+        "command": "target/release/ipdon-regional init target/ipdon-enhancements-journey-10pKnI/replica 314879266638 1",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "initialized realm=314879266638; commit 1\n"
+      },
+      {
+        "command": "target/release/ipdon-regional replicate target/ipdon-enhancements-journey-10pKnI/source target/ipdon-enhancements-journey-10pKnI/replica 1",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "verified ApplyReport { journal: ApplyReport { applied: 2, replayed: 0, encoded_bytes: 444 }, work: Work { added_members: 2, removed_members: 0, retained_members: 0, refreshes: 1, claim_changes: 0 } }; commit 2; more=false\n"
+      },
+      {
+        "command": "target/release/ipdon-regional replicate target/ipdon-enhancements-journey-10pKnI/source target/ipdon-enhancements-journey-10pKnI/replica 2",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "verified ApplyReport { journal: ApplyReport { applied: 4, replayed: 0, encoded_bytes: 952 }, work: Work { added_members: 0, removed_members: 0, retained_members: 0, refreshes: 0, claim_changes: 4 } }; commit 3; more=false\n"
+      },
+      {
+        "command": "target/release/ipdon-regional replicate target/ipdon-enhancements-journey-10pKnI/source target/ipdon-enhancements-journey-10pKnI/replica 1",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "verified ApplyReport { journal: ApplyReport { applied: 0, replayed: 0, encoded_bytes: 0 }, work: Work { added_members: 0, removed_members: 0, retained_members: 0, refreshes: 0, claim_changes: 0 } }; commit 3; more=false\n"
+      },
+      {
+        "command": "target/release/ipdon-regional candidates target/ipdon-enhancements-journey-10pKnI/replica 1700000070 192.0.2.1 1",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "value=NL prefix=192.0.2.0/24 source=8 generation=1 priority=100 expires=1700086400 policy=1\nscanned=1 complete=true resumable=false\n"
+      },
+      {
+        "command": "target/release/ipdon-regional candidates target/ipdon-enhancements-journey-10pKnI/replica 1700000070 192.0.2.1 3",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "value=false prefix=192.0.2.1/32 source=8 generation=1 priority=50 expires=1700086400 policy=1\nscanned=1 complete=true resumable=false\n"
+      },
+      {
+        "command": "target/release/ipdon-regional candidates target/ipdon-enhancements-journey-10pKnI/replica 1700000070 192.0.2.1 99",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "scanned=0 complete=true resumable=false\n"
+      },
+      {
+        "command": "target/release/ipdon-regional checkpoint target/ipdon-enhancements-journey-10pKnI/replica 1 2",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "realm=314879266638 baseline=None OriginCheckpoint { origin: 1, sequence: 2, digest: [113, 237, 196, 22, 182, 163, 1, 29, 249, 247, 164, 19, 171, 53, 14, 240, 70, 11, 60, 46, 210, 148, 165, 239, 106, 229, 124, 117, 82, 152, 192, 110] }\n"
+      },
+      {
+        "command": "target/release/ipdon-regional baseline target/ipdon-enhancements-journey-10pKnI/source target/ipdon-enhancements-journey-10pKnI/baseline-a 12345 1793914000",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "verified baseline candidate target/ipdon-enhancements-journey-10pKnI/baseline-a; realm=12345; baseline=[84, 51, 78, 208, 37, 191, 71, 30, 241, 85, 63, 108, 37, 176, 19, 115, 100, 248, 151, 231, 235, 14, 144, 187, 176, 29, 124, 71, 190, 135, 111, 132]; source directory preserved\n"
+      },
+      {
+        "command": "target/release/ipdon-regional baseline target/ipdon-enhancements-journey-10pKnI/source target/ipdon-enhancements-journey-10pKnI/baseline-b 12345 1793914000",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "verified baseline candidate target/ipdon-enhancements-journey-10pKnI/baseline-b; realm=12345; baseline=[84, 51, 78, 208, 37, 191, 71, 30, 241, 85, 63, 108, 37, 176, 19, 115, 100, 248, 151, 231, 235, 14, 144, 187, 176, 29, 124, 71, 190, 135, 111, 132]; source directory preserved\n"
+      },
+      {
+        "command": "target/release/ipdon-regional replicate target/ipdon-enhancements-journey-10pKnI/baseline-a target/ipdon-enhancements-journey-10pKnI/baseline-b 1",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "verified ApplyReport { journal: ApplyReport { applied: 0, replayed: 0, encoded_bytes: 0 }, work: Work { added_members: 0, removed_members: 0, retained_members: 0, refreshes: 0, claim_changes: 0 } }; commit 3; more=false\n"
+      },
+      {
+        "command": "target/release/ipdon-regional replicate target/ipdon-enhancements-journey-10pKnI/source target/ipdon-enhancements-journey-10pKnI/baseline-a 1",
+        "expected_exit_code": 1,
+        "exit_code": 1,
+        "output": "foreign journal realm 00000000000000000000004950444f4e; expected 00000000000000000000000000003039\n"
+      },
+      {
+        "command": "target/release/ipdon-regional checkpoint target/ipdon-enhancements-journey-10pKnI/baseline-a 1 0",
+        "expected_exit_code": 1,
+        "exit_code": 1,
+        "output": "origin 1 cursor 0 precedes retained floor 2; snapshot required\n"
+      },
+      {
+        "command": "target/release/ipdon-regional snapshot target/ipdon-enhancements-journey-10pKnI/baseline-a target/ipdon-enhancements-journey-10pKnI/baseline-bundle",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "snapshot [91, 204, 133, 246, 207, 182, 137, 36, 119, 101, 190, 62, 160, 68, 5, 14, 89, 24, 158, 198, 2, 17, 137, 86, 239, 168, 98, 95, 40, 61, 80, 0]; watermarks {1: Cursor { applied: 2, serving: 2, floor: 2 }, 2: Cursor { applied: 4, serving: 4, floor: 4 }}\n"
+      },
+      {
+        "command": "target/release/ipdon-regional restore target/ipdon-enhancements-journey-10pKnI/baseline-bundle target/ipdon-enhancements-journey-10pKnI/restored",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "restored commit 300631680364611865070599030580514825489 {1: Cursor { applied: 2, serving: 2, floor: 2 }, 2: Cursor { applied: 4, serving: 4, floor: 4 }}\n"
+      },
+      {
+        "command": "target/release/ipdon-regional candidates target/ipdon-enhancements-journey-10pKnI/restored 1700000070 192.0.2.1 1",
+        "expected_exit_code": 0,
+        "exit_code": 0,
+        "output": "value=NL prefix=192.0.2.0/24 source=8 generation=1 priority=100 expires=1700086400 policy=1\nscanned=1 complete=true resumable=false\n"
+      },
+      {
+        "command": "target/release/ipdon-regional init target/ipdon-enhancements-journey-10pKnI/invalid-zero-realm 0 1",
+        "expected_exit_code": 1,
+        "exit_code": 1,
+        "output": "invalid input: realm and policy must be nonzero\n"
+      }
+    ]
+  }
+}

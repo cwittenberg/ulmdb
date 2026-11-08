@@ -1,0 +1,1022 @@
+{
+  "profile": "predeclared-original-full-journey-tmpfs-tail-confirmation",
+  "schema": 1,
+  "status": "draft-awaiting-root-review-not-measured",
+  "root_product_edits": false,
+  "inputs": {
+    "original_receipt": {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-m3-f03-vs-f02-final/receipt.json",
+      "sha256": "31a6ca039ed65f2bd79baa99908f142071cb5105c877b3b1171fdb9fd129b169"
+    },
+    "focused_wrapper": {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-tail-review/receipt.json",
+      "sha256": "d32d168d5b839e33225bb1fe3270889ba02a228470791bd26d84ba00b9153fe9"
+    },
+    "focused_candidate": {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-tail-review/candidate/receipt.json",
+      "sha256": "2d5a336d95c49bd2962ab7643fd95e794c4c1794bc1e6caae9411e9eaa7048d5"
+    },
+    "focused_identical": {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-tail-review/identical-baseline/receipt.json",
+      "sha256": "1e0e0036d30532a68c0b1722ceae3da0fc1dbff32b4c9ebd9350923fb31a6e00"
+    },
+    "executable": {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-m3-f03-vs-f02-final/journey",
+      "sha256": "372e94f61fd9bd114ebad842da21cdb49308f6ce72c8ac9815ef1169b71d3c7f"
+    },
+    "baseline": {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-baseline-f02/liblmdb.so.0",
+      "sha256": "1bc6751904f62652765610a5806831eb79369641b66767e730f439881460907a"
+    },
+    "candidate": {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-root-rollback-final-replay/provider/liblmdb.so.0",
+      "sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9"
+    },
+    "source": {
+      "path": "/mnt/data3/ipdon/ulmdb/clients/lmdb-ulmdb/qualification/performance_journey.c",
+      "sha256": "2e8c51bb5d595e9d3f6960d69846f9508f385831a9e605b503c376df5c5a0a5c"
+    },
+    "monitor": {
+      "path": "/mnt/data3/ipdon/ulmdb/clients/lmdb-ulmdb/qualification/compare_performance.py",
+      "sha256": "66c9878e7b18c4f2498b23fd0292cb826ab1865cd139f43e78bfc73e1b409000"
+    }
+  },
+  "configuration": {
+    "keys": 256,
+    "batched_reads": 4096,
+    "single_reads": 32,
+    "write_transactions": 32,
+    "reopens": 4,
+    "timeout": 180
+  },
+  "mount": "/dev/shm; exact tmpfs required, no ramfs fallback",
+  "candidate_pairs": 30,
+  "identical_baseline_pairs": 30,
+  "processes": 120,
+  "schedule": [
+    {
+      "ordinal": 1,
+      "block": 1,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "01-candidate-baseline"
+    },
+    {
+      "ordinal": 2,
+      "block": 1,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "01-candidate-candidate"
+    },
+    {
+      "ordinal": 3,
+      "block": 1,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "01-identical-baseline"
+    },
+    {
+      "ordinal": 4,
+      "block": 1,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "01-identical-candidate"
+    },
+    {
+      "ordinal": 5,
+      "block": 2,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "02-identical-baseline"
+    },
+    {
+      "ordinal": 6,
+      "block": 2,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "02-identical-candidate"
+    },
+    {
+      "ordinal": 7,
+      "block": 2,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "02-candidate-baseline"
+    },
+    {
+      "ordinal": 8,
+      "block": 2,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "02-candidate-candidate"
+    },
+    {
+      "ordinal": 9,
+      "block": 3,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "03-candidate-candidate"
+    },
+    {
+      "ordinal": 10,
+      "block": 3,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "03-candidate-baseline"
+    },
+    {
+      "ordinal": 11,
+      "block": 3,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "03-identical-candidate"
+    },
+    {
+      "ordinal": 12,
+      "block": 3,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "03-identical-baseline"
+    },
+    {
+      "ordinal": 13,
+      "block": 4,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "04-identical-candidate"
+    },
+    {
+      "ordinal": 14,
+      "block": 4,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "04-identical-baseline"
+    },
+    {
+      "ordinal": 15,
+      "block": 4,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "04-candidate-candidate"
+    },
+    {
+      "ordinal": 16,
+      "block": 4,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "04-candidate-baseline"
+    },
+    {
+      "ordinal": 17,
+      "block": 5,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "05-candidate-baseline"
+    },
+    {
+      "ordinal": 18,
+      "block": 5,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "05-candidate-candidate"
+    },
+    {
+      "ordinal": 19,
+      "block": 5,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "05-identical-baseline"
+    },
+    {
+      "ordinal": 20,
+      "block": 5,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "05-identical-candidate"
+    },
+    {
+      "ordinal": 21,
+      "block": 6,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "06-identical-baseline"
+    },
+    {
+      "ordinal": 22,
+      "block": 6,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "06-identical-candidate"
+    },
+    {
+      "ordinal": 23,
+      "block": 6,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "06-candidate-baseline"
+    },
+    {
+      "ordinal": 24,
+      "block": 6,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "06-candidate-candidate"
+    },
+    {
+      "ordinal": 25,
+      "block": 7,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "07-candidate-candidate"
+    },
+    {
+      "ordinal": 26,
+      "block": 7,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "07-candidate-baseline"
+    },
+    {
+      "ordinal": 27,
+      "block": 7,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "07-identical-candidate"
+    },
+    {
+      "ordinal": 28,
+      "block": 7,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "07-identical-baseline"
+    },
+    {
+      "ordinal": 29,
+      "block": 8,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "08-identical-candidate"
+    },
+    {
+      "ordinal": 30,
+      "block": 8,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "08-identical-baseline"
+    },
+    {
+      "ordinal": 31,
+      "block": 8,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "08-candidate-candidate"
+    },
+    {
+      "ordinal": 32,
+      "block": 8,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "08-candidate-baseline"
+    },
+    {
+      "ordinal": 33,
+      "block": 9,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "09-candidate-baseline"
+    },
+    {
+      "ordinal": 34,
+      "block": 9,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "09-candidate-candidate"
+    },
+    {
+      "ordinal": 35,
+      "block": 9,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "09-identical-baseline"
+    },
+    {
+      "ordinal": 36,
+      "block": 9,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "09-identical-candidate"
+    },
+    {
+      "ordinal": 37,
+      "block": 10,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "10-identical-baseline"
+    },
+    {
+      "ordinal": 38,
+      "block": 10,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "10-identical-candidate"
+    },
+    {
+      "ordinal": 39,
+      "block": 10,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "10-candidate-baseline"
+    },
+    {
+      "ordinal": 40,
+      "block": 10,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "10-candidate-candidate"
+    },
+    {
+      "ordinal": 41,
+      "block": 11,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "11-candidate-candidate"
+    },
+    {
+      "ordinal": 42,
+      "block": 11,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "11-candidate-baseline"
+    },
+    {
+      "ordinal": 43,
+      "block": 11,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "11-identical-candidate"
+    },
+    {
+      "ordinal": 44,
+      "block": 11,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "11-identical-baseline"
+    },
+    {
+      "ordinal": 45,
+      "block": 12,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "12-identical-candidate"
+    },
+    {
+      "ordinal": 46,
+      "block": 12,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "12-identical-baseline"
+    },
+    {
+      "ordinal": 47,
+      "block": 12,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "12-candidate-candidate"
+    },
+    {
+      "ordinal": 48,
+      "block": 12,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "12-candidate-baseline"
+    },
+    {
+      "ordinal": 49,
+      "block": 13,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "13-candidate-baseline"
+    },
+    {
+      "ordinal": 50,
+      "block": 13,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "13-candidate-candidate"
+    },
+    {
+      "ordinal": 51,
+      "block": 13,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "13-identical-baseline"
+    },
+    {
+      "ordinal": 52,
+      "block": 13,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "13-identical-candidate"
+    },
+    {
+      "ordinal": 53,
+      "block": 14,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "14-identical-baseline"
+    },
+    {
+      "ordinal": 54,
+      "block": 14,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "14-identical-candidate"
+    },
+    {
+      "ordinal": 55,
+      "block": 14,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "14-candidate-baseline"
+    },
+    {
+      "ordinal": 56,
+      "block": 14,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "14-candidate-candidate"
+    },
+    {
+      "ordinal": 57,
+      "block": 15,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "15-candidate-candidate"
+    },
+    {
+      "ordinal": 58,
+      "block": 15,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "15-candidate-baseline"
+    },
+    {
+      "ordinal": 59,
+      "block": 15,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "15-identical-candidate"
+    },
+    {
+      "ordinal": 60,
+      "block": 15,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "15-identical-baseline"
+    },
+    {
+      "ordinal": 61,
+      "block": 16,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "16-identical-candidate"
+    },
+    {
+      "ordinal": 62,
+      "block": 16,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "16-identical-baseline"
+    },
+    {
+      "ordinal": 63,
+      "block": 16,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "16-candidate-candidate"
+    },
+    {
+      "ordinal": 64,
+      "block": 16,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "16-candidate-baseline"
+    },
+    {
+      "ordinal": 65,
+      "block": 17,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "17-candidate-baseline"
+    },
+    {
+      "ordinal": 66,
+      "block": 17,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "17-candidate-candidate"
+    },
+    {
+      "ordinal": 67,
+      "block": 17,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "17-identical-baseline"
+    },
+    {
+      "ordinal": 68,
+      "block": 17,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "17-identical-candidate"
+    },
+    {
+      "ordinal": 69,
+      "block": 18,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "18-identical-baseline"
+    },
+    {
+      "ordinal": 70,
+      "block": 18,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "18-identical-candidate"
+    },
+    {
+      "ordinal": 71,
+      "block": 18,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "18-candidate-baseline"
+    },
+    {
+      "ordinal": 72,
+      "block": 18,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "18-candidate-candidate"
+    },
+    {
+      "ordinal": 73,
+      "block": 19,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "19-candidate-candidate"
+    },
+    {
+      "ordinal": 74,
+      "block": 19,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "19-candidate-baseline"
+    },
+    {
+      "ordinal": 75,
+      "block": 19,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "19-identical-candidate"
+    },
+    {
+      "ordinal": 76,
+      "block": 19,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "19-identical-baseline"
+    },
+    {
+      "ordinal": 77,
+      "block": 20,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "20-identical-candidate"
+    },
+    {
+      "ordinal": 78,
+      "block": 20,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "20-identical-baseline"
+    },
+    {
+      "ordinal": 79,
+      "block": 20,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "20-candidate-candidate"
+    },
+    {
+      "ordinal": 80,
+      "block": 20,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "20-candidate-baseline"
+    },
+    {
+      "ordinal": 81,
+      "block": 21,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "21-candidate-baseline"
+    },
+    {
+      "ordinal": 82,
+      "block": 21,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "21-candidate-candidate"
+    },
+    {
+      "ordinal": 83,
+      "block": 21,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "21-identical-baseline"
+    },
+    {
+      "ordinal": 84,
+      "block": 21,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "21-identical-candidate"
+    },
+    {
+      "ordinal": 85,
+      "block": 22,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "22-identical-baseline"
+    },
+    {
+      "ordinal": 86,
+      "block": 22,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "22-identical-candidate"
+    },
+    {
+      "ordinal": 87,
+      "block": 22,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "22-candidate-baseline"
+    },
+    {
+      "ordinal": 88,
+      "block": 22,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "22-candidate-candidate"
+    },
+    {
+      "ordinal": 89,
+      "block": 23,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "23-candidate-candidate"
+    },
+    {
+      "ordinal": 90,
+      "block": 23,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "23-candidate-baseline"
+    },
+    {
+      "ordinal": 91,
+      "block": 23,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "23-identical-candidate"
+    },
+    {
+      "ordinal": 92,
+      "block": 23,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "23-identical-baseline"
+    },
+    {
+      "ordinal": 93,
+      "block": 24,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "24-identical-candidate"
+    },
+    {
+      "ordinal": 94,
+      "block": 24,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "24-identical-baseline"
+    },
+    {
+      "ordinal": 95,
+      "block": 24,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "24-candidate-candidate"
+    },
+    {
+      "ordinal": 96,
+      "block": 24,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "24-candidate-baseline"
+    },
+    {
+      "ordinal": 97,
+      "block": 25,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "25-candidate-baseline"
+    },
+    {
+      "ordinal": 98,
+      "block": 25,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "25-candidate-candidate"
+    },
+    {
+      "ordinal": 99,
+      "block": 25,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "25-identical-baseline"
+    },
+    {
+      "ordinal": 100,
+      "block": 25,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "25-identical-candidate"
+    },
+    {
+      "ordinal": 101,
+      "block": 26,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "26-identical-baseline"
+    },
+    {
+      "ordinal": 102,
+      "block": 26,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "26-identical-candidate"
+    },
+    {
+      "ordinal": 103,
+      "block": 26,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "26-candidate-baseline"
+    },
+    {
+      "ordinal": 104,
+      "block": 26,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "26-candidate-candidate"
+    },
+    {
+      "ordinal": 105,
+      "block": 27,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "27-candidate-candidate"
+    },
+    {
+      "ordinal": 106,
+      "block": 27,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "27-candidate-baseline"
+    },
+    {
+      "ordinal": 107,
+      "block": 27,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "27-identical-candidate"
+    },
+    {
+      "ordinal": 108,
+      "block": 27,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "27-identical-baseline"
+    },
+    {
+      "ordinal": 109,
+      "block": 28,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "28-identical-candidate"
+    },
+    {
+      "ordinal": 110,
+      "block": 28,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "28-identical-baseline"
+    },
+    {
+      "ordinal": 111,
+      "block": 28,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "28-candidate-candidate"
+    },
+    {
+      "ordinal": 112,
+      "block": 28,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "28-candidate-baseline"
+    },
+    {
+      "ordinal": 113,
+      "block": 29,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "29-candidate-baseline"
+    },
+    {
+      "ordinal": 114,
+      "block": 29,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "29-candidate-candidate"
+    },
+    {
+      "ordinal": 115,
+      "block": 29,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "29-identical-baseline"
+    },
+    {
+      "ordinal": 116,
+      "block": 29,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "29-identical-candidate"
+    },
+    {
+      "ordinal": 117,
+      "block": 30,
+      "series": "identical",
+      "arm": "candidate",
+      "artifact": "baseline",
+      "database_name": "30-identical-candidate"
+    },
+    {
+      "ordinal": 118,
+      "block": 30,
+      "series": "identical",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "30-identical-baseline"
+    },
+    {
+      "ordinal": 119,
+      "block": 30,
+      "series": "candidate",
+      "arm": "candidate",
+      "artifact": "candidate",
+      "database_name": "30-candidate-candidate"
+    },
+    {
+      "ordinal": 120,
+      "block": 30,
+      "series": "candidate",
+      "arm": "baseline",
+      "artifact": "baseline",
+      "database_name": "30-candidate-baseline"
+    }
+  ],
+  "bootstrap_seed": 918647203,
+  "bootstrap_resamples": 100000,
+  "moving_block_length_pairs": 3,
+  "target_mean_ratio_percent": 10.0
+}

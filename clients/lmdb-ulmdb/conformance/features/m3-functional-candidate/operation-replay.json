@@ -1,0 +1,310 @@
+{
+  "profile": "exact-integrated-Root-F03-operation-replay",
+  "complete": true,
+  "passed": true,
+  "root_modified": false,
+  "code_changes": false,
+  "provider_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+  "source_provider_workload_checked": true,
+  "source_unchanged": true,
+  "frozen_provider_mode": "0o444",
+  "root_gate_receipt": "target/qualification/runs/m3-f02-f03-final-v1/receipt.json",
+  "root_gate_passed": true,
+  "ordinary_scaling": [
+    {
+      "records_per_database": 256,
+      "business_records": 512,
+      "Root_rollback_median_ms": 7.360166,
+      "reference_rollback_median_ms": 0.039646,
+      "Root_seed_close_median_ms": 28.080442,
+      "Root_coordinated_reopen_median_ms": 7.306803,
+      "Root_A_get_check_median_ms": 12.933211,
+      "ROI_observed_RSS_kib": [
+        9988,
+        9988,
+        9988
+      ],
+      "ROI_observed_FDs": [
+        19,
+        19,
+        19
+      ],
+      "R_DONE_proc_VmHWM_kib": [
+        9852,
+        9852,
+        9852
+      ],
+      "raw_ru_maxrss_kib": [
+        65536,
+        65536,
+        65536
+      ],
+      "no_copy_witness_new_root_bytes": 256,
+      "no_copy_witness_new_segments": 0
+    },
+    {
+      "records_per_database": 4096,
+      "business_records": 8192,
+      "Root_rollback_median_ms": 51.04409,
+      "reference_rollback_median_ms": 0.041269,
+      "Root_seed_close_median_ms": 383.050846,
+      "Root_coordinated_reopen_median_ms": 109.242645,
+      "Root_A_get_check_median_ms": 218.89012,
+      "ROI_observed_RSS_kib": [
+        11172,
+        11172,
+        11172
+      ],
+      "ROI_observed_FDs": [
+        19,
+        19,
+        19
+      ],
+      "R_DONE_proc_VmHWM_kib": [
+        10240,
+        10240,
+        10240
+      ],
+      "raw_ru_maxrss_kib": [
+        65536,
+        65536,
+        65536
+      ],
+      "no_copy_witness_new_root_bytes": 256,
+      "no_copy_witness_new_segments": 0
+    },
+    {
+      "records_per_database": 65536,
+      "business_records": 131072,
+      "Root_rollback_median_ms": 731.859371,
+      "reference_rollback_median_ms": 0.028634,
+      "Root_seed_close_median_ms": 6891.465777,
+      "Root_coordinated_reopen_median_ms": 2081.265498,
+      "Root_A_get_check_median_ms": 4369.946457,
+      "ROI_observed_RSS_kib": [
+        30400,
+        30396,
+        30400
+      ],
+      "ROI_observed_FDs": [
+        19,
+        19,
+        19
+      ],
+      "R_DONE_proc_VmHWM_kib": [
+        29260,
+        28672,
+        27648
+      ],
+      "raw_ru_maxrss_kib": [
+        65536,
+        65536,
+        83384
+      ],
+      "no_copy_witness_new_root_bytes": 256,
+      "no_copy_witness_new_segments": 0
+    }
+  ],
+  "ordinary_three_pairs_per_size": true,
+  "prepared_witnesses_three_reference_and_three_Root": true,
+  "reader_setup_controls": [
+    {
+      "threads": 1,
+      "mode": "begin",
+      "F02": {
+        "operations_per_second": 515.519,
+        "latency_p50_ns": 1924469,
+        "latency_p95_ns": 1970246,
+        "latency_p99_ns": 2103510,
+        "latency_max_ns": 2187039,
+        "throughput_range": [
+          481.32,
+          519.847
+        ]
+      },
+      "F03": {
+        "operations_per_second": 521.121,
+        "latency_p50_ns": 1915672,
+        "latency_p95_ns": 1955589,
+        "latency_p99_ns": 1975186,
+        "latency_max_ns": 2123929,
+        "throughput_range": [
+          497.203,
+          525.464
+        ]
+      },
+      "F03_to_F02_throughput_ratio": 1.010866718782431
+    },
+    {
+      "threads": 1,
+      "mode": "renew",
+      "F02": {
+        "operations_per_second": 520.16,
+        "latency_p50_ns": 1911214,
+        "latency_p95_ns": 1940630,
+        "latency_p99_ns": 1953053,
+        "latency_max_ns": 2013508,
+        "throughput_range": [
+          518.632,
+          520.665
+        ]
+      },
+      "F03": {
+        "operations_per_second": 519.582,
+        "latency_p50_ns": 1909461,
+        "latency_p95_ns": 1958504,
+        "latency_p99_ns": 1971699,
+        "latency_max_ns": 2004241,
+        "throughput_range": [
+          502.336,
+          520.966
+        ]
+      },
+      "F03_to_F02_throughput_ratio": 0.9988888034450939
+    },
+    {
+      "threads": 4,
+      "mode": "begin",
+      "F02": {
+        "operations_per_second": 1440.319,
+        "latency_p50_ns": 1954507,
+        "latency_p95_ns": 5010477,
+        "latency_p99_ns": 7164112,
+        "latency_max_ns": 8097547,
+        "throughput_range": [
+          1304.226,
+          1506.446
+        ]
+      },
+      "F03": {
+        "operations_per_second": 1458.431,
+        "latency_p50_ns": 1938136,
+        "latency_p95_ns": 5038010,
+        "latency_p99_ns": 7718286,
+        "latency_max_ns": 8742373,
+        "throughput_range": [
+          1372.114,
+          1513.822
+        ]
+      },
+      "F03_to_F02_throughput_ratio": 1.0125749920677296
+    },
+    {
+      "threads": 4,
+      "mode": "renew",
+      "F02": {
+        "operations_per_second": 1387.855,
+        "latency_p50_ns": 1930271,
+        "latency_p95_ns": 4944652,
+        "latency_p99_ns": 5972396,
+        "latency_max_ns": 8008738,
+        "throughput_range": [
+          1341.151,
+          1479.07
+        ]
+      },
+      "F03": {
+        "operations_per_second": 1484.489,
+        "latency_p50_ns": 1932405,
+        "latency_p95_ns": 4960943,
+        "latency_p99_ns": 7874022,
+        "latency_max_ns": 8764375,
+        "throughput_range": [
+          1373.383,
+          1542.078
+        ]
+      },
+      "F03_to_F02_throughput_ratio": 1.069628311314943
+    }
+  ],
+  "reader_setup_budget_passed": true,
+  "reader_control_scope": "Admission begin/renew only; does not erase or accept separate hot-query p99 tail review",
+  "artifacts": [
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/INPUTS.json",
+      "sha256": "35d23cf7bf191cd06c6b3c520f370efb8e030f5fd83fb36719bf4fb322ca13bd",
+      "bytes": 55887
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/provider/liblmdb.so.0",
+      "sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+      "bytes": 48551760
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/apps/rollback_scaling",
+      "sha256": "aaf62b2c66552b7a64768331e1aa4e065beb443441ca8a2b4045f0c0b5ec5ed9",
+      "bytes": 21520
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/apps/readers_bench",
+      "sha256": "9fd0fa726860c4032fff62aba0da67118c882fc102c867378924649058551161",
+      "bytes": 21816
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/ordinary-three-pairs/receipt.json",
+      "sha256": "c8ba5b84a0d42b323c9f200ea77ddb0797ebfeeb9f88212413da5fbb4765b84a",
+      "bytes": 124329
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/prepared-proofs/receipt.json",
+      "sha256": "2a88a8a49a16f044e656dd54677fbdd3a32cbe228a57d8e77b3dc88e56c2aa32",
+      "bytes": 41401
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/reader-controls/receipt.json",
+      "sha256": "483fa2e315d413766b51a7decfe7afb4ee1228cfa875ab19504de451f7b4cfaf",
+      "bytes": 34104
+    },
+    {
+      "path": "target/qualification/runs/m3-f02-f03-final-v1/receipt.json",
+      "sha256": "91a330f14af1a66b59ec9dd5443bcdcbfd77ec09c10b5088d870685766196fb2",
+      "bytes": 90988
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/finalize.py",
+      "sha256": "e4601a9e4715e25d4886c2210518c953b027578ee80f9f20d5067db8f3836b3f",
+      "bytes": 5397
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/prepare.py",
+      "sha256": "f1becb9f956daeb797f184ba46567d3fad57fb38fc8bb523596a85a47d404e6b",
+      "bytes": 2396
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/reader_controls.py",
+      "sha256": "e62b966541f60fa599ff0db7931b13d06a8a7ea7a7c335af0490691f7493e52a",
+      "bytes": 3641
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/scale.py",
+      "sha256": "b9d30240de0b130ab19a3756d49e25b9786b8c94ed149d723a5c2eeab19f924d",
+      "bytes": 8660
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/stage_proofs.py",
+      "sha256": "fc3d7efd7783ad523bf6de4793ca9ba00816f516a1e6053c36ca7470906478eb",
+      "bytes": 2207
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/staged_run.py",
+      "sha256": "85872e48e0e77b973aed25956e51573ec5913a89d3b45cc5bcf16987fc1e8589",
+      "bytes": 3628
+    },
+    {
+      "path": "target/qualification/m3-root-rollback-final-replay/verify_inputs.py",
+      "sha256": "eae30c291efab3d41d1434e639f418b769c233a1a6eb236b35c3706129171beb",
+      "bytes": 784
+    }
+  ],
+  "limits": [
+    "Linux default Legacy adapter scope; no inheritance of these operation timings/no-copy byte counts to Cohort,Indexed,Range",
+    "Frozen default debug Rust package vs pinned O2 LMDB; no O(1) or speed-parity claim",
+    "Remaining byte authentication and ordinary setup cost remain explicit",
+    "Creation/coordinated-load/full-check times separate from rollback; source-data files read/hashed before final commit, no cold-disk claim",
+    "Every known value and complete checksum checked after rollback and durable reopen; MAIN opaque named catalog row excluded from2N business-row denominator",
+    "Prepared-B sealing witness is separate from ordinary nonprepared B timing",
+    "RSS and /proc high-water/FD samples are approximate and may miss peaks; raw ru_maxrss includes launcher/executable high-water history",
+    "File-tree byte/block counts exclude open-unlinked objects/filesystem metadata; pin lease churn is separated",
+    "Root ordinary hot-query repeated-tail review remains explicit in its own retained reports"
+  ]
+}

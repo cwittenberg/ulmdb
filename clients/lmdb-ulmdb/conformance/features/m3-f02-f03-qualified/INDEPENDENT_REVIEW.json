@@ -1,0 +1,182 @@
+{
+  "profile": "independent-F02-F03-promotion-readiness-review",
+  "reviewer": "adapter_audit",
+  "reviewed_utc": "2026-11-05T23:24:49.672085+00:00",
+  "read_only_product_review": true,
+  "decision": "ready_for_narrow_feature_supported_promotion",
+  "blockers": [],
+  "scope": "Exact 9e6434b3 Linux Legacy C adapter against pinned LMDB1.0.2, with modern environment ABI explicitly selected; not full M3/native/backend/platform/performance parity.",
+  "candidate_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+  "inspected_inputs": {
+    "LMDB_PARITY_PLAN.md": "5f52f7621d4cd2b226cd7c9b0f5b3fdb951835a8292fb89c3baaee7f232fa447",
+    "clients/lmdb-ulmdb/features/M3_IMPLEMENTATION.md": "794b47ae874f1889bfacfa103c586447abd12086ac1266051231e77a9e245dbf",
+    "PERFORMANCE_PLAN.md": "883851c8dafb8805f2a55650b51272f91dc08ec37be00fd9cea59acf2624abc1",
+    "target/qualification/runs/m3-f02-f03-final-v1/receipt.json": "91a330f14af1a66b59ec9dd5443bcdcbfd77ec09c10b5088d870685766196fb2",
+    "target/qualification/m3-root-rollback-final-replay/HANDOFF.json": "bf85ad10371b0695204904eb2c4ec042c082be4d485473e76fc212824f69aa43",
+    "target/qualification/performance-m3-f02-vs-qualified/BUDGET_ASSESSMENT.json": "29356289faea07d0d645a453f6437c4833ee1b7fe256e52037d793e79f6d2363",
+    "target/qualification/performance-m3-f03-vs-f02-final/BUDGET_ASSESSMENT.json": "f98db724c45a6d00ad772b17836ab66a7132948a40197aac24a0208ec309b7f8",
+    "target/qualification/m3-qualified-baseline-062f/input.json": "901349706219a76f618df103ff47e2f8f21e05eca95f7b708ff18f6183ee6882",
+    "target/qualification/m3-f03-baseline-f02/input.json": "fa6a4086b1b0b67df7de8f918b9c8b5a9e7a856ef40c516f5812a0751ab574ab",
+    "target/qualification/m3-f03-full-tail-confirmation/PROTOCOL.json": "a74a47b17d6bf65254afd22369475d0a1eabc561e6bd42ead1c7d17b0e60491f",
+    "target/qualification/m3-f03-full-tail-confirmation/PROTOCOL.md": "1ae80ff59a006802b93eac1c509ce2040dd0952aa084e0f564f29b5953ae704d",
+    "target/qualification/m3-f03-full-tail-confirmation/PROTOCOL_FREEZE.json": "b21e4140653ce4428dc4e5b4d4077a1d2a2ae5067f61be5e96d8dddaf1bc2db9",
+    "target/qualification/m3-f03-full-tail-confirmation/ANALYSIS.json": "b3c7180b38672b6811260f6c0f6240cc965916631728e352831ce83a1abc53e9",
+    "target/qualification/m3-f03-full-tail-confirmation/ROOT_REVIEW.json": "f81c84f5e4523f3d6483b1ffd040b10780e7e491ce9f7eabac9ea4ec452b5732",
+    "target/qualification/m3-f03-full-tail-confirmation/EVIDENCE.json": "aaad95523d004ce8d289a9970cb804c5d72bb68b1eca8b3965e0a5509bc0f56f"
+  },
+  "functional": {
+    "gate_complete": true,
+    "gate_passed": true,
+    "stages": [
+      {
+        "name": "workspace",
+        "exit_code": 0
+      },
+      {
+        "name": "native-lifecycle-faults",
+        "exit_code": 0
+      },
+      {
+        "name": "c-lifecycle-faults",
+        "exit_code": 0
+      },
+      {
+        "name": "clients",
+        "exit_code": 0
+      },
+      {
+        "name": "native-runner-controls",
+        "exit_code": 0
+      },
+      {
+        "name": "native-file-coordination",
+        "exit_code": 0
+      },
+      {
+        "name": "common-v1",
+        "exit_code": 0
+      },
+      {
+        "name": "features-v2",
+        "exit_code": 0
+      },
+      {
+        "name": "feature-matrix-render",
+        "exit_code": 0
+      },
+      {
+        "name": "feature-matrix-check",
+        "exit_code": 0
+      },
+      {
+        "name": "feature-matrix-controls",
+        "exit_code": 0
+      },
+      {
+        "name": "public-python-compatibility",
+        "exit_code": 0
+      },
+      {
+        "name": "negative-controls",
+        "exit_code": 0
+      },
+      {
+        "name": "lifecycle-negative-controls",
+        "exit_code": 0
+      }
+    ],
+    "exact_differential_checks": 61,
+    "lifecycle_mutant_rejections": [
+      "missing_prepare",
+      "bogus_prepare",
+      "missing_rollback",
+      "bogus_rollback"
+    ],
+    "artifacts_independently_rehashed": {
+      "/mnt/data3/ipdon/ulmdb/target/lmdb-ulmdb/lib/liblmdb.so.0": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+      "/mnt/data3/ipdon/ulmdb/target/debug/libulmdb_c.a": "c90f04a9d2711f66780102153d5c84b054f569bc75e54dc9f4bd66350a71992d",
+      "/mnt/data3/ipdon/ulmdb/target/lmdb-ulmdb-parity": "469f9888d4a0f137d89b44de8de17c825512054b4804a00dbe9e17f84285fed6",
+      "/mnt/data3/ipdon/ulmdb/target/qualification/runs/m3-f02-f03-final-v1/common/receipt.json": "410bad90de8d26e9689e155c17638b49430f75f9d14e662af206668c216e84c9",
+      "/mnt/data3/ipdon/ulmdb/target/qualification/runs/m3-f02-f03-final-v1/features/receipt.json": "097ac2a08d36efd3f982e0eb7004489803c546b5989ec79fdbbba8f342062f79",
+      "/mnt/data3/ipdon/ulmdb/target/qualification/runs/m3-f02-f03-final-v1/negative-controls/controls.json": "546c185d3c22beab6c1d3073495b3f7bb201fa814c4aa9c2d218c08eb8e51332",
+      "/mnt/data3/ipdon/ulmdb/target/qualification/runs/m3-f02-f03-final-v1/lifecycle-negative-controls/receipt.json": "d941a349638839a15811fccee3aafde9908317950526862dcb7851dd444dfc1f",
+      "/mnt/data3/ipdon/ulmdb/target/qualification/runs/m3-f02-f03-final-v1/native-coordination/receipt.json": "9dbc37e65ee3de6421ea7379d60d52ade6d3f3fbadf046642cbc3187efdcf480"
+    },
+    "artifact_mismatches": [],
+    "recorded_source_files_independently_rehashed": 644,
+    "source_mismatches_at_review": [],
+    "source_check_timing": "Before Root metadata promotion; canonical documentation/registry publication will intentionally change metadata hashes, not the qualified provider."
+  },
+  "tail": {
+    "raw_process_p99s_independently_recomputed": 120,
+    "samples_per_process": 4096,
+    "nearest_rank_index_one_based": 4056,
+    "exact_fixed_schedule_verified": true,
+    "candidate_pairs": 30,
+    "identical_control_pairs": 30,
+    "candidate_mean_paired_percent": -2.5473873282232007,
+    "candidate_student_t_one_sided_upper 95_percent": 0.3106074189605823,
+    "candidate_conservative_upper 95_percent": 0.3106074189605823,
+    "identical_conservative_90_envelope_percent": [
+      -0.1572310732780579,
+      7.580921824896416
+    ],
+    "predeclared_margin_percent": 10,
+    "predeclared_rule_passed": true,
+    "protocol_freeze_hashes_independently_verified": 10,
+    "evidence_hashes_independently_verified": 10,
+    "retained_adverse_candidate_pairs_above10": 4,
+    "retained_adverse_control_pairs_above10": 8,
+    "claim": "Closes only the exact-artifact repeated mean paired sampled-p99 review, without removing earlier adverse campaigns/outliers or asserting universal tail equality."
+  },
+  "budgets": {
+    "F02": {
+      "budgeted_phase_means": 10,
+      "maximum_allowed_loss_percent": 5,
+      "observed_throughput_change_range_percent": [
+        1.0728687816386435,
+        15.976878269883972
+      ],
+      "passed": true
+    },
+    "F03": {
+      "budgeted_phase_means": 10,
+      "maximum_allowed_loss_percent": 5,
+      "observed_throughput_change_range_percent": [
+        -0.25005384093008676,
+        2.4563292197005517
+      ],
+      "passed": true,
+      "reader_control_throughput_ratios_1reader_begin_renew_4reader_begin_renew": [
+        1.010866718782431,
+        0.9988888034450939,
+        1.0125749920677296,
+        1.069628311314943
+      ],
+      "four_reader_p95_ratios": [
+        1.0054950855976388,
+        1.0032946706866328
+      ],
+      "reader_budget": "≥0.90 throughput, ≤1.15 p95",
+      "reader_budget_passed": true
+    },
+    "resource": "One new 256-byte R descriptor and zero data segments in exact witnesses; old A/B/data bytes/inodes/sizes retained; sampled FD/ordinary file classes unchanged. Prepared abort/drop and death orphan reclaimability exercised separately. RSS/FD sampling does not establish exact peaks.",
+    "operation_scaling": "731.859371ms at 65,536 records per each of two DBs versus reference 0.028634ms is major explicit debt. The predeclared F03 budget required reporting scaling/no-copy, not a rollback latency threshold; no operation-speed parity accepted.",
+    "startup_loading": "F02 tmpfs initial load -8.91% (all 3 pairs) and F03 adverse disk load remain unaccepted. Creation/loading were explicitly excluded before measurement and retained; they do not fail the named phase budgets or become accepted by feature promotion."
+  },
+  "required_publication_alignment": [
+    "Publish exact provider/gate/feature receipts and generated registry states together",
+    "Explicit modern environment ABI selection in F02/F03 scope; mdb_version remains the existing 0.9.31 identifier",
+    "Link frozen tail closure as superseding historical open assessments without rewriting those original captures",
+    "Keep nine absent APIs, G03/G04/G05, other backends/platforms, startup/load and operation-performance debt visible"
+  ],
+  "claims_not_approved": [
+    "Full LMDB parity",
+    "Complete M3 durability/PREVSNAPSHOT",
+    "G05 overall performance acceptance",
+    "Startup/load nonregression",
+    "Rollback O(1) or operation-speed parity",
+    "Resident/native-other-backend inheritance",
+    "Power-loss safety from process death or injected I/O"
+  ]
+}

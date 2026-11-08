@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "kind": "G14-evidence-publication-input",
+  "full_gate": {
+    "path": "clients/lmdb-ulmdb/conformance/features/qualification.json",
+    "sha256": "cdaf6a14a3605eeea17d4d7af24ca72d8694231485b003619780bbddfe174241"
+  },
+  "adapter_sha256": "062fb159d59525c06d80411a2579dadcbaec88807075ea8a0a144046792bae64",
+  "feature_receipt_sha256": "2bbeac21a573e85e4192f2a8f4d339c9cf0909d0ee1f395ef8bc87c082b2f14c",
+  "native_receipt_sha256": "bb8f663baf970efe13ddcd527f025a84a4ccdb63a9ac5c66a85db1006a000985",
+  "performance_assessment_sha256": "3f6273dadd6333bd3816a03ffaecd28e3dc931cdfca2405ed8bf06a09dc1c576",
+  "matrix_before_sha256": "36e09961615bb9205dec0941bb9bf2469b69d944fa391178696050df00983949",
+  "matrix_after_sha256": "7d577be464c5b8b74d3e680a4061c7c5d755d915b1c305a0a17fe7c341cf8122",
+  "product_sources_changed_after_gate": false,
+  "promotion_checks_pending": true
+}

@@ -1,0 +1,16 @@
+{
+  "name": "ulmdb-js",
+  "version": "0.1.0",
+  "description": "Synchronous Node.js client for ULMDB with IPv4/IPv6 prefix indexes",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": ["index.js", "index.d.ts", "native.c", "scripts/build.js", "examples", "test", "README.md"],
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "install": "node scripts/build.js",
+    "test": "node --test test/*.test.js",
+    "example": "node examples/basic.js"
+  },
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,48 @@
+{
+  "complete": true,
+  "passed": true,
+  "decision": "close_exact_artifact_repeated_tail_review",
+  "scope": "Only the process-pair arithmetic mean sampled-p99 ratio for these exact artifacts and original full tmpfs journey; no universal p99 equality, broad tail parity or causal code claim.",
+  "files": [
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/PROTOCOL.json",
+      "sha256": "a74a47b17d6bf65254afd22369475d0a1eabc561e6bd42ead1c7d17b0e60491f"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/PROTOCOL.md",
+      "sha256": "1ae80ff59a006802b93eac1c509ce2040dd0952aa084e0f564f29b5953ae704d"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/PROTOCOL_FREEZE.json",
+      "sha256": "b21e4140653ce4428dc4e5b4d4077a1d2a2ae5067f61be5e96d8dddaf1bc2db9"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/run_confirmation.py",
+      "sha256": "507aa5c4f5254022340634e676fe79b98c3ae7d3539718b3ae2fa54274358c94"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/analyze_confirmation.py",
+      "sha256": "434ad91180a83e6cd9ff7660d23c91d4f372b2e591ef0dad164a59c080891820"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/capture/receipt.json",
+      "sha256": "e6a49bc6b1775346b669d18776c399426dbd40e77857d63baea8ba6f31322c67"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/ANALYSIS.json",
+      "sha256": "b3c7180b38672b6811260f6c0f6240cc965916631728e352831ce83a1abc53e9"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/PAIRS.csv",
+      "sha256": "bad7fec575f0a7f986d7b81c0f6f116773b79bd1da4ed4b5fc56ad2740f1b15b"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/REPORT.md",
+      "sha256": "df7ee9dc299a94ab46ab1f5e09d618a041052417cc2425ce61575efdd9f418c1"
+    },
+    {
+      "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-f03-full-tail-confirmation/runner.log",
+      "sha256": "c6d8cf466785aeb4a2f98da86c06a8142550e049ad3a2929e2cd3c94c2fea821"
+    }
+  ]
+}

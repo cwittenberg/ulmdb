@@ -1,0 +1,1388 @@
+{
+  "schema": 1,
+  "leaf_cases": [
+    {
+      "id": "m3-g14-main-fold-write-views-probe/all-frozen-scenarios",
+      "group": "m3-g14-main-fold-write-views-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-write-views-probe/write_views.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 3,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-named-probe/all-frozen-scenarios",
+      "group": "m3-g14-main-fold-named-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-named-probe/named_fold_aliases.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 2,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-probe/all-frozen-scenarios",
+      "group": "m3-g14-main-fold-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-probe/main_fold_collision.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-dual-writes-probe/lower-then-upper",
+      "group": "m3-g14-main-fold-dual-writes-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-dual-writes-probe/dual_writes.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-dual-writes-probe/upper-then-lower",
+      "group": "m3-g14-main-fold-dual-writes-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-dual-writes-probe/dual_writes.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-dual-writes-probe/child-lower-upper-release",
+      "group": "m3-g14-main-fold-dual-writes-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-dual-writes-probe/dual_writes.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "2",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-dual-writes-probe/child-lower-upper-abort",
+      "group": "m3-g14-main-fold-dual-writes-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-dual-writes-probe/dual_writes.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "3",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-clear-views-probe/dirty-upper-clean-lower",
+      "group": "m3-g14-main-fold-clear-views-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-views-probe/clear_views_v2.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-clear-views-probe/dirty-lower-clean-upper",
+      "group": "m3-g14-main-fold-clear-views-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-views-probe/clear_views_v2.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-clear-views-probe/child-dirty-abort-clean-both",
+      "group": "m3-g14-main-fold-clear-views-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-views-probe/clear_views_v2.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "2",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-clear-views-probe/child-dirty-release",
+      "group": "m3-g14-main-fold-clear-views-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-views-probe/clear_views_v2.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "3",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-clear-rearm-probe/clean-alias-rearmed-by-MAIN-row",
+      "group": "m3-g14-main-fold-clear-rearm-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-rearm-probe/clear_rearm.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-clear-recreate-probe/clean-close-recreate-with-loaded-other-alias",
+      "group": "m3-g14-main-fold-clear-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-clear-recreate-probe/clear_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-kind-recreate-probe/KV-to-DUP-upper-then-lower",
+      "group": "m3-g14-main-fold-kind-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-kind-recreate-probe/KV-to-DUP-lower-then-upper",
+      "group": "m3-g14-main-fold-kind-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-kind-recreate-probe/KV-to-DUP-upper-only",
+      "group": "m3-g14-main-fold-kind-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "2",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-kind-recreate-probe/DUP-to-KV-upper-then-lower",
+      "group": "m3-g14-main-fold-kind-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "3",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-kind-recreate-probe/DUP-to-KV-lower-then-upper",
+      "group": "m3-g14-main-fold-kind-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "4",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-kind-recreate-probe/DUP-to-KV-upper-only",
+      "group": "m3-g14-main-fold-kind-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "5",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-kind-recreate-probe/DUPFIXED8-to-DUPFIXED4-upper-then-lower",
+      "group": "m3-g14-main-fold-kind-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "6",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-kind-recreate-probe/DUPFIXED8-to-DUPFIXED4-lower-then-upper",
+      "group": "m3-g14-main-fold-kind-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "7",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "m3-g14-main-fold-kind-recreate-probe/DUPFIXED8-to-DUPFIXED4-upper-only",
+      "group": "m3-g14-main-fold-kind-recreate-probe",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-main-fold-kind-recreate-probe/kind_recreate.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "8",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "ordinary-refresh",
+      "group": "ordinary-refresh",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-refresh-probe/parity_named_refresh.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 4,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "projected-clear",
+      "group": "projected-clear",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-refresh-probe/parity_projected_clear.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 2,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "previous-shared-named",
+      "group": "previous-shared-named",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-shared-probe/parity_previous_shared_named.c",
+      "versions": [
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 2,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "previous-recreated-named",
+      "group": "previous-recreated-named",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-recreated-probe/parity_previous_recreated_named.c",
+      "versions": [
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 3,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "long-name-refresh",
+      "group": "long-name-refresh",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-g14-view-refresh-work/long-name-probe/parity_long_named_refresh.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 4,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "previous-named",
+      "group": "previous-named",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-previous-work/named-probe/parity_previous_named.c",
+      "versions": [
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 2,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "clean-retained-prune",
+      "group": "clean-retained-prune",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-combined-independent-review/retained-clean-prune/probe.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode0/compact0",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "0",
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode0/compact1",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "0",
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode1/compact0",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "1",
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode1/compact1",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "1",
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode2/compact0",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "2",
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode2/compact1",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "2",
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode3/compact0",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "3",
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode3/compact1",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "3",
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode4/compact0",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "4",
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode4/compact1",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "4",
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode5/compact0",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "5",
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode5/compact1",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "5",
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode6/compact0",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "6",
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode6/compact1",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "6",
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode7/compact0",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "7",
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode7/compact1",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "7",
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode8/compact0",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "8",
+        "0",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "copy-empty-flags/mode8/compact1",
+      "group": "copy-empty-flags",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/m3-c-logical-alias-work/copy-empty-flags-reference/copy_empty_flags.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "8",
+        "1",
+        "{database}"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match"
+    },
+    {
+      "id": "MAIN-duplicate-copy/dupsort/0",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "dupsort",
+        "0"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    },
+    {
+      "id": "MAIN-duplicate-copy/dupsort/1",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "dupsort",
+        "1"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    },
+    {
+      "id": "MAIN-duplicate-copy/fixed/0",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "fixed",
+        "0"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    },
+    {
+      "id": "MAIN-duplicate-copy/fixed/1",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "fixed",
+        "1"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    },
+    {
+      "id": "MAIN-duplicate-copy/integer/0",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "integer",
+        "0"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    },
+    {
+      "id": "MAIN-duplicate-copy/integer/1",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "integer",
+        "1"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    },
+    {
+      "id": "MAIN-duplicate-copy/reverse/0",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "reverse",
+        "0"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    },
+    {
+      "id": "MAIN-duplicate-copy/reverse/1",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "reverse",
+        "1"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    },
+    {
+      "id": "MAIN-duplicate-copy/fixed-reverse/0",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "fixed-reverse",
+        "0"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    },
+    {
+      "id": "MAIN-duplicate-copy/fixed-reverse/1",
+      "group": "copy-main-duplicates",
+      "source": "clients/lmdb-ulmdb/tests/parity_aliases/main_duplicates_copy.c",
+      "versions": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ],
+      "args": [
+        "{database}",
+        "fixed-reverse",
+        "1"
+      ],
+      "journeys": 1,
+      "outcome": "reference-trace-match",
+      "provider_stdout": true
+    }
+  ],
+  "modern_original": [
+    {
+      "name": "readonly-previous-existing-peer-seed0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "writable-previous-existing-peer-seed0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "readonly-previous-existing-peer-seed1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "writable-previous-existing-peer-seed1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "readonly-previous-existing-peer-seed2",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "writable-previous-existing-peer-seed2",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "readonly-previous-existing-peer-seed3",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "writable-previous-existing-peer-seed3",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "second-dirty-seed0-nolock0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "second-dirty-seed0-nolock1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "second-dirty-seed1-nolock0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "second-dirty-seed1-nolock1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "second-dirty-seed2-nolock0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "second-dirty-seed2-nolock1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "second-dirty-seed3-nolock0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "second-dirty-seed3-nolock1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "readonly-peer-after-first-seed0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "readonly-peer-after-first-seed1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "readonly-peer-after-first-seed2",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "retained-ex-readonly0-kill0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "retained-ex-readonly0-kill1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "retained-ex-readonly1-kill0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "retained-ex-readonly1-kill1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "last-close-reset-seed0-kill0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "lone-owner-reset-seed0-kill0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "last-close-reset-seed0-kill1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "lone-owner-reset-seed0-kill1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "last-close-reset-seed2-kill0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "lone-owner-reset-seed2-kill0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "last-close-reset-seed2-kill1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "lone-owner-reset-seed2-kill1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "last-close-reset-seed3-kill0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "lone-owner-reset-seed3-kill0",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "last-close-reset-seed3-kill1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "lone-owner-reset-seed3-kill1",
+      "group": "base",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "previous-after-rollback-seed1",
+      "group": "base",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "previous-after-rollback-seed2",
+      "group": "base",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "previous-after-rollback-seed3",
+      "group": "base",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "backup-boundary-seed0-compact0",
+      "group": "base",
+      "classification": "copy_history_dependency_not_claimed"
+    },
+    {
+      "name": "backup-boundary-seed0-compact1",
+      "group": "base",
+      "classification": "copy_history_dependency_not_claimed"
+    },
+    {
+      "name": "backup-boundary-seed1-compact0",
+      "group": "base",
+      "classification": "copy_history_dependency_not_claimed"
+    },
+    {
+      "name": "backup-boundary-seed1-compact1",
+      "group": "base",
+      "classification": "copy_history_dependency_not_claimed"
+    },
+    {
+      "name": "backup-boundary-seed3-compact0",
+      "group": "base",
+      "classification": "copy_history_dependency_not_claimed"
+    },
+    {
+      "name": "backup-boundary-seed3-compact1",
+      "group": "base",
+      "classification": "copy_history_dependency_not_claimed"
+    },
+    {
+      "name": "rollback-seed1-readonly0-nolock0",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed1-readonly0-nolock1",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed1-readonly1-nolock0",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed1-readonly1-nolock1",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed2-readonly0-nolock0",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed2-readonly0-nolock1",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed2-readonly1-nolock0",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed2-readonly1-nolock1",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed3-readonly0-nolock0",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed3-readonly0-nolock1",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed3-readonly1-nolock0",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "rollback-seed3-readonly1-nolock1",
+      "group": "followup",
+      "classification": "preserved_upstream_assertion_safe_explicit_boundary"
+    },
+    {
+      "name": "readonly-previous-normal-peer-dirty-seed0",
+      "group": "followup",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "readonly-previous-normal-peer-dirty-seed1",
+      "group": "followup",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "readonly-previous-normal-peer-dirty-seed2",
+      "group": "followup",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "readonly-previous-normal-peer-dirty-seed3",
+      "group": "followup",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed0-hold-writer-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed0-hold-writer-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed0-hold-clean-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed0-hold-clean-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed0-hold-prepare-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed0-hold-prepare-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed1-hold-writer-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed1-hold-writer-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed1-hold-clean-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed1-hold-clean-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed1-hold-prepare-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed1-hold-prepare-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed2-hold-writer-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed2-hold-writer-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed2-hold-clean-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed2-hold-clean-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed2-hold-prepare-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed2-hold-prepare-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed3-hold-writer-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed3-hold-writer-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed3-hold-clean-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed3-hold-clean-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed3-hold-prepare-commit-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    },
+    {
+      "name": "seed3-hold-prepare-abort-held",
+      "group": "active",
+      "classification": "planned_unchanged_executable_reference_replay"
+    }
+  ],
+  "modern_copy_roles": {
+    "seeds": [
+      1,
+      3
+    ],
+    "roles": [
+      "readonly-PREV",
+      "writable-PREV-before",
+      "writable-PREV-after-C1",
+      "normal-after-readonly-setter"
+    ],
+    "nolock": [
+      false,
+      true
+    ],
+    "compact": [
+      false,
+      true
+    ],
+    "raw_invalid_reference_outputs": 12
+  },
+  "classifications": {
+    "core": 63,
+    "ordinary_copy": 6,
+    "upstream_assertions": 15,
+    "raw_copy_role_bugs": 12
+  }
+}

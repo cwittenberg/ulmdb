@@ -1,0 +1,7687 @@
+{
+  "schema": 1,
+  "scope": "Frozen public-header-valid640-case durability contract; physical WRITEMAP flag API cases remain unqualified",
+  "reference_groundwork_receipt_sha256": "6de558636f52224d7787c677115d1446e6adfdd7b3a2f305a1f212e48a8dad23",
+  "cases": [
+    {
+      "version": "0.9.31",
+      "label": "full-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w0-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w0-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w0-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w0-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync+mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync+nometasync+mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "full-w1-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nosync-w1-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "nometasync-w1-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.31",
+      "label": "mapasync-w1-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w0-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w0-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w0-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w0-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync+mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync+nometasync+mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "full-w1-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nosync-w1-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "nometasync-w1-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "0.9.36",
+      "label": "mapasync-w1-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w0-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w0-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w0-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w0-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w0-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "0",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync+mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync+mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w1-idle-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "idle",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w1-sync-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "sync-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w1-sync-dirty-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "sync-dirty",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w1-readonly-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "readonly",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync+nometasync+mapasync-w1-readonly-active-txnfull-tofull-commit",
+      "arguments": [
+        "nosync+nometasync+mapasync",
+        "1",
+        "readonly-active",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-runtime-after-commit-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-runtime-before-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-before",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-runtime-after-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-runtime-after-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-runtime-after-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-commit-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "commit",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-commit-txnnometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "commit",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-commit-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "commit",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-commit-txnnosync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "commit",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-commit-txnnometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "commit",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-commit-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "commit",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-commit-txnnosync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "commit",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-commit-txnnometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "commit",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-commit-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "commit",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-commit-txnnosync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "commit",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-commit-txnnometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "commit",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-commit-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "commit",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-prepare-txnfull-tofull-abort",
+      "arguments": [
+        "full",
+        "0",
+        "prepare",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-prepare-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "prepare",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-prepare-txnnosync-tofull-abort",
+      "arguments": [
+        "full",
+        "0",
+        "prepare",
+        "nosync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-prepare-txnnometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "prepare",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-prepare-txnnometasync-tofull-abort",
+      "arguments": [
+        "full",
+        "0",
+        "prepare",
+        "nometasync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-prepare-txnfull-tofull-abort",
+      "arguments": [
+        "nosync",
+        "0",
+        "prepare",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-prepare-txnnosync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "prepare",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-prepare-txnnosync-tofull-abort",
+      "arguments": [
+        "nosync",
+        "0",
+        "prepare",
+        "nosync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-prepare-txnnometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "prepare",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-prepare-txnnometasync-tofull-abort",
+      "arguments": [
+        "nosync",
+        "0",
+        "prepare",
+        "nometasync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-prepare-txnfull-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "0",
+        "prepare",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-prepare-txnnosync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "prepare",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-prepare-txnnosync-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "0",
+        "prepare",
+        "nosync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-prepare-txnnometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "prepare",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-prepare-txnnometasync-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "0",
+        "prepare",
+        "nometasync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-prepare-txnfull-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "0",
+        "prepare",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-prepare-txnnosync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "prepare",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-prepare-txnnosync-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "0",
+        "prepare",
+        "nosync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-prepare-txnnometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "prepare",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-prepare-txnnometasync-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "0",
+        "prepare",
+        "nometasync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-runtime-after-prepare-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-runtime-after-prepare-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-runtime-after-prepare-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-runtime-after-prepare-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-runtime-after-prepare-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-runtime-after-prepare-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-runtime-after-prepare-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-runtime-after-prepare-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-runtime-after-prepare-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "runtime-after-prepare",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-prepare-clean-txnfull-tofull-abort",
+      "arguments": [
+        "full",
+        "0",
+        "prepare-clean",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-prepare-readonly-txnfull-tofull-abort",
+      "arguments": [
+        "full",
+        "0",
+        "prepare-readonly",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-prepared-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback-prepared",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-prepared-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback-prepared",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-txnnometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-prepared-txnnometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback-prepared",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-prepared-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback-prepared",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-prepare-clean-txnfull-tofull-abort",
+      "arguments": [
+        "nosync",
+        "0",
+        "prepare-clean",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-prepare-readonly-txnfull-tofull-abort",
+      "arguments": [
+        "nosync",
+        "0",
+        "prepare-readonly",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-rollback-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "rollback",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-rollback-prepared-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "rollback-prepared",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-rollback-txnnosync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "rollback",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-rollback-prepared-txnnosync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "rollback-prepared",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-rollback-txnnometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "rollback",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-rollback-prepared-txnnometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "rollback-prepared",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-rollback-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "rollback",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-rollback-prepared-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "rollback-prepared",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback-runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-rollback-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "rollback-runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-prepare-clean-txnfull-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "0",
+        "prepare-clean",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-prepare-readonly-txnfull-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "0",
+        "prepare-readonly",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-rollback-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "rollback",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-rollback-prepared-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "rollback-prepared",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-rollback-txnnosync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "rollback",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-rollback-prepared-txnnosync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "rollback-prepared",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-rollback-txnnometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "rollback",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-rollback-prepared-txnnometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "rollback-prepared",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-rollback-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "rollback",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-rollback-prepared-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "rollback-prepared",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback-runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w0-rollback-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "0",
+        "rollback-runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-prepare-clean-txnfull-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "0",
+        "prepare-clean",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-prepare-readonly-txnfull-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "0",
+        "prepare-readonly",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-rollback-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "rollback",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-rollback-prepared-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "rollback-prepared",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-rollback-txnnosync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "rollback",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-rollback-prepared-txnnosync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "rollback-prepared",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-rollback-txnnometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "rollback",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-rollback-prepared-txnnometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "rollback-prepared",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-rollback-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "rollback",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-rollback-prepared-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "rollback-prepared",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-rollback-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "rollback-runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w0-rollback-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "0",
+        "rollback-runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-commit-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "commit",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-commit-txnnometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "commit",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-commit-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "commit",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-commit-txnnosync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "commit",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-commit-txnnometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "commit",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-commit-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "commit",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-commit-txnnosync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "commit",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-commit-txnnometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "commit",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-commit-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "commit",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-commit-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-commit-txnnosync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "commit",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-commit-txnnometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "commit",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-commit-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "commit",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-prepare-txnfull-tofull-abort",
+      "arguments": [
+        "full",
+        "1",
+        "prepare",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-prepare-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "prepare",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-prepare-txnnosync-tofull-abort",
+      "arguments": [
+        "full",
+        "1",
+        "prepare",
+        "nosync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-prepare-txnnometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "prepare",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-prepare-txnnometasync-tofull-abort",
+      "arguments": [
+        "full",
+        "1",
+        "prepare",
+        "nometasync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-prepare-txnfull-tofull-abort",
+      "arguments": [
+        "nosync",
+        "1",
+        "prepare",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-prepare-txnnosync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "prepare",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-prepare-txnnosync-tofull-abort",
+      "arguments": [
+        "nosync",
+        "1",
+        "prepare",
+        "nosync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-prepare-txnnometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "prepare",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-prepare-txnnometasync-tofull-abort",
+      "arguments": [
+        "nosync",
+        "1",
+        "prepare",
+        "nometasync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-prepare-txnfull-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "1",
+        "prepare",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-prepare-txnnosync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "prepare",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-prepare-txnnosync-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "1",
+        "prepare",
+        "nosync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-prepare-txnnometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "prepare",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-prepare-txnnometasync-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "1",
+        "prepare",
+        "nometasync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-prepare-txnfull-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "1",
+        "prepare",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-prepare-txnnosync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "prepare",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-prepare-txnnosync-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "1",
+        "prepare",
+        "nosync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-prepare-txnnometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "prepare",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-prepare-txnnometasync-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "1",
+        "prepare",
+        "nometasync",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-runtime-after-prepare-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-runtime-after-prepare-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-runtime-after-prepare-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-runtime-after-prepare-txnfull-tonometasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-runtime-after-prepare-txnfull-tomapasync-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-runtime-after-prepare-txnfull-tonosync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-runtime-after-prepare-txnfull-tomapasync-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-runtime-after-prepare-txnfull-tonosync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-runtime-after-prepare-txnfull-tonometasync-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "runtime-after-prepare",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-prepare-clean-txnfull-tofull-abort",
+      "arguments": [
+        "full",
+        "1",
+        "prepare-clean",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-prepare-readonly-txnfull-tofull-abort",
+      "arguments": [
+        "full",
+        "1",
+        "prepare-readonly",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-prepared-txnfull-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback-prepared",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-prepared-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback-prepared",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-txnnometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-prepared-txnnometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback-prepared",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-prepared-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback-prepared",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-prepare-clean-txnfull-tofull-abort",
+      "arguments": [
+        "nosync",
+        "1",
+        "prepare-clean",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-prepare-readonly-txnfull-tofull-abort",
+      "arguments": [
+        "nosync",
+        "1",
+        "prepare-readonly",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-rollback-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "rollback",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-rollback-prepared-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "rollback-prepared",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-rollback-txnnosync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "rollback",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-rollback-prepared-txnnosync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "rollback-prepared",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-rollback-txnnometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "rollback",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-rollback-prepared-txnnometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "rollback-prepared",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-rollback-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "rollback",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-rollback-prepared-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "rollback-prepared",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-runtime-before-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback-runtime-before",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w1-rollback-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "1",
+        "rollback-runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-prepare-clean-txnfull-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "1",
+        "prepare-clean",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-prepare-readonly-txnfull-tofull-abort",
+      "arguments": [
+        "nometasync",
+        "1",
+        "prepare-readonly",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-rollback-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "rollback",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-rollback-prepared-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "rollback-prepared",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-rollback-txnnosync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "rollback",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-rollback-prepared-txnnosync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "rollback-prepared",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-rollback-txnnometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "rollback",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-rollback-prepared-txnnometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "rollback-prepared",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-rollback-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "rollback",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-rollback-prepared-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "rollback-prepared",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-runtime-before-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback-runtime-before",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nometasync-w1-rollback-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "nometasync",
+        "1",
+        "rollback-runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-prepare-clean-txnfull-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "1",
+        "prepare-clean",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-prepare-readonly-txnfull-tofull-abort",
+      "arguments": [
+        "mapasync",
+        "1",
+        "prepare-readonly",
+        "full",
+        "full",
+        "abort"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-rollback-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "rollback",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-rollback-prepared-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "rollback-prepared",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-rollback-txnnosync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "rollback",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-rollback-prepared-txnnosync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "rollback-prepared",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-rollback-txnnometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "rollback",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-rollback-prepared-txnnometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "rollback-prepared",
+        "nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-rollback-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "rollback",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-rollback-prepared-txnnosync+nometasync-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "rollback-prepared",
+        "nosync+nometasync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w1-rollback-runtime-before-txnfull-tomapasync-commit",
+      "arguments": [
+        "full",
+        "1",
+        "rollback-runtime-before",
+        "full",
+        "mapasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "mapasync-w1-rollback-runtime-after-prepare-txnfull-tofull-commit",
+      "arguments": [
+        "mapasync",
+        "1",
+        "rollback-runtime-after-prepare",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-nested-commit-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "nested-commit",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-nested-clean-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "nested-clean",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-nested-abort-txnfull-tonosync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "nested-abort",
+        "full",
+        "nosync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-nested-commit-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "nested-commit",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-nested-clean-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "nested-clean",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-nested-abort-txnfull-tonometasync-commit",
+      "arguments": [
+        "full",
+        "0",
+        "nested-abort",
+        "full",
+        "nometasync",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-nested-commit-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "nested-commit",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-nested-clean-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "nested-clean",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "nosync-w0-nested-abort-txnfull-tofull-commit",
+      "arguments": [
+        "nosync",
+        "0",
+        "nested-abort",
+        "full",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-nested-commit-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "nested-commit",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-nested-clean-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "nested-clean",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "label": "full-w0-nested-abort-txnnosync-tofull-commit",
+      "arguments": [
+        "full",
+        "0",
+        "nested-abort",
+        "nosync",
+        "full",
+        "commit"
+      ]
+    }
+  ]
+}

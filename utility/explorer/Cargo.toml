@@ -1,0 +1,16 @@
+[package]
+name = "uexplorer"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+description = "A visual terminal browser and record editor for ULMDB"
+
+[dependencies]
+ulmdb.workspace = true
+ratatui = { version = "=0.30.2", default-features = false, features = ["crossterm", "unstable-rendered-line-info"] }
+crossterm = "=0.29.0"
+unicode-width = "=0.2.2"
+
+[lints]
+workspace = true

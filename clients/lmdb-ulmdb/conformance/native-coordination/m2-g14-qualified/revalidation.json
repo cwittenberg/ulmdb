@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "kind": "qualification-evidence-revalidation",
+  "complete": true,
+  "passed": true,
+  "recorded_utc": "2026-11-05T20:35:28.189708+00:00",
+  "scope": "G14 target publication after the passed full Linux gate; all frozen native artifacts are validated and product Rust/C sources are unchanged.",
+  "full_gate": {
+    "path": "clients/lmdb-ulmdb/conformance/features/qualification.json",
+    "sha256": "cdaf6a14a3605eeea17d4d7af24ca72d8694231485b003619780bbddfe174241"
+  },
+  "feature_receipt": {
+    "path": "clients/lmdb-ulmdb/conformance/features/receipt.json",
+    "sha256": "2bbeac21a573e85e4192f2a8f4d339c9cf0909d0ee1f395ef8bc87c082b2f14c",
+    "checks": 55
+  },
+  "native_receipt": {
+    "path": "clients/lmdb-ulmdb/conformance/native-coordination/receipt.json",
+    "sha256": "bb8f663baf970efe13ddcd527f025a84a4ccdb63a9ac5c66a85db1006a000985",
+    "source_sha256": "f5c0c84427621e05d30a5f1f9a193173968e9a2697732eb28ee9bc64d9af4f45",
+    "actual_cases": 52,
+    "backend_scoped_rows": 82
+  },
+  "adapter_sha256": "062fb159d59525c06d80411a2579dadcbaec88807075ea8a0a144046792bae64",
+  "source_changes_since_full_gate": {
+    "clients/lmdb-ulmdb/features/matrix.json": {
+      "before": "36e09961615bb9205dec0941bb9bf2469b69d944fa391178696050df00983949",
+      "after": "7d577be464c5b8b74d3e680a4061c7c5d755d915b1c305a0a17fe7c341cf8122"
+    }
+  },
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/features/registry.py",
+        "render"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/features/registry.py",
+        "check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/features/test_registry.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "tests": 27,
+      "console_tail": "clients/lmdb-ulmdb/conformance/features/g14-promotion-controls.tail.log",
+      "console_tail_sha256": "3814019bc375f4a85c84a51de0ceb84f964354af40f18faa571ce79bf7eddb48",
+      "console_tail_only": true
+    },
+    {
+      "operation": "native_evidence.check_native(require_artifacts=True)",
+      "passed": true
+    }
+  ],
+  "feature_status_sha256": "9c117269b7d10a7d0cd441d14eb007224e43e82b47563188d2356e1dae0cda68",
+  "g14_performance": {
+    "assessment": "clients/lmdb-ulmdb/conformance/features/g14-performance/BUDGET_ASSESSMENT.json",
+    "sha256": "3f6273dadd6333bd3816a03ffaecd28e3dc931cdfca2405ed8bf06a09dc1c576",
+    "predeclared_change_budget_passed": true,
+    "broader_performance_accepted": false,
+    "disk_initial_load_change_percent": -5.811
+  },
+  "performance_acceptance": "G14 bounded change budget passed; G05/prior M1 acceptance remains pending.",
+  "all_lmdb_parity_established": false
+}

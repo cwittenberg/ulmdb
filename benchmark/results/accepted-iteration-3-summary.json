@@ -1,0 +1,814 @@
+{
+  "status": "last accepted implementation, iteration3",
+  "full": {
+    "rows": [
+      {
+        "filesystem": "disk",
+        "case": "ordered_kv_mixed",
+        "ulmdb": 6252268.09704827,
+        "ulmdb_p99_ns": 231.0746799855978,
+        "ulmdb_range": [
+          6214221.498351727,
+          6294022.507817864
+        ],
+        "lmdb": 4050329.283181416,
+        "lmdb_p99_ns": 342.09251313655335,
+        "lmdb_range": [
+          4038436.577331612,
+          4065291.890816169
+        ],
+        "gap_pct": 54.3644395286621,
+        "previous_ulmdb": 6087377.008084665,
+        "change_pct": 2.7087379136303325,
+        "previous_ulmdb_p99_ns": 237.8380923853525,
+        "p99_change_pct": -2.843704442767059
+      },
+      {
+        "filesystem": "disk",
+        "case": "ordered_kv_hits",
+        "ulmdb": 6710654.586331537,
+        "ulmdb_p99_ns": 222.6299956444721,
+        "ulmdb_range": [
+          6696781.149234109,
+          6730840.780101064
+        ],
+        "lmdb": 4130712.2051893943,
+        "lmdb_p99_ns": 340.84988692961787,
+        "lmdb_range": [
+          4108750.7874890603,
+          4148445.557645413
+        ],
+        "gap_pct": 62.45756792015123,
+        "previous_ulmdb": 6397958.333526597,
+        "change_pct": 4.887438093592267,
+        "previous_ulmdb_p99_ns": 231.54550542493155,
+        "p99_change_pct": -3.8504352585457147
+      },
+      {
+        "filesystem": "disk",
+        "case": "ordered_kv_misses",
+        "ulmdb": 6526849.782592976,
+        "ulmdb_p99_ns": 224.69181422420647,
+        "ulmdb_range": [
+          6491472.27237055,
+          6566560.647475948
+        ],
+        "lmdb": 4010309.357690889,
+        "lmdb_p99_ns": 341.6805573168073,
+        "lmdb_range": [
+          3981914.4812052026,
+          4037813.318179815
+        ],
+        "gap_pct": 62.7517779912893,
+        "previous_ulmdb": 6342763.513068049,
+        "change_pct": 2.902303848246146,
+        "previous_ulmdb_p99_ns": 231.32530080012285,
+        "p99_change_pct": -2.867600972730633
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv4_lpm_mixed",
+        "ulmdb": 5448786.721934832,
+        "ulmdb_p99_ns": 423.8487937118455,
+        "ulmdb_range": [
+          5331535.273062493,
+          5493042.16090099
+        ],
+        "lmdb": 2572512.7083353396,
+        "lmdb_p99_ns": 776.3924599521453,
+        "lmdb_range": [
+          2510720.3837385033,
+          2635533.331054695
+        ],
+        "gap_pct": 111.80796130879816,
+        "previous_ulmdb": 5414201.773716706,
+        "change_pct": 0.6387820340575168,
+        "previous_ulmdb_p99_ns": 419.9195094619634,
+        "p99_change_pct": 0.9357231948847966
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv4_lpm_hits",
+        "ulmdb": 3168609.181727557,
+        "ulmdb_p99_ns": 432.66576473910925,
+        "ulmdb_range": [
+          3140238.7445011474,
+          3180486.759583925
+        ],
+        "lmdb": 2091521.647028226,
+        "lmdb_p99_ns": 787.0099678062047,
+        "lmdb_range": [
+          2053911.7165843167,
+          2136305.646589622
+        ],
+        "gap_pct": 51.49779521668969,
+        "previous_ulmdb": 3155002.3521109982,
+        "change_pct": 0.43127795475190744,
+        "previous_ulmdb_p99_ns": 427.77402970207106,
+        "p99_change_pct": 1.1435324955199055
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv4_lpm_misses",
+        "ulmdb": 21471906.558678955,
+        "ulmdb_p99_ns": 114.66212507033924,
+        "ulmdb_range": [
+          21123478.61445823,
+          21662912.89004244
+        ],
+        "lmdb": 3740411.2468485073,
+        "lmdb_p99_ns": 632.8585815224205,
+        "lmdb_range": [
+          3581966.589206639,
+          3921660.901825141
+        ],
+        "gap_pct": 474.05202641207336,
+        "previous_ulmdb": 21483897.29861612,
+        "change_pct": -0.05581268505662207,
+        "previous_ulmdb_p99_ns": 118.0817804358145,
+        "p99_change_pct": -2.896005931528167
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv4_lpm_outside_cover_misses",
+        "ulmdb": 100907544.18626705,
+        "ulmdb_p99_ns": 41.38317736691722,
+        "ulmdb_range": [
+          100843302.11392772,
+          100938730.1907742
+        ],
+        "lmdb": 90780464.20660968,
+        "lmdb_p99_ns": 45.40609333147957,
+        "lmdb_range": [
+          81509556.99555773,
+          100977589.28627777
+        ],
+        "gap_pct": 11.155571926366093,
+        "previous_ulmdb": 100877362.37144826,
+        "change_pct": 0.029919314015813825,
+        "previous_ulmdb_p99_ns": 41.39598396743845,
+        "p99_change_pct": -0.030936818729332405
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv4_lpm_inside_gap_misses",
+        "ulmdb": 11528905.421896096,
+        "ulmdb_p99_ns": 117.32676167940606,
+        "ulmdb_range": [
+          11425951.621092591,
+          11587947.086536616
+        ],
+        "lmdb": 1942157.3990794152,
+        "lmdb_p99_ns": 640.4379572920177,
+        "lmdb_range": [
+          1833531.1828075282,
+          2008983.9249895627
+        ],
+        "gap_pct": 493.61334088374144,
+        "previous_ulmdb": 11584777.911022065,
+        "change_pct": -0.4822922765986726,
+        "previous_ulmdb_p99_ns": 117.27073600640618,
+        "p99_change_pct": 0.0477746408932056
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv6_lpm_mixed",
+        "ulmdb": 4374380.332126562,
+        "ulmdb_p99_ns": 516.7969736011535,
+        "ulmdb_range": [
+          4326904.094711604,
+          4398162.3378212
+        ],
+        "lmdb": 1537126.5883084368,
+        "lmdb_p99_ns": 1245.2765879413416,
+        "lmdb_range": [
+          1524066.6919201342,
+          1543086.8299540253
+        ],
+        "gap_pct": 184.5816581014606,
+        "previous_ulmdb": 4386651.549129542,
+        "change_pct": -0.27973995348263836,
+        "previous_ulmdb_p99_ns": 513.1972034432266,
+        "p99_change_pct": 0.7014399403922456
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv6_lpm_hits",
+        "ulmdb": 2517638.212029285,
+        "ulmdb_p99_ns": 530.3264270041261,
+        "ulmdb_range": [
+          2484879.8941068435,
+          2538108.509532263
+        ],
+        "lmdb": 1222250.0312619947,
+        "lmdb_p99_ns": 1256.684804403301,
+        "lmdb_range": [
+          1209497.4730763028,
+          1233109.3878236152
+        ],
+        "gap_pct": 105.98389426341667,
+        "previous_ulmdb": 2515869.791615477,
+        "change_pct": 0.07029061757097832,
+        "previous_ulmdb_p99_ns": 525.7528404673071,
+        "p99_change_pct": 0.8699119024737634
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv6_lpm_misses",
+        "ulmdb": 17297478.14216093,
+        "ulmdb_p99_ns": 142.26564998964452,
+        "ulmdb_range": [
+          17108283.13567029,
+          17403941.122467183
+        ],
+        "lmdb": 2174240.9478384284,
+        "lmdb_p99_ns": 1112.0554485126015,
+        "lmdb_range": [
+          2162392.719980549,
+          2189717.0885521593
+        ],
+        "gap_pct": 695.56399484416,
+        "previous_ulmdb": 17199295.78557722,
+        "change_pct": 0.5708510267382172,
+        "previous_ulmdb_p99_ns": 141.42724966541712,
+        "p99_change_pct": 0.5928138503795033
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv6_lpm_outside_cover_misses",
+        "ulmdb": 97173971.73583479,
+        "ulmdb_p99_ns": 41.140057367653746,
+        "ulmdb_range": [
+          96743376.10196751,
+          97404178.63926363
+        ],
+        "lmdb": 85365271.37310584,
+        "lmdb_p99_ns": 43.78571458149204,
+        "lmdb_range": [
+          74046649.38911514,
+          99269131.02284431
+        ],
+        "gap_pct": 13.833143353011423,
+        "previous_ulmdb": 95967239.0573639,
+        "change_pct": 1.2574423212796448,
+        "previous_ulmdb_p99_ns": 41.28059317594734,
+        "p99_change_pct": -0.34044038004636956
+      },
+      {
+        "filesystem": "disk",
+        "case": "ipv6_lpm_inside_gap_misses",
+        "ulmdb": 9326590.136579836,
+        "ulmdb_p99_ns": 143.35893942660636,
+        "ulmdb_range": [
+          9251512.1885782,
+          9377586.162433859
+        ],
+        "lmdb": 1096840.2226614426,
+        "lmdb_p99_ns": 1126.4535167072406,
+        "lmdb_range": [
+          1086184.6075285764,
+          1108961.9582382948
+        ],
+        "gap_pct": 750.3143797871678,
+        "previous_ulmdb": 9342411.361887496,
+        "change_pct": -0.16934841225471065,
+        "previous_ulmdb_p99_ns": 141.40508420519666,
+        "p99_change_pct": 1.3817432607829083
+      },
+      {
+        "filesystem": "disk",
+        "case": "durable_batch1",
+        "ulmdb": 15481.049202072934,
+        "ulmdb_p99_ns": 86701.5343733017,
+        "ulmdb_range": [
+          14836.186478809637,
+          16361.246087840718
+        ],
+        "lmdb": 10581.326714512092,
+        "lmdb_p99_ns": 199464.17551450146,
+        "lmdb_range": [
+          9680.042090033012,
+          11000.30689137429
+        ],
+        "gap_pct": 46.305370014149226,
+        "previous_ulmdb": 15497.734378662597,
+        "change_pct": -0.10766203744357883,
+        "previous_ulmdb_p99_ns": 81108.43426569682,
+        "p99_change_pct": 6.895830449991047
+      },
+      {
+        "filesystem": "disk",
+        "case": "durable_batch64",
+        "ulmdb": 486922.5536289117,
+        "ulmdb_p99_ns": 191194.3225601069,
+        "ulmdb_range": [
+          472498.0687968032,
+          504293.5126136169
+        ],
+        "lmdb": 178439.7092302332,
+        "lmdb_p99_ns": 451520.2953517606,
+        "lmdb_range": [
+          176461.51959518797,
+          179868.6927803425
+        ],
+        "gap_pct": 172.87791250581796,
+        "previous_ulmdb": 482000.0854919268,
+        "change_pct": 1.0212587684421237,
+        "previous_ulmdb_p99_ns": 242871.51816426805,
+        "p99_change_pct": -21.277585776529328
+      },
+      {
+        "filesystem": "ram",
+        "case": "ordered_kv_mixed",
+        "ulmdb": 6289098.005491092,
+        "ulmdb_p99_ns": 231.12167670604694,
+        "ulmdb_range": [
+          6236429.067489173,
+          6324801.900286731
+        ],
+        "lmdb": 4058470.628053758,
+        "lmdb_p99_ns": 341.83114015459347,
+        "lmdb_range": [
+          4045890.001606977,
+          4072391.078332888
+        ],
+        "gap_pct": 54.962264898958566,
+        "previous_ulmdb": 6068009.885420247,
+        "change_pct": 3.6435029646549877,
+        "previous_ulmdb_p99_ns": 237.03329119127574,
+        "p99_change_pct": -2.4940017731342135
+      },
+      {
+        "filesystem": "ram",
+        "case": "ordered_kv_hits",
+        "ulmdb": 6700156.65155602,
+        "ulmdb_p99_ns": 221.78615302277888,
+        "ulmdb_range": [
+          6676537.485591659,
+          6719172.157472578
+        ],
+        "lmdb": 4147782.050118003,
+        "lmdb_p99_ns": 339.91880009980383,
+        "lmdb_range": [
+          4119556.143702125,
+          4196248.416851944
+        ],
+        "gap_pct": 61.53589003948272,
+        "previous_ulmdb": 6367391.522103537,
+        "change_pct": 5.2260824279037,
+        "previous_ulmdb_p99_ns": 230.56851780027137,
+        "p99_change_pct": -3.8090043086889125
+      },
+      {
+        "filesystem": "ram",
+        "case": "ordered_kv_misses",
+        "ulmdb": 6505065.591148274,
+        "ulmdb_p99_ns": 224.3574443666397,
+        "ulmdb_range": [
+          6491890.284631843,
+          6514491.705569283
+        ],
+        "lmdb": 4012079.653077727,
+        "lmdb_p99_ns": 340.6538135241085,
+        "lmdb_range": [
+          3999218.5606518923,
+          4036157.7485067095
+        ],
+        "gap_pct": 62.137000100637074,
+        "previous_ulmdb": 6347949.982321354,
+        "change_pct": 2.4750605985314644,
+        "previous_ulmdb_p99_ns": 230.8781968253519,
+        "p99_change_pct": -2.8243257909904895
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv4_lpm_mixed",
+        "ulmdb": 5480386.255073867,
+        "ulmdb_p99_ns": 422.11406402843085,
+        "ulmdb_range": [
+          5425733.576134911,
+          5524717.846616914
+        ],
+        "lmdb": 2563181.2411015667,
+        "lmdb_p99_ns": 772.303359204321,
+        "lmdb_range": [
+          2509709.24155724,
+          2621765.5452569784
+        ],
+        "gap_pct": 113.81188997460771,
+        "previous_ulmdb": 5391877.438904243,
+        "change_pct": 1.6415212914708155,
+        "previous_ulmdb_p99_ns": 418.78088360031046,
+        "p99_change_pct": 0.7959246848768808
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv4_lpm_hits",
+        "ulmdb": 3177262.4497557334,
+        "ulmdb_p99_ns": 431.44632165002264,
+        "ulmdb_range": [
+          3149497.492753941,
+          3200412.533175526
+        ],
+        "lmdb": 2062272.3604733087,
+        "lmdb_p99_ns": 789.2994663885163,
+        "lmdb_range": [
+          2052039.990668348,
+          2075201.9463319054
+        ],
+        "gap_pct": 54.06609285237791,
+        "previous_ulmdb": 3122684.703662323,
+        "change_pct": 1.7477827982249172,
+        "previous_ulmdb_p99_ns": 425.3065070728703,
+        "p99_change_pct": 1.4436211238358476
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv4_lpm_misses",
+        "ulmdb": 21457731.378039725,
+        "ulmdb_p99_ns": 115.44442014011408,
+        "ulmdb_range": [
+          21265680.11632327,
+          21646310.115861874
+        ],
+        "lmdb": 3679082.021461322,
+        "lmdb_p99_ns": 604.3629806585056,
+        "lmdb_range": [
+          3483126.2669191496,
+          3771226.554903225
+        ],
+        "gap_pct": 483.23601520350906,
+        "previous_ulmdb": 21515915.36346613,
+        "change_pct": -0.2704230075435188,
+        "previous_ulmdb_p99_ns": 120.0722163664959,
+        "p99_change_pct": -3.8541773995879436
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv4_lpm_outside_cover_misses",
+        "ulmdb": 100917263.66213004,
+        "ulmdb_p99_ns": 41.12732994268078,
+        "ulmdb_range": [
+          100806451.61290322,
+          100964845.3029261
+        ],
+        "lmdb": 92910075.84261374,
+        "lmdb_p99_ns": 45.40609333147957,
+        "lmdb_range": [
+          82207265.06705031,
+          100945098.48456171
+        ],
+        "gap_pct": 8.618212553265137,
+        "previous_ulmdb": 100949079.14394015,
+        "change_pct": -0.031516366548267616,
+        "previous_ulmdb_p99_ns": 41.140057367653746,
+        "p99_change_pct": -0.0309368187293102
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv4_lpm_inside_gap_misses",
+        "ulmdb": 11542885.47632441,
+        "ulmdb_p99_ns": 113.7464355909537,
+        "ulmdb_range": [
+          11392424.891878767,
+          11629901.64010688
+        ],
+        "lmdb": 1890619.2944697742,
+        "lmdb_p99_ns": 612.8625558197937,
+        "lmdb_range": [
+          1783148.4226993457,
+          1949294.227567187
+        ],
+        "gap_pct": 510.5346279966756,
+        "previous_ulmdb": 11452990.40047315,
+        "change_pct": 0.7849048388929525,
+        "previous_ulmdb_p99_ns": 118.47292816033789,
+        "p99_change_pct": -3.989512745888657
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv6_lpm_mixed",
+        "ulmdb": 4408949.740200422,
+        "ulmdb_p99_ns": 507.6756709130978,
+        "ulmdb_range": [
+          4402849.138713276,
+          4415286.992964654
+        ],
+        "lmdb": 1548754.882908658,
+        "lmdb_p99_ns": 1235.5510417810835,
+        "lmdb_range": [
+          1534145.0222974794,
+          1562719.6048350935
+        ],
+        "gap_pct": 184.6770517953196,
+        "previous_ulmdb": 4378683.481355058,
+        "change_pct": 0.6912182388665755,
+        "previous_ulmdb_p99_ns": 511.85986630035865,
+        "p99_change_pct": -0.8174493963559848
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv6_lpm_hits",
+        "ulmdb": 2527098.8367277416,
+        "ulmdb_p99_ns": 523.5912657608554,
+        "ulmdb_range": [
+          2521726.4464248577,
+          2538104.2819802132
+        ],
+        "lmdb": 1233692.7758145966,
+        "lmdb_p99_ns": 1241.1097112727257,
+        "lmdb_range": [
+          1217105.6747818328,
+          1249543.818885496
+        ],
+        "gap_pct": 104.8402070814689,
+        "previous_ulmdb": 2522857.1694968417,
+        "change_pct": 0.16812950341322797,
+        "previous_ulmdb_p99_ns": 527.1350754792614,
+        "p99_change_pct": -0.6722773503895607
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv6_lpm_misses",
+        "ulmdb": 17216652.455767024,
+        "ulmdb_p99_ns": 140.15469521619073,
+        "ulmdb_range": [
+          17117553.73039639,
+          17436801.131648395
+        ],
+        "lmdb": 2185468.556801322,
+        "lmdb_p99_ns": 1083.9488378920532,
+        "lmdb_range": [
+          2144953.260127866,
+          2218897.8817430055
+        ],
+        "gap_pct": 687.7785476339923,
+        "previous_ulmdb": 17398031.91497741,
+        "change_pct": -1.0425286037913373,
+        "previous_ulmdb_p99_ns": 140.1037000400424,
+        "p99_change_pct": 0.036398165168893826
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv6_lpm_outside_cover_misses",
+        "ulmdb": 95552642.81810774,
+        "ulmdb_p99_ns": 41.140057367653746,
+        "ulmdb_range": [
+          93415383.17822488,
+          97322417.00222625
+        ],
+        "lmdb": 90992612.91328701,
+        "lmdb_p99_ns": 42.42258229687153,
+        "lmdb_range": [
+          82518463.50620951,
+          99098206.32246557
+        ],
+        "gap_pct": 5.0114286850585055,
+        "previous_ulmdb": 96627922.69772099,
+        "change_pct": -1.1128045078408921,
+        "previous_ulmdb_p99_ns": 41.12732994268078,
+        "p99_change_pct": 0.03094639255867282
+      },
+      {
+        "filesystem": "ram",
+        "case": "ipv6_lpm_inside_gap_misses",
+        "ulmdb": 9365161.736778392,
+        "ulmdb_p99_ns": 141.57923772401736,
+        "ulmdb_range": [
+          9335668.028312746,
+          9392581.738942584
+        ],
+        "lmdb": 1113028.5779104347,
+        "lmdb_p99_ns": 1093.3598695296087,
+        "lmdb_range": [
+          1096164.752466131,
+          1121457.255201126
+        ],
+        "gap_pct": 741.4125138062723,
+        "previous_ulmdb": 9266232.861215532,
+        "change_pct": 1.0676277732770245,
+        "previous_ulmdb_p99_ns": 141.69488173385005,
+        "p99_change_pct": -0.0816148109357373
+      },
+      {
+        "filesystem": "ram",
+        "case": "durable_batch1",
+        "ulmdb": 59280.32091476811,
+        "ulmdb_p99_ns": 12536.251113273742,
+        "ulmdb_range": [
+          58963.323430873104,
+          59608.854150173334
+        ],
+        "lmdb": 133396.2213179167,
+        "lmdb_p99_ns": 8291.733583916603,
+        "lmdb_range": [
+          127497.9132177485,
+          135867.54612597043
+        ],
+        "gap_pct": -55.560719539807494,
+        "previous_ulmdb": 57090.5920313598,
+        "change_pct": 3.8355336763813863,
+        "previous_ulmdb_p99_ns": 12587.436168157095,
+        "p99_change_pct": -0.40663606313124934
+      },
+      {
+        "filesystem": "ram",
+        "case": "durable_batch64",
+        "ulmdb": 962866.0373302074,
+        "ulmdb_p99_ns": 106244.07082879911,
+        "ulmdb_range": [
+          956058.42506647,
+          971075.9941645351
+        ],
+        "lmdb": 742257.2651700419,
+        "lmdb_p99_ns": 94466.23603530161,
+        "lmdb_range": [
+          737909.4589057304,
+          748403.1568873007
+        ],
+        "gap_pct": 29.721335514260904,
+        "previous_ulmdb": 914614.2305899162,
+        "change_pct": 5.275645745110413,
+        "previous_ulmdb_p99_ns": 116357.78522265505,
+        "p99_change_pct": -8.691910364659272
+      }
+    ],
+    "combined_writes": [
+      {
+        "filesystem": "disk",
+        "batch": 1,
+        "ulmdb": 16049.706647742072,
+        "lmdb": 11236.218806562794,
+        "gap_pct": 42.839036192209434
+      },
+      {
+        "filesystem": "disk",
+        "batch": 64,
+        "ulmdb": 505900.240733176,
+        "lmdb": 183134.85729250946,
+        "gap_pct": 176.2446473666858
+      },
+      {
+        "filesystem": "ram",
+        "batch": 1,
+        "ulmdb": 70705.48737568464,
+        "lmdb": 137207.05690075262,
+        "gap_pct": -48.46803876361202
+      },
+      {
+        "filesystem": "ram",
+        "batch": 64,
+        "ulmdb": 972153.7286981271,
+        "lmdb": 748615.8830708204,
+        "gap_pct": 29.860152674073003
+      }
+    ]
+  },
+  "millions": [
+    {
+      "engine": "ulmdb",
+      "operation": "load",
+      "status": "completed",
+      "operations_per_run": 1000000,
+      "transactions_per_run": 1000,
+      "completed_runs": 3,
+      "required_runs": 3,
+      "ops_s": 1169016.6787302908,
+      "observed_completed_run_rates": [
+        1156694.9716635065,
+        1171721.2957973948,
+        1178742.524311771
+      ],
+      "failures": []
+    },
+    {
+      "engine": "lmdb",
+      "operation": "load",
+      "status": "completed",
+      "operations_per_run": 1000000,
+      "transactions_per_run": 1000,
+      "completed_runs": 3,
+      "required_runs": 3,
+      "ops_s": 1580608.2242298897,
+      "observed_completed_run_rates": [
+        1606388.0139808126,
+        1597275.9723334424,
+        1539013.035495815
+      ],
+      "failures": []
+    },
+    {
+      "engine": "sqlite",
+      "operation": "load",
+      "status": "completed",
+      "operations_per_run": 1000000,
+      "transactions_per_run": 1000,
+      "completed_runs": 3,
+      "required_runs": 3,
+      "ops_s": 827604.5302477822,
+      "observed_completed_run_rates": [
+        824576.2524489935,
+        826247.3725209617,
+        832008.3087943993
+      ],
+      "failures": []
+    },
+    {
+      "engine": "ulmdb",
+      "operation": "read",
+      "status": "completed",
+      "operations_per_run": 10000000,
+      "transactions_per_run": 1,
+      "completed_runs": 3,
+      "required_runs": 3,
+      "ops_s": 2608858.8775059595,
+      "observed_completed_run_rates": [
+        2651103.952639101,
+        2612695.1370364465,
+        2563517.387359303
+      ],
+      "failures": []
+    },
+    {
+      "engine": "lmdb",
+      "operation": "read",
+      "status": "completed",
+      "operations_per_run": 10000000,
+      "transactions_per_run": 1,
+      "completed_runs": 3,
+      "required_runs": 3,
+      "ops_s": 1667587.8259274226,
+      "observed_completed_run_rates": [
+        1658281.0197990353,
+        1674688.3656029266,
+        1669836.749318594
+      ],
+      "failures": []
+    },
+    {
+      "engine": "sqlite",
+      "operation": "read",
+      "status": "completed",
+      "operations_per_run": 10000000,
+      "transactions_per_run": 1,
+      "completed_runs": 3,
+      "required_runs": 3,
+      "ops_s": 458521.51314914436,
+      "observed_completed_run_rates": [
+        453253.3832970299,
+        460500.16539687733,
+        461857.82468489103
+      ],
+      "failures": []
+    },
+    {
+      "engine": "ulmdb",
+      "operation": "update",
+      "status": "completed",
+      "operations_per_run": 1000000,
+      "transactions_per_run": 1000,
+      "completed_runs": 3,
+      "required_runs": 3,
+      "ops_s": 145078.37871209634,
+      "observed_completed_run_rates": [
+        144937.50034894608,
+        145474.40388505094,
+        144824.06304894265
+      ],
+      "failures": []
+    },
+    {
+      "engine": "lmdb",
+      "operation": "update",
+      "status": "completed",
+      "operations_per_run": 1000000,
+      "transactions_per_run": 1000,
+      "completed_runs": 3,
+      "required_runs": 3,
+      "ops_s": 128015.00826220917,
+      "observed_completed_run_rates": [
+        127712.6240530699,
+        128241.23732049712,
+        128091.743758324
+      ],
+      "failures": []
+    },
+    {
+      "engine": "sqlite",
+      "operation": "update",
+      "status": "completed",
+      "operations_per_run": 1000000,
+      "transactions_per_run": 1000,
+      "completed_runs": 3,
+      "required_runs": 3,
+      "ops_s": 58018.29558100507,
+      "observed_completed_run_rates": [
+        57727.99295499027,
+        58039.097702120656,
+        58289.158843786296
+      ],
+      "failures": []
+    }
+  ],
+  "source_receipt": "benchmark/work/optimization-20261105/iteration-3-build/source.json"
+}

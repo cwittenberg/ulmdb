@@ -1,0 +1,613 @@
+{
+  "schema": 1,
+  "scope": "Exact F02-only Linux Legacy C adapter artifacts and predeclared bounded change budget; no F03, G05 or broad backend/performance acceptance",
+  "assessed_utc": "2026-11-05T21:46:50.927552+00:00",
+  "receipt_sha256": "bf7e4345d00c2f16912c1ea0b54f6c0af2dfe88dff8f12288fb2c5e532dd18a9",
+  "baseline_sha256": "062fb159d59525c06d80411a2579dadcbaec88807075ea8a0a144046792bae64",
+  "candidate_sha256": "1bc6751904f62652765610a5806831eb79369641b66767e730f439881460907a",
+  "predeclared_budget_input": {
+    "path": "/mnt/data3/ipdon/ulmdb/target/qualification/m3-qualified-baseline-062f/input.json",
+    "sha256": "901349706219a76f618df103ff47e2f8f21e05eca95f7b708ff18f6183ee6882"
+  },
+  "budget": {
+    "throughput_loss_percent_max": 5,
+    "phases": [
+      "batched_get",
+      "single_get_transaction",
+      "update_batch1",
+      "update_batch16",
+      "close_reopen"
+    ],
+    "minimum_interleaved_pairs_per_filesystem": 3,
+    "required_filesystems": [
+      "disk",
+      "tmpfs"
+    ],
+    "repeated_paired_p99_increase_percent_requires_review": 10,
+    "creation_and_initial_load": "Retain all rates/tails; one sample per process is not a stable startup/load acceptance claim.",
+    "resource_policy": "No new persistent file/descriptor class or per-record cache; expected removal of the artificial MAIN initialization publication is recorded explicitly. Prepared-abort orphan reclamation is tested separately."
+  },
+  "logical_oracles_passed": true,
+  "source_unchanged": true,
+  "f02_change_budget_passed": true,
+  "phases": [
+    {
+      "filesystem": "disk",
+      "phase": "create_open",
+      "budgeted": false,
+      "mean_paired_throughput_change_percent": 73.97955159629161,
+      "paired_throughput_changes_percent": [
+        62.980567070764934,
+        81.59344264367438,
+        77.36464507443554
+      ],
+      "throughput_budget_passed": null,
+      "paired_p99_changes_percent": [
+        -38.6429917398798,
+        -44.931932263533525,
+        -43.6189777517202
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "initial_load",
+      "budgeted": false,
+      "mean_paired_throughput_change_percent": 0.8871901394528278,
+      "paired_throughput_changes_percent": [
+        -1.689409983553103,
+        -0.0006300450910212696,
+        4.351610447002607
+      ],
+      "throughput_budget_passed": null,
+      "paired_p99_changes_percent": [
+        1.7184415059155578,
+        0.0006300490606125919,
+        -4.170142107402041
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "batched_get",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 8.833353773732304,
+      "paired_throughput_changes_percent": [
+        0.7473311564876184,
+        1.1912047398113357,
+        24.561525424897958
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -11.293175681966295,
+        -17.537037037037038,
+        -74.92703000143548
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "single_get_transaction",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 15.976878269883972,
+      "paired_throughput_changes_percent": [
+        8.379429155852547,
+        9.064099094767176,
+        30.487106559032195
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -6.503056019536924,
+        -8.942377188785123,
+        -44.87694115326074
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "update_batch1",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 3.601954955584811,
+      "paired_throughput_changes_percent": [
+        2.638022080115565,
+        2.036302341445695,
+        6.131540445193173
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -1.5751029662657623,
+        -1.6339783855429002,
+        -3.1506667605573857
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "update_batch16",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 1.0791053319468984,
+      "paired_throughput_changes_percent": [
+        0.7063868240804405,
+        1.221158825278268,
+        1.3097703464819865
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -0.6113306884927505,
+        -1.9270928630191309,
+        -1.3140745717750812
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "disk",
+      "phase": "close_reopen",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 1.8622984893160277,
+      "paired_throughput_changes_percent": [
+        1.4631458164223288,
+        2.016960846496718,
+        2.106788805029036
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -1.499510066479226,
+        -2.0596604341688085,
+        -2.2333481213595463
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "create_open",
+      "budgeted": false,
+      "mean_paired_throughput_change_percent": 92.58511977553867,
+      "paired_throughput_changes_percent": [
+        104.34713875639368,
+        85.92792956087085,
+        87.48029100935149
+      ],
+      "throughput_budget_passed": null,
+      "paired_p99_changes_percent": [
+        -51.06366518827944,
+        -46.215719049750916,
+        -46.66105996442474
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "initial_load",
+      "budgeted": false,
+      "mean_paired_throughput_change_percent": -8.906003095884662,
+      "paired_throughput_changes_percent": [
+        -10.840758280329709,
+        -7.761211901073839,
+        -8.116039106250438
+      ],
+      "throughput_budget_passed": null,
+      "paired_p99_changes_percent": [
+        12.158872228203377,
+        8.414260487410075,
+        8.832922555042488
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "batched_get",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 1.0728687816386435,
+      "paired_throughput_changes_percent": [
+        1.1689250631913506,
+        0.9073403594117124,
+        1.1423409223128678
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -13.744207599629288,
+        23.653449461379793,
+        -4.796163069544368
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "single_get_transaction",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 8.831098368079568,
+      "paired_throughput_changes_percent": [
+        8.922116578193041,
+        9.02424796626149,
+        8.546930559784172
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -7.861813833644682,
+        -9.469320725800124,
+        -8.073008706644313
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "update_batch1",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 3.5158370522401747,
+      "paired_throughput_changes_percent": [
+        2.229375374407172,
+        4.167922816512015,
+        4.1502129658013365
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -2.045956366648116,
+        -4.035253684699558,
+        -3.3138249565119793
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "update_batch16",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 2.4256074753198944,
+      "paired_throughput_changes_percent": [
+        1.1619329363655506,
+        3.2592000580908387,
+        2.8556894315032944
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -0.44109702252589367,
+        -3.4189422446104567,
+        -2.030364414839747
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    },
+    {
+      "filesystem": "ram",
+      "phase": "close_reopen",
+      "budgeted": true,
+      "mean_paired_throughput_change_percent": 1.992441402274799,
+      "paired_throughput_changes_percent": [
+        2.375818362133786,
+        1.5888965333795024,
+        2.0126093113111088
+      ],
+      "throughput_budget_passed": true,
+      "paired_p99_changes_percent": [
+        -2.380538222741191,
+        -1.6082402462897938,
+        -2.28268830701176
+      ],
+      "repeated_paired_p99_above_10_percent": false
+    }
+  ],
+  "resources": [
+    {
+      "filesystem": "disk",
+      "pair": 1,
+      "baseline_physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 2027520,
+        "files": 146
+      },
+      "baseline_fd_peak_observed": 21,
+      "baseline_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 67,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 66
+      },
+      "candidate_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 2011136,
+        "files": 144
+      },
+      "candidate_fd_peak_observed": 21,
+      "candidate_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 66,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 65
+      },
+      "persistent_file_class_set_equal": true,
+      "file_and_byte_totals_not_increased": true
+    },
+    {
+      "filesystem": "disk",
+      "pair": 2,
+      "candidate_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 2011136,
+        "files": 144
+      },
+      "candidate_fd_peak_observed": 21,
+      "candidate_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 66,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 65
+      },
+      "baseline_physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 2027520,
+        "files": 146
+      },
+      "baseline_fd_peak_observed": 21,
+      "baseline_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 67,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 66
+      },
+      "persistent_file_class_set_equal": true,
+      "file_and_byte_totals_not_increased": true
+    },
+    {
+      "filesystem": "disk",
+      "pair": 3,
+      "baseline_physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 2027520,
+        "files": 146
+      },
+      "baseline_fd_peak_observed": 21,
+      "baseline_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 67,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 66
+      },
+      "candidate_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 2011136,
+        "files": 144
+      },
+      "candidate_fd_peak_observed": 21,
+      "candidate_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 66,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 65
+      },
+      "persistent_file_class_set_equal": true,
+      "file_and_byte_totals_not_increased": true
+    },
+    {
+      "filesystem": "ram",
+      "pair": 1,
+      "baseline_physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 1986560,
+        "files": 146
+      },
+      "baseline_fd_peak_observed": 21,
+      "baseline_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 67,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 66
+      },
+      "candidate_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 1970176,
+        "files": 144
+      },
+      "candidate_fd_peak_observed": 21,
+      "candidate_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 66,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 65
+      },
+      "persistent_file_class_set_equal": true,
+      "file_and_byte_totals_not_increased": true
+    },
+    {
+      "filesystem": "ram",
+      "pair": 2,
+      "candidate_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 1970176,
+        "files": 144
+      },
+      "candidate_fd_peak_observed": 21,
+      "candidate_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 66,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 65
+      },
+      "baseline_physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 1986560,
+        "files": 146
+      },
+      "baseline_fd_peak_observed": 21,
+      "baseline_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 67,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 66
+      },
+      "persistent_file_class_set_equal": true,
+      "file_and_byte_totals_not_increased": true
+    },
+    {
+      "filesystem": "ram",
+      "pair": 3,
+      "baseline_physical": {
+        "apparent_bytes": 1825680,
+        "allocated_bytes": 1986560,
+        "files": 146
+      },
+      "baseline_fd_peak_observed": 21,
+      "baseline_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 67,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 66
+      },
+      "candidate_physical": {
+        "apparent_bytes": 1813072,
+        "allocated_bytes": 1970176,
+        "files": 144
+      },
+      "candidate_fd_peak_observed": 21,
+      "candidate_file_classes": {
+        ".ulmdb-coordination/capture": 1,
+        ".ulmdb-coordination/registry": 1,
+        "CURRENT": 1,
+        "LMDB-ENV": 1,
+        "LMDB-ENV-GATE": 1,
+        "LMDB-MAPSIZE": 1,
+        "LMDB-READERS": 1,
+        "LMDB-WRITER": 1,
+        "LOCK": 1,
+        "PREVIOUS": 1,
+        "commits/{id}.root": 66,
+        "lmdb-readers/00000000.slot": 1,
+        "lmdb-readers/00000001.slot": 1,
+        "lmdb-readers/registry.lock": 1,
+        "segments/{id}.seg": 65
+      },
+      "persistent_file_class_set_equal": true,
+      "file_and_byte_totals_not_increased": true
+    }
+  ],
+  "host_load": {
+    "samples": 36,
+    "one_minute_min": 1.66748046875,
+    "one_minute_max": 2.0947265625,
+    "affinity_cpu_count": 128,
+    "external_jobs_stopped": false
+  },
+  "resource_limitations": "1ms FD sampling is an observed lower bound. Existing prepared metadata is bounded by DBI slots, not records. Ordinary-journey totals do not prove prepared-abort orphan reclamation; separate lifecycle/fault proof is required.",
+  "startup_load_limitations": "RAM initial-load mean throughput regressed 8.91%; all three pairs regressed. Startup/loading remain outside the predeclared phase budget and are not accepted as nonregressing. Moving MAIN initialization into the actual first write changes the work distribution; no causal speedup is inferred.",
+  "prior_m1_regression_accepted": false,
+  "product_release_qualified": false,
+  "broad_performance_accepted": false
+}

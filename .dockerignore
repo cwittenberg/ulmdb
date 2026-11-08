@@ -1,0 +1,23 @@
+# Allow only workspace manifests and Rust sources into the build context.
+# Databases, frames, credentials, evidence, benchmarks and target/ stay outside.
+**
+!Dockerfile
+!.dockerignore
+!Cargo.toml
+!Cargo.lock
+!rust-toolchain.toml
+!crates/
+!crates/*/
+!crates/*/Cargo.toml
+!crates/*/build.rs
+!crates/*/src/
+!crates/*/src/**
+!clients/
+!clients/*/
+!clients/*/Cargo.toml
+!clients/*/src/
+!clients/*/src/**
+**/target/
+**/*.key
+**/.env
+**/.env.*

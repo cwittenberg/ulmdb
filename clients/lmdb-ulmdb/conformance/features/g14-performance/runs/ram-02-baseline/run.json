@@ -1,0 +1,103 @@
+{
+  "command": [
+    "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/journey",
+    "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-02-baseline",
+    "256",
+    "4096",
+    "32",
+    "32",
+    "4"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "process_seconds": 2.858823494054377,
+  "database": "/dev/shm/ulmdb-c-performance-999073-1793910009244452589/ram-02-baseline",
+  "stdout": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-02-baseline/stdout.json",
+  "stderr": "/mnt/data3/ipdon/ulmdb/target/qualification/performance-g14-final-vs-qualified/runs/ram-02-baseline/stderr.log",
+  "fd_peak_observed": 21,
+  "fd_observations": 2568,
+  "fd_unavailable_observations": 0,
+  "passed": true,
+  "metrics": {
+    "create_open": {
+      "operations_per_second": 161.67573667549416,
+      "elapsed_ns": 6185220,
+      "transactions": 0,
+      "sample_unit": "environment",
+      "sample_count": 1,
+      "p50_ns": 6185220,
+      "p95_ns": 6185220,
+      "p99_ns": 6185220
+    },
+    "initial_load": {
+      "operations_per_second": 12688.620557607379,
+      "elapsed_ns": 20175558,
+      "transactions": 1,
+      "sample_unit": "write_transaction",
+      "sample_count": 1,
+      "p50_ns": 20175558,
+      "p95_ns": 20175558,
+      "p99_ns": 20175558
+    },
+    "batched_get": {
+      "operations_per_second": 94441.20366420803,
+      "elapsed_ns": 43370900,
+      "transactions": 1,
+      "sample_unit": "get_with_value_oracle",
+      "sample_count": 4096,
+      "p50_ns": 9348,
+      "p95_ns": 9718,
+      "p99_ns": 11852
+    },
+    "single_get_transaction": {
+      "operations_per_second": 219.57059169478217,
+      "elapsed_ns": 145739007,
+      "transactions": 32,
+      "sample_unit": "read_transaction_with_get",
+      "sample_count": 32,
+      "p50_ns": 4556235,
+      "p95_ns": 4612331,
+      "p99_ns": 4648548
+    },
+    "update_batch1": {
+      "operations_per_second": 65.93309736056356,
+      "elapsed_ns": 485340463,
+      "transactions": 32,
+      "sample_unit": "write_transaction_1_record",
+      "sample_count": 32,
+      "p50_ns": 14821698,
+      "p95_ns": 24422303,
+      "p99_ns": 25211092
+    },
+    "update_batch16": {
+      "operations_per_second": 344.2166329799933,
+      "elapsed_ns": 1487435385,
+      "transactions": 32,
+      "sample_unit": "write_transaction_16_records",
+      "sample_count": 32,
+      "p50_ns": 45890265,
+      "p95_ns": 64798336,
+      "p99_ns": 66243005
+    },
+    "close_reopen": {
+      "operations_per_second": 15.267791587117815,
+      "elapsed_ns": 261989429,
+      "transactions": 0,
+      "sample_unit": "environment_close_and_open",
+      "sample_count": 4,
+      "p50_ns": 65336556,
+      "p95_ns": 65753387,
+      "p99_ns": 65753387
+    }
+  },
+  "checksums": {
+    "loaded": "22541afdfeebff25",
+    "after_batch1": "9b865e1019d5af65",
+    "final": "a17558801f9ec7c5"
+  },
+  "physical": {
+    "apparent_bytes": 1825680,
+    "allocated_bytes": 1986560,
+    "files": 146
+  }
+}

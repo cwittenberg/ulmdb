@@ -1,0 +1,19 @@
+[package]
+name = "ulmdb-prefix"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+ulmdb-core.workspace = true
+
+[dev-dependencies]
+ulmdb-storage.workspace = true
+ulmdb-reference = { path = "../ulmdb-reference" }
+
+[lints]
+workspace = true
+
+[features]
+scalar-family = []

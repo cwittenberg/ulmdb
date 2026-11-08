@@ -1,0 +1,22 @@
+{
+  "1.0.2": {
+    "commit": "c279e0477c713076893e8c2b1a6337e421c15867",
+    "files": [
+      {
+        "path": "COPYRIGHT",
+        "bytes": 715,
+        "sha256": "3c87f63656b6a12fda225b6f798c547fe89e3404f499e890b445761eb310fd4f"
+      }
+    ]
+  },
+  "0.9.31": {
+    "commit": "ce201088de95d26fc0da36ba805bf2ddc2ba74ff",
+    "files": [
+      {
+        "path": "COPYRIGHT",
+        "bytes": 715,
+        "sha256": "3c87f63656b6a12fda225b6f798c547fe89e3404f499e890b445761eb310fd4f"
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "scope": "Supplemental actual C clean/dirty/prepared writer retained during selected force-sync EIO; no production edits or power-loss/performance/mapping claim",
+  "source_sha256": "5787d955722078634877611e889eda9df26564902a6e5445fcd28613079a9840",
+  "case_plan": {
+    "writer_states": [
+      "clean",
+      "dirty",
+      "prepared"
+    ],
+    "policies": [
+      "full",
+      "nometasync",
+      "nosync"
+    ],
+    "file_modes": [
+      "legacy",
+      "cohort",
+      "indexed"
+    ],
+    "positive_injected_cases": 27,
+    "calibration_cases": 27
+  },
+  "requirements": [
+    "Compile with pinned1.0 header and record complete ELF imports/actual provider binding",
+    "Each no-injection calibration exits1 precisely at expectedEIO assertion, after successful seed/retained-state creation and actual selected force-sync fsync",
+    "For each fresh injected case count exact per-process fsync position from calibration; inject exactly one selected-data/descriptor fsync inside retained.sync.force1; return5",
+    "Held clean/dirty cursor, old read snapshot and borrowed A bytes remain valid afterEIO; original writer publishesB exactlyonce",
+    "Held prepared owner is committed without forbidden post-prepare data calls",
+    "B and full8192-byte payload survive fresh read, force-sync retry and actual environment reopen",
+    "Successful forced-sync fences must exclude newly prepared B assets",
+    "Old885 no-op-sync negative must reject for absent selected fsync and return0, not generic API/setup failure"
+  ],
+  "prior_claim_correction": "Original70b fault-sync happens before B.begin and proves NEW-writer admission only; immutable prior receipts retain explicit additive corrections.",
+  "accepted_original_protocol_sha256": "25d561912e74c55217a8575fe32f7c31899599ded40f9d3de11ec3bed898aba7",
+  "accepted_original_driver_sha256": "a40f6944d2b7f3aa72b09350482158ff6183d696311f0709aa5232479c2c5e9c",
+  "accepted_original_receipt_sha256": "372e803b92f6e2085f108fdfce441c043b946d4e8efe2084f339b42398696433",
+  "generic_adaptation": "provider/header/helper paths supplied by CLI and hash/source/binding verified; original exactRoot83d capture remains unchanged; generated same-archive NoOpSync is mandatory, historical negative optional"
+}

@@ -1,0 +1,39 @@
+[package]
+name = "ulmdb"
+default-run = "ulmdb"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+ulmdb-platform.workspace = true
+ulmdb-core.workspace = true
+ulmdb-storage.workspace = true
+ulmdb-kv.workspace = true
+ulmdb-prefix.workspace = true
+arc-swap.workspace = true
+sha2.workspace = true
+hmac.workspace = true
+libc.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+snapshot-log = ["ulmdb-storage/snapshot-log"]
+snapshot-log-profile = ["snapshot-log"]
+resident-metadata-reuse = ["resident-private-index", "ulmdb-storage/resident-metadata-reuse"]
+range-lifecycle = ["ulmdb-storage/range-lifecycle"]
+resident-prefix-audit-cache = []
+resident-compact-pages = ["ulmdb-kv/compact-pages"]
+resident-scalar-prefix = ["ulmdb-prefix/scalar-family"]
+resident-direct-page-patch = ["ulmdb-storage/resident-direct-page-patch"]
+resident-fused-patch = ["ulmdb-storage/resident-fused-patch"]
+resident-single-pass-audit = []
+resident-word-search = ["ulmdb-kv/word-search"]
+resident-private-index = ["ulmdb-storage/resident-private-index"]
+fault-injection = ["ulmdb-storage/fault-injection"]
+
+[dev-dependencies]
+ulmdb-reference = { path = "../ulmdb-reference" }

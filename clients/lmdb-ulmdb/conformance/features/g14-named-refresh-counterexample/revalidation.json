@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "qualification-evidence-revalidation",
+  "complete": true,
+  "passed": true,
+  "recorded_utc": "2026-11-05T23:52:22.588966+00:00",
+  "scope": "Current source/artifact revalidation after evidence-driven G14 reopening; original full gate remains historical passing evidence for its exact finite profile and F02/F03 scopes",
+  "adapter_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+  "abi_selection": "Pinned LMDB1.0.2; ULMDB_LMDB_ABI=1.0 or existing per-environment LMDB-ABI selector",
+  "full_gate": {
+    "path": "clients/lmdb-ulmdb/conformance/features/qualification.json",
+    "sha256": "91a330f14af1a66b59ec9dd5443bcdcbfd77ec09c10b5088d870685766196fb2",
+    "stages": 14
+  },
+  "feature_receipt": {
+    "path": "clients/lmdb-ulmdb/conformance/features/receipt.json",
+    "sha256": "097ac2a08d36efd3f982e0eb7004489803c546b5989ec79fdbbba8f342062f79",
+    "checks": 61
+  },
+  "native_receipt": {
+    "path": "clients/lmdb-ulmdb/conformance/native-coordination/receipt.json",
+    "sha256": "9dbc37e65ee3de6421ea7379d60d52ade6d3f3fbadf046642cbc3187efdcf480",
+    "source_sha256": "e820c97d963701924fab7c200eb52bc843c132e232b7fdbfecbf120bf5df62e0",
+    "backend_scoped_rows": 82
+  },
+  "source_changes_since_full_gate": {
+    "clients/lmdb-ulmdb/features/matrix.json": {
+      "before": "848ab35d9948869683bb50b9dad45fdbeed866fb4f0dc60441a420c348634c1c",
+      "after": "c88a97edf751008f62f151694090c05a49d4b0dcd89a48955fc507fc652310c0"
+    }
+  },
+  "full_gate_artifacts_checked": 8,
+  "native_artifacts_required_and_checked": true,
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/features/registry.py",
+        "render"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/features/registry.py",
+        "check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "clients/lmdb-ulmdb/features/test_registry.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "tests": 27,
+      "full_log": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/registry-controls.log",
+      "sha256": "ddeeb9f0786277cc3b8c1c84de564b0b5b5c227724abf5ce0240ec10bac7fd3d"
+    },
+    {
+      "operation": "registry.validate+generated-status exact equality",
+      "passed": true
+    },
+    {
+      "operation": "full-gate source/artifact revalidation; native artifacts required",
+      "passed": true
+    },
+    {
+      "operation": "counterexample source/provider/executable/stdout/stderr checks",
+      "passed": true
+    }
+  ],
+  "feature_status_sha256": "b2f7a770922b7462b06a2b7587052c4c5af73b75132a806cd8071702d4f6f1c7",
+  "qualified_targets": [
+    "F02",
+    "F03"
+  ],
+  "total_supported_backlog_targets": 5,
+  "nine_modern_extension_apis_remain_absent": true,
+  "m3_complete": false,
+  "full_parity_qualified": false,
+  "g05_performance_accepted": false,
+  "power_loss_qualified": false,
+  "other_backends_qualified": false,
+  "g14_archive_manifest": {
+    "path": "target/qualification/m3-f02-f03-promotion/G14_ARCHIVE.json",
+    "sha256": "17172ba90648efab6dda6103f7b445b0b86d31cb90a4b16af85c965d4e899166"
+  },
+  "independent_review": {
+    "path": "clients/lmdb-ulmdb/conformance/features/m3-f02-f03-qualified/INDEPENDENT_REVIEW.json",
+    "sha256": "42d0230ffeb34afb67884c6a53686908c171f54efea6883cddf7dc71341e4cb7"
+  },
+  "change_budget": {
+    "path": "clients/lmdb-ulmdb/conformance/features/m3-f02-f03-qualified/CHANGE_BUDGET_ACCEPTANCE.json",
+    "sha256": "d08f28c04ea6256cb1d422367dfc6750c488276a69de45a874a0086b63a6b84d",
+    "ordinary_operation_change_budgets_accepted": true,
+    "startup_load_accepted": false,
+    "rollback_speed_parity": false
+  },
+  "g14_target_complete": false,
+  "g14_reopened": {
+    "reason": "Actual valid ordinary-MVCC same-flags peer recreation returns BAD_DBI on current adapter for all3 pinned header profiles",
+    "publication": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/publication.json",
+    "sha256": "74910d5f70652d7629d2915e720894e37a8466620be26630a9fdd81936b427cf",
+    "reference_completed_journeys": 12,
+    "root_actual_failures": 3,
+    "other_root_modes": "Unreached after mode0, never claimed"
+  },
+  "prior_revalidation": {
+    "path": "clients/lmdb-ulmdb/conformance/features/g14-named-refresh-counterexample/prior-revalidation-features.json",
+    "sha256": "d85c5ed1aabe0262224536cc55bef1008683bccb4235b35c8e68781e8df24884"
+  }
+}

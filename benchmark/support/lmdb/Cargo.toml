@@ -1,0 +1,26 @@
+[package]
+name = "ulmdb-lmdb-baseline"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94"
+publish = false
+build = "build.rs"
+
+# Keep the benchmark-only native implementation outside the production workspace.
+[workspace]
+
+[dependencies]
+serde = { version = "=1.0.229", features = ["derive"] }
+toml = "=0.8.23"
+sha2 = "=0.10.9"
+
+[build-dependencies]
+serde = { version = "=1.0.229", features = ["derive"] }
+toml = "=0.8.23"
+sha2 = "=0.10.9"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+debug = 1
+

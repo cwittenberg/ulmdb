@@ -1,0 +1,33 @@
+[package]
+name = "ulmdb-storage"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+ulmdb-platform.workspace = true
+ulmdb-core.workspace = true
+memmap2.workspace = true
+libc.workspace = true
+sha2.workspace = true
+
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+all = "warn"
+[features]
+snapshot-log = []
+resident-metadata-reuse = ["resident-private-index"]
+range-chunks = ["ulmdb-core/range-chunks"]
+range-lifecycle = []
+resident-direct-page-patch = []
+resident-fused-patch = []
+resident-private-index = []
+fault-injection = []
+
+
+[dev-dependencies]
+ulmdb-kv.workspace = true
+ulmdb-prefix.workspace = true

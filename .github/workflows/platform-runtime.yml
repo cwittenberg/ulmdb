@@ -1,0 +1,56 @@
+name: Native platform runtime
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-gnu:
+    runs-on: windows-2025
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13.15'
+      - name: Install the declared Rust GNU target
+        run: rustup toolchain install 1.94.0 --profile minimal --target x86_64-pc-windows-gnu
+      - name: Build and run on the native Windows kernel
+        run: python clients/lmdb-ulmdb/qualification/platform/windows.py --output target/qualification/windows-host
+      - name: Retain Windows source, commands, binaries and result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-gnu-host
+          path: target/qualification/windows-host
+          if-no-files-found: error
+
+  macos:
+    runs-on: macos-15-intel
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13.15'
+      - name: Install the declared Rust toolchain
+        run: rustup toolchain install 1.94.0 --profile minimal
+      - name: Build and run on the native macOS kernel
+        run: python3 clients/lmdb-ulmdb/qualification/platform/macos.py --output target/qualification/macos-host
+      - name: Retain macOS source, commands, binaries and result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: macos-intel-host
+          path: target/qualification/macos-host
+          if-no-files-found: error

@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "repository": "https://github.com/LMDB/lmdb.git",
+  "ref": "LMDB_1.0.2",
+  "commit": "c279e0477c713076893e8c2b1a6337e421c15867",
+  "license": "OpenLDAP Public License 2.8",
+  "files": [
+    {
+      "path": "mdb.c",
+      "bytes": 365735,
+      "sha256": "6a84f672a05b1dda9f4e3aaae2a4a0bac73683752ec9640518b904b2f9a11109"
+    },
+    {
+      "path": "midl.c",
+      "bytes": 8104,
+      "sha256": "26a37f2e94e147e7cce4c8875c94d239d528d1b7b6ac6dfa5d73673dd7fd29f6"
+    },
+    {
+      "path": "lmdb.h",
+      "bytes": 88301,
+      "sha256": "fe585a964eb6123f0569608a7d94485f8ca227a49a1ef9e51cc27805afefa5e2"
+    },
+    {
+      "path": "midl.h",
+      "bytes": 6325,
+      "sha256": "ff8babe69bb4a90aca5798789264c53de4f9efaee2f8cea3ab617c05d7e842d8"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 2214,
+      "sha256": "310fe25c858a9515fc8c8d7d1f24a67c9496f84a91e0a0e41ea9975b1371e569"
+    },
+    {
+      "path": "module.c",
+      "bytes": 2064,
+      "sha256": "94a6916de09dc33b0fb6d419bfcf8c25335f7296794aa00a5088173368891dec"
+    },
+    {
+      "path": "COPYRIGHT",
+      "bytes": 715,
+      "sha256": "3c87f63656b6a12fda225b6f798c547fe89e3404f499e890b445761eb310fd4f"
+    }
+  ]
+}

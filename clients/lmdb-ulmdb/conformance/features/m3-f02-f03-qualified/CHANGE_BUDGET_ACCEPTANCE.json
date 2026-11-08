@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-11-05T23:24:13.072727+00:00",
+  "scope": "Exact Linux Legacy C adapter F02/F03 ordinary-operation change budgets; not broad speed, backend, platform or G05 acceptance",
+  "candidate_sha256": "9e6434b38ef4e1bf335ce2154bcf67431f2b0445006f026ed2400e2a673f30c9",
+  "f02_baseline_sha256": "062fb159d59525c06d80411a2579dadcbaec88807075ea8a0a144046792bae64",
+  "f03_baseline_sha256": "1bc6751904f62652765610a5806831eb79369641b66767e730f439881460907a",
+  "f03_baseline_is_tested_f02_stage_not_qualified_release": true,
+  "ordinary_throughput_budget_passed": true,
+  "observed_ordinary_resources_not_increased": true,
+  "tail_review_resolved": true,
+  "f02_f03_change_budgets_accepted": true,
+  "original_primary_assessment_retained_unchanged": true,
+  "candidate_mean_sampled_p99_ratio_change_percent": -2.5473873282232016,
+  "candidate_conservative_upper95_percent": 0.3106074189605823,
+  "identical_control_conservative_90_envelope_percent": [
+    -0.1572310732780579,
+    7.580921824896416
+  ],
+  "tail_processes": 120,
+  "tail_candidate_process_pairs": 30,
+  "tail_identical_control_process_pairs": 30,
+  "startup_load_acceptance": false,
+  "rollback_operation_speed_parity": false,
+  "prior_m1_g05_performance_accepted": false,
+  "other_backends_accepted": false,
+  "power_loss_qualification": false,
+  "broad_performance_accepted": false,
+  "retained_limits": [
+    "F02 initial-load throughput fell 8.91 percent on tmpfs; outside predeclared accepted phases",
+    "F03 primary initial-load mean fell 13.94 percent on disk, with every original pair and tail retained; no startup/load nonregression claim",
+    "Original three full and seven reduced-later-work adverse-tail captures remain separate from the predeclared confirmation",
+    "Four candidate and eight identical-control individual confirmation pairs exceeded 10 percent; no exclusions or control subtraction",
+    "Rollback authenticates files and scales with database bytes; 731.859 ms at 131072 total business records versus pinned reference 0.029 ms",
+    "Fault and process-death tests do not simulate power loss"
+  ]
+}

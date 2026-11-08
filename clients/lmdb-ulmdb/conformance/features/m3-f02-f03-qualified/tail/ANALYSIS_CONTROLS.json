@@ -1,0 +1,30 @@
+{
+  "scope": "Synthetic statistical decision controls only; no product/performance evidence",
+  "passed": true,
+  "checks": [
+    {
+      "candidate_ratio": 1.0,
+      "source_valid": true,
+      "decision": "close_exact_artifact_repeated_tail_review",
+      "passed": true
+    },
+    {
+      "candidate_ratio": 1.2,
+      "source_valid": true,
+      "decision": "regression_beyond_margin_review_open",
+      "passed": true
+    },
+    {
+      "candidate_ratio": 1.1,
+      "source_valid": true,
+      "decision": "inconclusive_review_open",
+      "passed": true
+    },
+    {
+      "candidate_ratio": 1.0,
+      "source_valid": false,
+      "decision": "inconclusive_review_open",
+      "passed": true
+    }
+  ]
+}

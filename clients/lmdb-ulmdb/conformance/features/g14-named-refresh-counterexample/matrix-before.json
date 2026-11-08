@@ -1,0 +1,2895 @@
+{
+  "schema": 1,
+  "audit_date": "2026-11-05",
+  "adapter_header": "clients/c/include/lmdb.h",
+  "plan": "LMDB_PARITY_PLAN.md",
+  "scope": "32 feature-gap targets; source states and evidence are deliberately separate. Historical common-profile passes are contextual, never automatic target qualification.",
+  "receipts": [
+    {
+      "id": "common-v1",
+      "path": "clients/lmdb-ulmdb/conformance/receipt.json",
+      "profile": "lmdb-common-functional-v1",
+      "required": true
+    },
+    {
+      "id": "features-v2",
+      "path": "clients/lmdb-ulmdb/conformance/features/receipt.json",
+      "profile": "lmdb-features-v2",
+      "required": false
+    },
+    {
+      "id": "native-coordination",
+      "path": "clients/lmdb-ulmdb/conformance/native-coordination/receipt.json",
+      "profile": "ulmdb-file-coordination-v1",
+      "kind": "native-test",
+      "required": false
+    }
+  ],
+  "backends": {
+    "adapter-file": {
+      "state": "emulated",
+      "boundary": "Linux C adapter over Legacy native file storage. Each feature has separate reference/artifact evidence; historical common-v1 logical behavior uses compatibility scans/buffers and native formats."
+    },
+    "file-legacy": {
+      "state": "unqualified",
+      "boundary": "Public default; native duplicates, savepoints, borrowed snapshots, backup and manual maintenance exist. New backlog targets require their own evidence."
+    },
+    "file-cohort": {
+      "state": "unqualified",
+      "boundary": "Shared native API, different publication metadata; Legacy evidence does not independently qualify its publication/lifecycle behavior."
+    },
+    "file-indexed": {
+      "state": "unqualified",
+      "boundary": "Shared native API, indexed publication metadata; retain separate migration/publication/lifecycle gates."
+    },
+    "resident": {
+      "state": "unqualified",
+      "boundary": "Experimental bounded anonymous page pool plus WAL; no duplicates/savepoints/checkpoint/export/replication or WAL retirement; records cap 4080 bytes, WAL 256 MiB."
+    },
+    "hybrid": {
+      "state": "unqualified",
+      "boundary": "Experimental backend with existing checkpoint and retirement APIs; evaluate reuse without inheriting qualification."
+    },
+    "range-v6": {
+      "state": "unqualified",
+      "boundary": "Experimental format6; range-lifecycle enables independent read-only capture/export. Retention/reclaim/compact/replication and adapter access remain unqualified or unsupported."
+    }
+  },
+  "features": [
+    {
+      "id": "F01",
+      "target": "Return public transaction flags",
+      "state": "supported",
+      "implementation": "implemented",
+      "milestone": "M2",
+      "priority": "P1",
+      "sources": [
+        "clients/c/src/transaction.rs",
+        "clients/c/include/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_txn_flags",
+          "kind": "function",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Valid read/write, nested, reset/renew flags match the modern reference.",
+          "path": "clients/lmdb-ulmdb/tests/parity_modern.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "LMDB 1.0 transaction flags",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Null transaction fails without overwriting output.",
+          "path": "clients/lmdb-ulmdb/tests/parity_modern.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "LMDB 1.0 transaction flags",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Read-only reopened environment reports correct flags.",
+          "path": "clients/lmdb-ulmdb/tests/parity_modern.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "LMDB 1.0 transaction flags",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        }
+      ],
+      "limits": "Qualified only for the exact Legacy-backed Linux C adapter artifact in features-v2 against pinned LMDB1.0.2. This does not qualify native/Resident/other modern extensions.",
+      "references": [
+        "1.0.2"
+      ]
+    },
+    {
+      "id": "F02",
+      "target": "Persist a transaction without publishing it",
+      "state": "supported",
+      "implementation": "implemented",
+      "milestone": "M3",
+      "priority": "P1",
+      "sources": [
+        "clients/c/include/lmdb.h",
+        "clients/c/src/transaction.rs",
+        "clients/c/src/prepared_metadata.rs",
+        "clients/c/src/prepared_tests.rs",
+        "clients/c/src/dbi_state.rs",
+        "clients/c/src/environment.rs",
+        "crates/ulmdb/src/prepared.rs",
+        "crates/ulmdb/src/physical.rs",
+        "crates/ulmdb/src/write.rs"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_txn_prepare",
+          "kind": "function",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "84 lifecycle journeys distinguish dirty pending owners from consumed clean/readonly/child transactions, publishing only at final commit.",
+          "path": "clients/lmdb-ulmdb/tests/parity_prepare_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 transaction preparation",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "negative",
+          "case": "Repeat prepare and tree/cursor/child operations return pinned errors; dirty intent includes reserve, identical puts and recoverable duplicate errors.",
+          "path": "clients/lmdb-ulmdb/tests/parity_prepare_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 transaction preparation",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "reopen",
+          "case": "Abort/final commit preserve the selected old/new complete data and subsequent writer IDs across the prepared boundary.",
+          "path": "clients/lmdb-ulmdb/tests/parity_prepare_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 transaction preparation",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "resource",
+          "case": "Preparation closes write cursors, consumes clean/readonly owners and preserves reader-slot progress with a one-slot reader limit.",
+          "path": "clients/lmdb-ulmdb/tests/parity_prepare_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 transaction preparation",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "positive",
+          "case": "Exact initial transaction IDs are 0/1 and remain correct through clean/abort/prepare/final commits in matched precreated and NOSUBDIR environments.",
+          "path": "clients/lmdb-ulmdb/tests/parity_first_ids_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "Absolute initial transaction IDs",
+            "reference": "0.9.31"
+          }
+        },
+        {
+          "role": "positive",
+          "case": "Exact initial transaction IDs are 0/1 and remain correct through clean/abort/prepare/final commits in matched precreated and NOSUBDIR environments.",
+          "path": "clients/lmdb-ulmdb/tests/parity_first_ids_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "Absolute initial transaction IDs",
+            "reference": "0.9.36"
+          }
+        },
+        {
+          "role": "positive",
+          "case": "Exact initial transaction IDs are 0/1 and remain correct through clean/abort/prepare/final commits in matched precreated and NOSUBDIR environments.",
+          "path": "clients/lmdb-ulmdb/tests/parity_first_ids_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "Absolute initial transaction IDs",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "reopen",
+          "case": "Empty/first/second committed data and exact absolute IDs survive actual environment reopen; all three pinned headers are exercised.",
+          "path": "clients/lmdb-ulmdb/tests/parity_first_ids_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "Absolute initial transaction IDs",
+            "reference": "0.9.31"
+          }
+        },
+        {
+          "role": "reopen",
+          "case": "Empty/first/second committed data and exact absolute IDs survive actual environment reopen; all three pinned headers are exercised.",
+          "path": "clients/lmdb-ulmdb/tests/parity_first_ids_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "Absolute initial transaction IDs",
+            "reference": "0.9.36"
+          }
+        },
+        {
+          "role": "reopen",
+          "case": "Empty/first/second committed data and exact absolute IDs survive actual environment reopen; all three pinned headers are exercised.",
+          "path": "clients/lmdb-ulmdb/tests/parity_first_ids_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "Absolute initial transaction IDs",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "positive",
+          "case": "32 source-exposed pending metadata cases preserve flags, comparison signs and exact callback counts without allowing general data operations.",
+          "path": "clients/lmdb-ulmdb/tests/parity_prepare_metadata_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 prepared metadata helpers",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "negative",
+          "case": "Only live dirty owners are probed; source-exposed metadata behavior does not authorize calls on consumed clean/readonly/child handles.",
+          "path": "clients/lmdb-ulmdb/tests/parity_prepare_metadata_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 prepared metadata helpers",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "negative",
+          "case": "112 real preparation/final-publication I/O failures distinguish unpoisoned retry from uncertain poisoned owners, verify selected data and aliases, and prove writer-lease release; a disabled injector is rejected.",
+          "path": "clients/c/src/prepared_tests.rs",
+          "status": "existing"
+        }
+      ],
+      "limits": "Qualified for the exact Linux Legacy-backed C adapter artifact and pinned LMDB 1.0.2 API profile: dirty unpublished owners, clean/readonly/child consumption, metadata guards, cursor invalidation, final publication/abort and exact initial IDs. The combined 61-check feature replay, fourteen-stage Linux gate and 133 real C lifecycle I/O failures pass. Matched ordinary-operation change budgets and the predeclared controlled tail review pass; tmpfs initial-load regression 8.91% remains outside the accepted budget. Evidence: conformance/features/m3-f02-f03-qualified. Other native backends remain independently unqualified. Range preparation remains unsupported; this is not restart-recoverable distributed two-phase commit. G03/G04 and M1/G05 performance acceptance remain separate.",
+      "references": [
+        "1.0.2"
+      ]
+    },
+    {
+      "id": "F03",
+      "target": "Roll back the eligible last commit",
+      "state": "supported",
+      "implementation": "implemented",
+      "milestone": "M3",
+      "priority": "P1",
+      "sources": [
+        "clients/c/include/lmdb.h",
+        "clients/c/src/rollback.rs",
+        "clients/c/src/process.rs",
+        "clients/c/src/transaction.rs",
+        "crates/ulmdb/src/rollback.rs",
+        "crates/ulmdb/tests/rollback_validation.rs",
+        "crates/ulmdb-storage/src/publication.rs"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_env_rollback",
+          "kind": "function",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "55 valid modern rollback scenarios restore the eligible previous data and commit identity, including sequence reuse after an intervening commit.",
+          "path": "clients/lmdb-ulmdb/tests/parity_rollback_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 last-commit rollback",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "negative",
+          "case": "Zero/wrong/future/first IDs return CANT_ROLLBACK; no illegal consecutive rollback or intervening-operation sequence is used as a reference oracle.",
+          "path": "clients/lmdb-ulmdb/tests/parity_rollback_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 last-commit rollback",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "reopen",
+          "case": "Actual reopen sees restored data/IDs; callbacks and permitted quiet old-reader pointers/cursors remain valid.",
+          "path": "clients/lmdb-ulmdb/tests/parity_rollback_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 last-commit rollback",
+            "reference": "1.0.2"
+          }
+        },
+        {
+          "role": "resource",
+          "case": "Rollback retains native allocator high-water and counts reader setup without serializing ordinary readers; owned locks, snapshots and active aliases remain bounded.",
+          "path": "clients/c/src/rollback_tests.rs",
+          "status": "existing"
+        },
+        {
+          "role": "negative",
+          "case": "24 corrupt descriptor/inventory/catalog/segment cases fail before selection without leaking pins or poisoning; correctly hash-sealed malformed user trees retain normal native-open lazy checks and fail full verify/export.",
+          "path": "crates/ulmdb/tests/rollback_validation.rs",
+          "status": "existing"
+        },
+        {
+          "role": "resource",
+          "case": "Quiet old-reader borrowed values and cursors remain valid through an eligible exclusive-use rollback and actual reopen; exact traced modern fixture includes these retained capabilities.",
+          "path": "clients/lmdb-ulmdb/tests/parity_rollback_suite.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "scenario": "LMDB 1.0 last-commit rollback",
+            "reference": "1.0.2"
+          }
+        }
+      ],
+      "limits": "Qualified for the exact Linux Legacy-backed C adapter artifact and pinned LMDB 1.0.2 exclusive-use contract. Combined 61-check/14-stage gate, native/C faults and allocator, namespace, integrity and reader-resource controls pass. Exact-file witnesses add one 256-byte metadata descriptor and zero data segments; A/B bytes, sizes and inodes remain unchanged. Ordinary-operation change budgets and controlled tail review pass. Rollback retains ordinary-open descriptor/inventory/file/catalog authentication with lazy checked user-tree access; full backup/check/export audits remain strict. Cost still scales with authenticated bytes: 731.859ms at 65,536 records in each of two databases versus reference0.029ms; no constant-time or operation-speed parity claim. WRITEMAP named-deletion reference assertions remain explicit exclusions. NOLOCK callers retain manual exclusion duties; Range/replica rollback remains unsupported. G03/G04/G05 and other backend qualification remain open. Evidence: conformance/features/m3-f02-f03-qualified.",
+      "references": [
+        "1.0.2"
+      ]
+    },
+    {
+      "id": "F04",
+      "target": "Incremental snapshot to a caller FD",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M7",
+      "priority": "P2",
+      "sources": [
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_env_incr_dumpfd",
+          "kind": "function",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Base plus delta reproduces all logical records and flags.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f04.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Wrong base and short/error I/O preserve FD ownership.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f04.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Restored base plus captured deltas reopens consistently.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f04.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No adapter implementation or public declaration; reference header is an audit pointer, not implementation evidence."
+    },
+    {
+      "id": "F05",
+      "target": "Incremental snapshot to a new file",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M7",
+      "priority": "P2",
+      "sources": [
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_env_incr_dump",
+          "kind": "function",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Create a complete bounded delta from the requested base.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f05.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Existing path, invalid transaction ID and disk full fail safely.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f05.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Base plus written delta reproduces the reopened current snapshot.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f05.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No adapter implementation or public declaration; reference header is an audit pointer, not implementation evidence."
+    },
+    {
+      "id": "F06",
+      "target": "Apply incremental snapshot from an FD",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M7",
+      "priority": "P2",
+      "sources": [
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_env_incr_loadfd",
+          "kind": "function",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Apply checked delta with exclusive access and atomic publication.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f06.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Wrong base, truncation, corruption and trailing bytes preserve old destination.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f06.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Interrupt each apply boundary and reopen an allowed complete state.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f06.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No adapter implementation or public declaration; reference header is an audit pointer, not implementation evidence."
+    },
+    {
+      "id": "F07",
+      "target": "Configurable persisted page geometry",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M6",
+      "priority": "P2",
+      "sources": [
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_env_set_pagesize",
+          "kind": "function",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Supported geometry survives create/split/copy/migration.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f07.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Reject invalid sizes and incompatible persisted descriptors.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f07.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Reopen each advertised geometry with exact key/duplicate limits.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f07.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No adapter implementation or public declaration; reference header is an audit pointer, not implementation evidence."
+    },
+    {
+      "id": "F08",
+      "target": "Application checksum callbacks",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M8",
+      "priority": "P2",
+      "sources": [
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_env_set_checksum",
+          "kind": "function",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Verify callback sizes/order/coverage across persisted object classes.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f08.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Reject tampered bytes and failing callbacks without publishing.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f08.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Reopened checksummed snapshots and overflow values verify.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f08.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No adapter implementation or public declaration; reference header is an audit pointer, not implementation evidence."
+    },
+    {
+      "id": "F09",
+      "target": "Application encryption callbacks",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M8",
+      "priority": "P2",
+      "sources": [
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_env_set_encrypt",
+          "kind": "function",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Callbacks protect storage, WAL, checkpoints and archives.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f09.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Wrong keys, authentication failure and scratch quota failures fail closed.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f09.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Encrypted snapshots reopen with correct callback/key and preserve borrowing.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f09.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No adapter implementation or public declaration; reference header is an audit pointer, not implementation evidence."
+    },
+    {
+      "id": "F10",
+      "target": "Load crypto modules",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M8",
+      "priority": "P2",
+      "sources": [
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_modload",
+          "kind": "function",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Resolve configured module ABI/hooks with owned lifetime.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f10.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Missing modules/symbols and ABI mismatches return expected errors.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f10.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Reopened environments retain a valid module callback owner.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f10.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No adapter implementation or public declaration; reference header is an audit pointer, not implementation evidence."
+    },
+    {
+      "id": "F11",
+      "target": "Unload crypto modules",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M8",
+      "priority": "P2",
+      "sources": [
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_modunload",
+          "kind": "function",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Release a module only after its environment/cache callbacks finish.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f11.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Invalid handles and unload ordering follow upstream contract.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f11.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Close/reload/reopen cycle retains callback safety.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f11.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No adapter implementation or public declaration; reference header is an audit pointer, not implementation evidence."
+    },
+    {
+      "id": "F12",
+      "target": "Set up crypto module callbacks",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M8",
+      "priority": "P2",
+      "sources": [
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_modsetup",
+          "kind": "function",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Propagate module key derivation, metadata and callback setup.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f12.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Setup and allocation failures release all partial ownership.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f12.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Reopen a module-configured encrypted environment.",
+          "path": "clients/lmdb-ulmdb/tests/feature_f12.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No adapter implementation or public declaration; reference header is an audit pointer, not implementation evidence."
+    },
+    {
+      "id": "G01",
+      "target": "Shared reader-slot high-water statistics",
+      "state": "supported",
+      "implementation": "implemented",
+      "milestone": "M0",
+      "priority": "P0",
+      "sources": [
+        "clients/c/src/environment.rs",
+        "clients/c/src/process.rs"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "me_numreaders",
+          "kind": "field",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Shared reader high-water and retained TLS slot behavior.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readers.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Reader slot high-water contract",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "A fifth reader fails when four shared slots are occupied, without lowering high-water.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readers.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Reader slot high-water contract",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Exclusive reopen resets reader-table high-water.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readers.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Reader slot high-water contract",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "Shared reader high-water and retained TLS slot behavior.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readers.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Reader slot high-water contract",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "A fifth reader fails when four shared slots are occupied, without lowering high-water.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readers.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Reader slot high-water contract",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Exclusive reopen resets reader-table high-water.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readers.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Reader slot high-water contract",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "Shared reader high-water and retained TLS slot behavior.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readers.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Reader slot high-water contract",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "A fifth reader fails when four shared slots are occupied, without lowering high-water.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readers.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Reader slot high-water contract",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Exclusive reopen resets reader-table high-water.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readers.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Reader slot high-water contract",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Malformed shared high-water is rejected; exclusive reopen reinitializes metadata.",
+          "path": "clients/c/tests/readers.py",
+          "status": "existing"
+        }
+      ],
+      "limits": "Qualified for the exact Legacy-backed Linux C adapter artifact in features-v2 against its three pinned reference versions: shared high-water, slot reuse/reset/TLS/dead-reader behavior, reader-table-full and reopen. This does not qualify native maintenance coordination. Corruption controls also exist in readers.py.",
+      "references": [
+        "0.9.31",
+        "1.0.2",
+        "0.9.36"
+      ]
+    },
+    {
+      "id": "G02",
+      "target": "Read-only child transactions",
+      "state": "supported",
+      "implementation": "implemented",
+      "milestone": "M2",
+      "priority": "P1",
+      "sources": [
+        "clients/c/src/private_read.rs",
+        "clients/c/src/lib.rs",
+        "clients/c/src/transaction.rs",
+        "clients/c/src/operations.rs",
+        "clients/lmdb-ulmdb/tests/parity_readonly_children.c"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_txn_begin",
+          "kind": "function",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Selected modern mode: sibling readonly children borrow parent private KV, duplicate, reserved and newly created database data; nested write parents and readonly-child commit/abort follow pinned LMDB1.0.2.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readonly_children.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "LMDB 1.0 read-only child transactions",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Readonly parents cannot nest; writer siblings, parent operations and writes through readonly children return the reference errors; nested reset is a no-op and renew fails.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readonly_children.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "LMDB 1.0 read-only child transactions",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "After ending all children, only committed parent data survives independent reopen; aborted nested and outer changes remain absent.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readonly_children.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "LMDB 1.0 read-only child transactions",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "resource",
+          "case": "TLS, NOTLS, WRITEMAP and NOLOCK: readonly children consume no global reader slots even at capacity; siblings share borrowed private pointers and NOTLS siblings read concurrently.",
+          "path": "clients/lmdb-ulmdb/tests/parity_readonly_children.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "LMDB 1.0 read-only child transactions",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "resource",
+          "case": "Adapter-only ownership regressions preserve ancestor writers under invalid consumption and capacity failure, and retain provisional DBI cleanup across NOTLS child transfer.",
+          "path": "clients/c/src/transaction.rs",
+          "status": "existing"
+        }
+      ],
+      "limits": "Qualified for the exact Legacy-backed Linux C adapter artifact in features-v2 against pinned LMDB1.0.2, with modern mode explicitly selected by ULMDB_LMDB_ABI=1.0 or persisted LMDB-ABI. Legacy mode retains LMDB0.9 readonly-child rejection. Native/Resident/Range APIs, automatic ABI-major loader selection, durability and performance remain separate targets.",
+      "references": [
+        "1.0.2"
+      ]
+    },
+    {
+      "id": "G03",
+      "target": "Previous-snapshot open",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M3",
+      "priority": "P1",
+      "sources": [
+        "clients/c/src/environment.rs",
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "MDB_PREVSNAPSHOT",
+          "kind": "constant",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Open previous committed snapshot and publish subsequent permitted commit.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g03.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Reject prohibited concurrent use and missing/invalid previous roots.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g03.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Previous view and flag reset survive allowed reopen sequences.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g03.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "No complete target qualification has been recorded."
+    },
+    {
+      "id": "G04",
+      "target": "Real durability policy and forced sync",
+      "state": "emulated",
+      "implementation": "partial",
+      "milestone": "M3/M11",
+      "priority": "P1",
+      "sources": [
+        "clients/c/src/environment.rs",
+        "clients/c/src/transaction.rs",
+        "crates/ulmdb/src/write.rs"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_env_sync",
+          "kind": "function",
+          "status": "present"
+        },
+        {
+          "name": "MDB_NOSYNC",
+          "kind": "constant",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Instrument actual data/metadata fences for each allowed policy.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g04.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Injected sync/write/selection failure never exposes a torn committed state.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g04.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Crash and reopen each policy with explicitly allowed loss envelope.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g04.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Flags are accepted but normal native publication remains synchronous; historical flag traces do not prove async durability behavior.",
+      "historical_context": [
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Environment and transaction contract",
+            "reference": "0.9.31",
+            "seed": 0
+          }
+        },
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Environment and transaction contract",
+            "reference": "1.0.2",
+            "seed": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "G05",
+      "target": "Shared native process and maintenance leases",
+      "state": "unqualified",
+      "implementation": "implemented",
+      "milestone": "M1",
+      "priority": "P1",
+      "sources": [
+        "crates/ulmdb/src/coordinated.rs",
+        "crates/ulmdb/src/physical.rs",
+        "crates/ulmdb-storage/src/coordination/linux.rs",
+        "crates/ulmdb-storage/src/coordination/writer.rs",
+        "clients/c/src/process.rs"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Independent processes serialize writes without lost updates.",
+          "path": "crates/ulmdb/tests/coordinated.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-legacy"
+          ],
+          "selector": {
+            "suite": "native",
+            "test": "independent_writers_serialize_without_lost_updates",
+            "backend": "file-legacy"
+          }
+        },
+        {
+          "role": "negative",
+          "case": "A live malformed physical pin blocks reclamation before any deletion.",
+          "path": "crates/ulmdb/tests/coordinated_faults.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-legacy"
+          ],
+          "selector": {
+            "suite": "native-faults",
+            "test": "malformed_live_physical_pin_stops_reclaim_before_any_unlink",
+            "backend": "file-legacy"
+          }
+        },
+        {
+          "role": "reopen",
+          "case": "A borrowed snapshot outlives its owner, survives foreign maintenance and exports to a reopened copy.",
+          "path": "crates/ulmdb/tests/coordinated.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-legacy"
+          ],
+          "selector": {
+            "suite": "native",
+            "test": "snapshot_outlives_native_or_coordinated_owner_and_exports_after_foreign_maintenance",
+            "backend": "file-legacy"
+          }
+        },
+        {
+          "role": "resource",
+          "case": "Physical registry exhaustion fails before publication and recovers after release.",
+          "path": "crates/ulmdb/tests/coordinated_faults.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-legacy"
+          ],
+          "selector": {
+            "suite": "native-faults",
+            "test": "exhausted_physical_registry_fails_before_publication_then_recovers",
+            "backend": "file-legacy"
+          }
+        },
+        {
+          "role": "positive",
+          "case": "Independent processes serialize writes without lost updates.",
+          "path": "crates/ulmdb/tests/coordinated.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-cohort"
+          ],
+          "selector": {
+            "suite": "native",
+            "test": "independent_writers_serialize_without_lost_updates",
+            "backend": "file-cohort"
+          }
+        },
+        {
+          "role": "negative",
+          "case": "A live malformed physical pin blocks reclamation before any deletion.",
+          "path": "crates/ulmdb/tests/coordinated_faults.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-cohort"
+          ],
+          "selector": {
+            "suite": "native-faults",
+            "test": "malformed_live_physical_pin_stops_reclaim_before_any_unlink",
+            "backend": "file-cohort"
+          }
+        },
+        {
+          "role": "reopen",
+          "case": "A borrowed snapshot outlives its owner, survives foreign maintenance and exports to a reopened copy.",
+          "path": "crates/ulmdb/tests/coordinated.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-cohort"
+          ],
+          "selector": {
+            "suite": "native",
+            "test": "snapshot_outlives_native_or_coordinated_owner_and_exports_after_foreign_maintenance",
+            "backend": "file-cohort"
+          }
+        },
+        {
+          "role": "resource",
+          "case": "Physical registry exhaustion fails before publication and recovers after release.",
+          "path": "crates/ulmdb/tests/coordinated_faults.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-cohort"
+          ],
+          "selector": {
+            "suite": "native-faults",
+            "test": "exhausted_physical_registry_fails_before_publication_then_recovers",
+            "backend": "file-cohort"
+          }
+        },
+        {
+          "role": "positive",
+          "case": "Independent processes serialize writes without lost updates.",
+          "path": "crates/ulmdb/tests/coordinated.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-indexed"
+          ],
+          "selector": {
+            "suite": "native",
+            "test": "independent_writers_serialize_without_lost_updates",
+            "backend": "file-indexed"
+          }
+        },
+        {
+          "role": "negative",
+          "case": "A live malformed physical pin blocks reclamation before any deletion.",
+          "path": "crates/ulmdb/tests/coordinated_faults.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-indexed"
+          ],
+          "selector": {
+            "suite": "native-faults",
+            "test": "malformed_live_physical_pin_stops_reclaim_before_any_unlink",
+            "backend": "file-indexed"
+          }
+        },
+        {
+          "role": "reopen",
+          "case": "A borrowed snapshot outlives its owner, survives foreign maintenance and exports to a reopened copy.",
+          "path": "crates/ulmdb/tests/coordinated.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-indexed"
+          ],
+          "selector": {
+            "suite": "native",
+            "test": "snapshot_outlives_native_or_coordinated_owner_and_exports_after_foreign_maintenance",
+            "backend": "file-indexed"
+          }
+        },
+        {
+          "role": "resource",
+          "case": "Physical registry exhaustion fails before publication and recovers after release.",
+          "path": "crates/ulmdb/tests/coordinated_faults.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "file-indexed"
+          ],
+          "selector": {
+            "suite": "native-faults",
+            "test": "exhausted_physical_registry_fails_before_publication_then_recovers",
+            "backend": "file-indexed"
+          }
+        },
+        {
+          "role": "positive",
+          "case": "The actual frozen C shared library and independently linked native owners coordinate writes, old snapshots and reclamation; Legacy adapter alias scope.",
+          "path": "clients/c/src/coordination_tests.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "suite": "mixed-adapter",
+            "test": "coordination_tests::mixed_native_c_and_snapshot_lifetimes",
+            "backend": "adapter-file"
+          }
+        },
+        {
+          "role": "negative",
+          "case": "The actual frozen C shared library and independently linked native owners coordinate writes, old snapshots and reclamation; Legacy adapter alias scope.",
+          "path": "clients/c/src/coordination_tests.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "suite": "mixed-adapter",
+            "test": "coordination_tests::mixed_native_c_and_snapshot_lifetimes",
+            "backend": "adapter-file"
+          }
+        },
+        {
+          "role": "reopen",
+          "case": "The actual frozen C shared library and independently linked native owners coordinate writes, old snapshots and reclamation; Legacy adapter alias scope.",
+          "path": "clients/c/src/coordination_tests.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "suite": "mixed-adapter",
+            "test": "coordination_tests::mixed_native_c_and_snapshot_lifetimes",
+            "backend": "adapter-file"
+          }
+        },
+        {
+          "role": "resource",
+          "case": "The actual frozen C shared library and independently linked native owners coordinate writes, old snapshots and reclamation; Legacy adapter alias scope.",
+          "path": "clients/c/src/coordination_tests.rs",
+          "status": "recorded",
+          "receipt": "native-coordination",
+          "backends": [
+            "adapter-file"
+          ],
+          "selector": {
+            "suite": "mixed-adapter",
+            "test": "coordination_tests::mixed_native_c_and_snapshot_lifetimes",
+            "backend": "adapter-file"
+          }
+        }
+      ],
+      "limits": "Linux functional coordination evidence is recorded for Legacy, Cohort and Indexed native files and the narrower Legacy adapter alias, including the actual frozen shared-library fixture. Full target support still requires accepted matched baseline/candidate performance. Pure open_snapshot retains its external coordination contract; the mixed fixture qualifies process-lifetime RTLD_NODELETE use only.",
+      "requires_performance": true,
+      "performance_gate": "pending matched baseline/candidate measurements and acceptance",
+      "qualification_requirements": [
+        {
+          "backend": "file-legacy",
+          "kind": "native-test",
+          "roles": [
+            "positive",
+            "negative",
+            "reopen",
+            "resource"
+          ]
+        },
+        {
+          "backend": "file-cohort",
+          "kind": "native-test",
+          "roles": [
+            "positive",
+            "negative",
+            "reopen",
+            "resource"
+          ]
+        },
+        {
+          "backend": "file-indexed",
+          "kind": "native-test",
+          "roles": [
+            "positive",
+            "negative",
+            "reopen",
+            "resource"
+          ]
+        },
+        {
+          "backend": "adapter-file",
+          "kind": "native-test",
+          "roles": [
+            "positive",
+            "negative",
+            "reopen",
+            "resource"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G06",
+      "target": "Automatic bounded space reuse and WAL lifecycle",
+      "state": "unsupported",
+      "implementation": "partial",
+      "milestone": "M5",
+      "priority": "P1",
+      "sources": [
+        "crates/ulmdb/src/compact.rs",
+        "crates/ulmdb/src/reclaim.rs",
+        "crates/ulmdb/src/resident/mod.rs"
+      ],
+      "backends": [
+        "file-legacy",
+        "file-cohort",
+        "file-indexed",
+        "resident"
+      ],
+      "declarations": [],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Sustain constant-size churn beyond ten original WAL capacities with bounded work.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g06.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Pinned readers, ENOSPC/EIO and failed cutovers preserve all live roots.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g06.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Restart at each checkpoint/cutover boundary and verify every record.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g06.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Manual file compact/prune/reclaim exist; Resident WAL retirement/checkpoint is absent. Full maintenance calls are not bounded per-cycle jobs."
+    },
+    {
+      "id": "G07",
+      "target": "Native integer/reverse/custom index traversal",
+      "state": "emulated",
+      "implementation": "partial",
+      "milestone": "M4",
+      "priority": "P1",
+      "sources": [
+        "clients/c/src/cursor_stream.rs",
+        "clients/c/src/operations.rs",
+        "crates/ulmdb/src/catalog.rs"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_set_compare",
+          "kind": "function",
+          "status": "present"
+        },
+        {
+          "name": "MDB_INTEGERKEY",
+          "kind": "constant",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Native comparator traversal matches built-in and callback ordering/equality.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g07.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Comparator collisions, invalid widths and missing reopen registration are handled.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g07.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Reopen registered order and preserve split/merge/duplicate equality.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g07.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Logical adapter ordering is implemented with scans/materialization; native byte-order fast paths do not provide these comparator indexes.",
+      "historical_context": [
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Ordering and duplicate flags",
+            "reference": "0.9.31",
+            "seed": 0
+          }
+        },
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Ordering and duplicate flags",
+            "reference": "1.0.2",
+            "seed": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "G08",
+      "target": "Bounded append and duplicate-append paths",
+      "state": "emulated",
+      "implementation": "partial",
+      "milestone": "M4",
+      "priority": "P1",
+      "sources": [
+        "clients/c/src/operations.rs",
+        "crates/ulmdb/src/bulk.rs"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [
+        {
+          "name": "MDB_APPEND",
+          "kind": "constant",
+          "status": "present"
+        },
+        {
+          "name": "MDB_APPENDDUP",
+          "kind": "constant",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Tail checks and append builders avoid full-index scans for supported orderings.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g08.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Out-of-order input and partial duplicate batches return reference-compatible errors.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g08.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Reopen sorted append, overwrite and aborted-batch results.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g08.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "APPEND logical checks exist but collect/sort records; sorted native bulk load is a different API.",
+      "historical_context": [
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Cursor input and write contract",
+            "reference": "0.9.31",
+            "seed": 0
+          }
+        },
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Cursor input and write contract",
+            "reference": "1.0.2",
+            "seed": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "G09",
+      "target": "Writer-private reserve without staging copies",
+      "state": "emulated",
+      "implementation": "partial",
+      "milestone": "M4",
+      "priority": "P2",
+      "sources": [
+        "clients/c/src/operations.rs",
+        "clients/c/tests/reserve.c"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [
+        {
+          "name": "MDB_RESERVE",
+          "kind": "constant",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Reserve direct writer-private storage with measured bounded copies/allocations.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g09.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Intervening updates, allocation failure and savepoint abort preserve pointer contract.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g09.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Reserved values persist after commit and disappear on abort.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g09.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "The existing logical reserve contract stages a zeroed vector and copies it later; it does not prove zero-copy reservation.",
+      "historical_context": [
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Reserve buffer lifetimes",
+            "reference": "0.9.31",
+            "seed": 0
+          }
+        },
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Reserve buffer lifetimes",
+            "reference": "1.0.2",
+            "seed": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "G10",
+      "target": "Truthful physical tree and allocation statistics",
+      "state": "unqualified",
+      "implementation": "partial",
+      "milestone": "M6/M10",
+      "priority": "P2",
+      "sources": [
+        "clients/c/src/environment.rs",
+        "crates/ulmdb/src/stats.rs"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [
+        {
+          "name": "MDB_stat",
+          "kind": "type",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Compare reported tree/overflow/allocation metrics with independent traversal.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g10.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Corrupt tree metrics fail without fabricating zero placeholder counts.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g10.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Metrics describe reopened compacted/split/overflow data accurately.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g10.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Native inventory statistics exist; adapter physical fields are placeholders. LMDB physical page-count identity is outside native format scope."
+    },
+    {
+      "id": "G11",
+      "target": "Configurable capacity, large values and scalable catalogs",
+      "state": "emulated",
+      "implementation": "partial",
+      "milestone": "M6",
+      "priority": "P2",
+      "sources": [
+        "clients/c/src/environment.rs",
+        "crates/ulmdb/src/write.rs",
+        "crates/ulmdb/src/resident/catalog_codec.rs"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed",
+        "resident"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_env_set_mapsize",
+          "kind": "function",
+          "status": "present"
+        },
+        {
+          "name": "mdb_env_set_maxdbs",
+          "kind": "function",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Support qualified page-dependent limits, checked growth and bounded overflow values.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g11.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Test below/at/above key, duplicate, value, catalog and map quotas without partial publication.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g11.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Growth adoption, capacity metadata and large values survive reopen.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g11.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Logical mapsize exists. Adapter keys/dups 511 bytes, native file values 64 MiB and Resident values 4080 bytes; current geometry and catalog limits remain."
+    },
+    {
+      "id": "G12",
+      "target": "Readahead and initialization storage policies",
+      "state": "unqualified",
+      "implementation": "partial",
+      "milestone": "M4/M11",
+      "priority": "P2",
+      "sources": [
+        "clients/c/src/environment.rs",
+        "crates/ulmdb-storage/src/mapping.rs"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [
+        {
+          "name": "MDB_NORDAHEAD",
+          "kind": "constant",
+          "status": "present"
+        },
+        {
+          "name": "MDB_NOMEMINIT",
+          "kind": "constant",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Apply supported mapping advice and initialized-range accounting.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g12.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Prove no uninitialized bytes become observable during copy/recovery/reservation.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g12.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Policies remain explicit after reopen with supported platform advice.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g12.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Flags are advisory compatibility metadata; accepting a flag does not demonstrate a storage optimization."
+    },
+    {
+      "id": "G13",
+      "target": "Explicit upstream-header ABI profiles",
+      "state": "unqualified",
+      "implementation": "partial",
+      "milestone": "M0",
+      "priority": "P2",
+      "sources": [
+        "clients/c/include/lmdb.h",
+        "clients/lmdb-ulmdb/tests/parity_abi.c"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Compile/link each enabled declaration and constant against genuine pinned upstream headers.",
+          "path": "clients/lmdb-ulmdb/tests/parity_modern_abi.c",
+          "status": "existing"
+        },
+        {
+          "role": "negative",
+          "case": "Missing exports, altered constants/types and trace mismatches fail release qualification.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g13.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Rebuild/profile selection does not silently change old header expectations.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g13.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "The historical common header probe does not qualify the complete modern API; newly added modern declarations require fresh fixture evidence."
+    },
+    {
+      "id": "G14",
+      "target": "Version-specific main catalog and DBI lifetimes",
+      "state": "supported",
+      "implementation": "implemented",
+      "milestone": "M2",
+      "priority": "P2",
+      "sources": [
+        "clients/c/src/catalog.rs",
+        "clients/c/src/dbi_state.rs",
+        "clients/c/src/operations.rs",
+        "clients/c/src/transaction.rs",
+        "crates/ulmdb/src/detached.rs",
+        "crates/ulmdb/src/savepoint.rs"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "mdb_drop",
+          "kind": "function",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "52 scenarios distinguish transaction-valid, loaded and dirty DBIs, nested commit/abort and retained KV/duplicate cursors on the three pinned versions.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "52 scenarios distinguish transaction-valid, loaded and dirty DBIs, nested commit/abort and retained KV/duplicate cursors on the three pinned versions.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "52 scenarios distinguish transaction-valid, loaded and dirty DBIs, nested commit/abort and retained KV/duplicate cursors on the three pinned versions.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Readonly/cache-only roots reject put/del/cursor writes without poisoning or resurrection; flags/alias/comparison do not load, capacity ordering and modern DBIS_BUSY follow the reference.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Readonly/cache-only roots reject put/del/cursor writes without poisoning or resurrection; flags/alias/comparison do not load, capacity ordering and modern DBIS_BUSY follow the reference.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Readonly/cache-only roots reject put/del/cursor writes without poisoning or resurrection; flags/alias/comparison do not load, capacity ordering and modern DBIS_BUSY follow the reference.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Old readers survive main clear; same-environment stale alias remains exported, actual reopen discovers missing named records, while dirty-before-clear descriptors are republished only as upstream permits.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Old readers survive main clear; same-environment stale alias remains exported, actual reopen discovers missing named records, while dirty-before-clear descriptors are republished only as upstream permits.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Old readers survive main clear; same-environment stale alias remains exported, actual reopen discovers missing named records, while dirty-before-clear descriptors are republished only as upstream permits.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "resource",
+          "case": "Full exported alias table remains full after main clear; reusable slots and callback/flag cleanup survive named deletion and abort without copying database contents.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "resource",
+          "case": "Full exported alias table remains full after main clear; reusable slots and callback/flag cleanup survive named deletion and abort without copying database contents.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "resource",
+          "case": "Full exported alias table remains full after main clear; reusable slots and callback/flag cleanup survive named deletion and abort without copying database contents.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_lifetimes.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Version-specific main catalog and DBI lifetimes",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "Proper named reopen loads the restored catalog entry and preserves actual flags after deletion abort; readonly commit exports its registered alias.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "Proper named reopen loads the restored catalog entry and preserves actual flags after deletion abort; readonly commit exports its registered alias.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "Proper named reopen loads the restored catalog entry and preserves actual flags after deletion abort; readonly commit exports its registered alias.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Readonly abort/reset and write abort do not export new aliases; modern main clear ignores recovered-only bindings, capacity checks precede dormant activation and proper reopen resets comparators.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Readonly abort/reset and write abort do not export new aliases; modern main clear ignores recovered-only bindings, capacity checks precede dormant activation and proper reopen resets comparators.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Readonly abort/reset and write abort do not export new aliases; modern main clear ignores recovered-only bindings, capacity checks precede dormant activation and proper reopen resets comparators.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Named deletion abort restores data without exporting a closed alias; nested rollback and genuine environment reopen preserve the exact durable catalog.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Named deletion abort restores data without exporting a closed alias; nested rollback and genuine environment reopen preserve the exact durable catalog.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Named deletion abort restores data without exporting a closed alias; nested rollback and genuine environment reopen preserve the exact durable catalog.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "resource",
+          "case": "Recovered data bindings do not consume the configured active alias count; a full active table rejects reactivation without losing original data.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "resource",
+          "case": "Recovered data bindings do not consume the configured active alias count; a full active table rejects reactivation without losing original data.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "resource",
+          "case": "Recovered data bindings do not consume the configured active alias count; a full active table rejects reactivation without losing original data.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_recovery.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transactional DBI registration and recovery",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "An environment alias published after an old reader begins can be returned by name without inventing transaction-local validity; fresh or renewed readers see the published data.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_visibility.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transaction-local DBI alias visibility",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "An environment alias published after an old reader begins can be returned by name without inventing transaction-local validity; fresh or renewed readers see the published data.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_visibility.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transaction-local DBI alias visibility",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "An environment alias published after an old reader begins can be returned by name without inventing transaction-local validity; fresh or renewed readers see the published data.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_visibility.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transaction-local DBI alias visibility",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Old-reader flags and data access through a future alias return the pinned reference's EINVAL while leaving the exported alias and writer progress intact.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_visibility.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transaction-local DBI alias visibility",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Old-reader flags and data access through a future alias return the pinned reference's EINVAL while leaving the exported alias and writer progress intact.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_visibility.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transaction-local DBI alias visibility",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Old-reader flags and data access through a future alias return the pinned reference's EINVAL while leaving the exported alias and writer progress intact.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_visibility.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transaction-local DBI alias visibility",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Ending or renewing the old reader restores valid alias access to the committed catalog without weakening snapshot isolation.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_visibility.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transaction-local DBI alias visibility",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Ending or renewing the old reader restores valid alias access to the committed catalog without weakening snapshot isolation.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_visibility.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transaction-local DBI alias visibility",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Ending or renewing the old reader restores valid alias access to the committed catalog without weakening snapshot isolation.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_visibility.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Transaction-local DBI alias visibility",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "32 scenarios preserve default, reverse, integer and custom global key/duplicate comparators on an old transaction-invalid environment alias, including exact callback counts.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_comparison.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Global comparator metadata on old DBI aliases",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "32 scenarios preserve default, reverse, integer and custom global key/duplicate comparators on an old transaction-invalid environment alias, including exact callback counts.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_comparison.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Global comparator metadata on old DBI aliases",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "positive",
+          "case": "32 scenarios preserve default, reverse, integer and custom global key/duplicate comparators on an old transaction-invalid environment alias, including exact callback counts.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_comparison.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Global comparator metadata on old DBI aliases",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Comparison does not grant transaction-local DBI validity: flags/get retain EINVAL before and after cmp/dcmp, while custom callbacks still run.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_comparison.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Global comparator metadata on old DBI aliases",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Comparison does not grant transaction-local DBI validity: flags/get retain EINVAL before and after cmp/dcmp, while custom callbacks still run.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_comparison.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Global comparator metadata on old DBI aliases",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "negative",
+          "case": "Comparison does not grant transaction-local DBI validity: flags/get retain EINVAL before and after cmp/dcmp, while custom callbacks still run.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_comparison.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Global comparator metadata on old DBI aliases",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Already-persisted database aliases reestablish global ordering at proper export open, without a flags/get call and with explicit custom callback re-registration.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_comparison.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Global comparator metadata on old DBI aliases",
+            "reference": "0.9.31",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Already-persisted database aliases reestablish global ordering at proper export open, without a flags/get call and with explicit custom callback re-registration.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_comparison.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Global comparator metadata on old DBI aliases",
+            "reference": "0.9.36",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        },
+        {
+          "role": "reopen",
+          "case": "Already-persisted database aliases reestablish global ordering at proper export open, without a flags/get call and with explicit custom callback re-registration.",
+          "path": "clients/lmdb-ulmdb/tests/parity_catalog_comparison.c",
+          "status": "recorded",
+          "receipt": "features-v2",
+          "selector": {
+            "scenario": "Global comparator metadata on old DBI aliases",
+            "reference": "1.0.2",
+            "seed": 0
+          },
+          "backends": [
+            "adapter-file"
+          ]
+        }
+      ],
+      "limits": "Qualified for exact Linux Legacy-backed C adapter artifact 062fb159d59525c06d80411a2579dadcbaec88807075ea8a0a144046792bae64 in explicitly selected 0.9/1.0 mode. Four unchanged fixtures cover 111 scenarios per pinned reference; full 55-check feature/common24/native52/workspace/all-client/public-Python/negative-control gate passed. Native ownership/resource regressions and the predeclared G14 change budget passed; disk initial loading fell 5.81% outside that budget and remains recorded. This does not qualify other native backends, automatic ABI selection, broader performance parity or the separate transaction-ID/prepare/rollback targets.",
+      "historical_context": [
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Database clear and drop",
+            "reference": "0.9.31",
+            "seed": 0
+          }
+        },
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Database clear and drop",
+            "reference": "1.0.2",
+            "seed": 0
+          }
+        }
+      ],
+      "references": [
+        "0.9.31",
+        "0.9.36",
+        "1.0.2"
+      ]
+    },
+    {
+      "id": "G15",
+      "target": "Requested file mode and shared-directory policy",
+      "state": "unsupported",
+      "implementation": "partial",
+      "milestone": "M10",
+      "priority": "P2",
+      "sources": [
+        "crates/ulmdb-storage/src/manifest.rs",
+        "clients/c/src/environment.rs"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Apply requested modes/umask to initialization, locks, writes and maintenance with two users.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g15.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Unauthorized users cannot open private data or inject writable metadata.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g15.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Created and compacted files retain declared permissions through reopen/migration.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g15.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Native initialization enforces private directory mode; complete LMDB file-mode behavior is not implemented."
+    },
+    {
+      "id": "G16",
+      "target": "Binary-safe streaming dump/load and online tools",
+      "state": "unsupported",
+      "implementation": "partial",
+      "milestone": "M10",
+      "priority": "P2",
+      "sources": [
+        "crates/ulmdb/src/main.rs",
+        "crates/ulmdb/src/backup.rs"
+      ],
+      "backends": [
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Round-trip all raw keys/values, DB flags and duplicate pairs through streaming tools.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g16.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Malformed input, short I/O and failed imports publish no partial destination.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g16.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Reloaded dump matches every raw pair and online reads run beside a writer.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g16.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Existing check/stats/export/restore are not binary-safe dump/load; scan is lossy and truncated, and ordinary CLI opens exclusive writer ownership."
+    },
+    {
+      "id": "G17",
+      "target": "Actual fixed-address and writable-map modes",
+      "state": "unsupported",
+      "implementation": "partial",
+      "milestone": "M11",
+      "priority": "P3",
+      "sources": [
+        "clients/c/src/environment.rs",
+        "crates/ulmdb-storage/src/mapping.rs"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "MDB_FIXEDMAP",
+          "kind": "constant",
+          "status": "present"
+        },
+        {
+          "name": "MDB_WRITEMAP",
+          "kind": "constant",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Implement real opt-in fixed-base and writable mapped ownership with explicit incompatibilities.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g17.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Occupied bases and address pressure fail without overwriting unrelated mappings.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g17.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Verify address/persistent-pointer stability across independent process reopen.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g17.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "FIXEDMAP is rejected and WRITEMAP is compatibility behavior; native immutable segments do not promise persistent raw pointers."
+    },
+    {
+      "id": "G18",
+      "target": "Bounded chunk mapping and callback decode cache",
+      "state": "unsupported",
+      "implementation": "missing",
+      "milestone": "M8/M11",
+      "priority": "P3",
+      "sources": [
+        "crates/ulmdb-storage/src/mapping.rs",
+        "benchmark/support/lmdb/vendor/lmdb.h"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "MDB_REMAP_CHUNKS",
+          "kind": "constant",
+          "status": "missing"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Pin decoded buffers and bound generation-safe mapping/cache eviction.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g18.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Pinned borrowed views, callback errors and cache exhaustion remain safe.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g18.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Reopen chunk/cache profiles without changing pointer-lifetime guarantees.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g18.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Native multi-file mappings do not implement the modern LMDB chunk-remap/cache contract."
+    },
+    {
+      "id": "G19",
+      "target": "Genuine caller-managed NOLOCK access",
+      "state": "emulated",
+      "implementation": "partial",
+      "milestone": "M11",
+      "priority": "P3",
+      "sources": [
+        "clients/c/src/environment.rs",
+        "clients/c/src/process.rs"
+      ],
+      "backends": [
+        "adapter-file"
+      ],
+      "declarations": [
+        {
+          "name": "MDB_NOLOCK",
+          "kind": "constant",
+          "status": "present"
+        }
+      ],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "External-lock-serialized callers bypass the documented internal coordination.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g19.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Invalid/unsupported policy combinations fail explicitly and ownership stays scoped.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g19.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Two independently started caller-locked processes reopen without hidden leases.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g19.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Reader coordination can be bypassed, but writer/native ownership leases remain. This is not exact no-lock behavior.",
+      "historical_context": [
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Environment and transaction contract",
+            "reference": "0.9.31",
+            "seed": 0
+          }
+        },
+        {
+          "receipt": "common-v1",
+          "selector": {
+            "scenario": "Environment and transaction contract",
+            "reference": "1.0.2",
+            "seed": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "G20",
+      "target": "macOS and Windows host qualification",
+      "state": "unqualified",
+      "implementation": "partial",
+      "milestone": "M10",
+      "priority": "P3",
+      "sources": [
+        "crates/ulmdb-storage/src/residency/os.rs",
+        "clients/c/src/process.rs"
+      ],
+      "backends": [
+        "adapter-file",
+        "file-legacy",
+        "file-cohort",
+        "file-indexed"
+      ],
+      "declarations": [],
+      "tests": [
+        {
+          "role": "positive",
+          "case": "Run native/adapter process, mapping, copy and crash journeys on actual advertised hosts.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g20.c",
+          "status": "planned"
+        },
+        {
+          "role": "negative",
+          "case": "Platform-specific lock, replace, loader and handle failures preserve data/ownership.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g20.c",
+          "status": "planned"
+        },
+        {
+          "role": "reopen",
+          "case": "Windows/macOS restart and process-death recovery pass host-specific suites.",
+          "path": "clients/lmdb-ulmdb/tests/feature_g20.c",
+          "status": "planned"
+        }
+      ],
+      "limits": "Linux evidence does not qualify Windows/macOS. Non-Unix page-size/residency paths and Unix-specific adapter loader/FD paths remain incomplete."
+    }
+  ]
+}
