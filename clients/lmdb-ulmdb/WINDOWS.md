@@ -28,7 +28,7 @@ target/lmdb-ulmdb-windows/bin/ulmdb-migrate.exe C:/data/lmdb C:/data/new-ulmdb
 
 - A competing LMDB DLL beside the application must be replaced explicitly.
 - Static LMDB, private DLL names and absolute loader bindings require application build changes.
-- [Migration and ABI options](README.md#use) · [Database tools](OPERATOR.md)
+- [Migration and ABI options](README.md#use)
 
 ## Test
 

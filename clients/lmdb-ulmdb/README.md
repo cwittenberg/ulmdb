@@ -49,7 +49,7 @@ target/lmdb-ulmdb/bin/ulmdb-migrate /path/to/lmdb /path/to/new-ulmdb
 - Explicit migration: point the application at the new destination.
 - Original and imported databases are separate; writes are not mirrored. Stop writing the original after switching.
 - Custom comparators: register them again in the application.
-- [C API](../c/include/lmdb.h) · [IP extensions](../c/include/ulmdb.h) · [Database tools](OPERATOR.md)
+- [C API](../c/include/lmdb.h) · [IP extensions](../c/include/ulmdb.h)
 
 ## Test
 
