@@ -27,8 +27,6 @@ Operations per second, geometric means of three runs. SQLite uses WAL with
 | Read | 2,776,989 | 1,660,288 | 455,490 | 6.10x |
 | Update | 145,257 | 128,143 | 58,247 | 2.49x |
 
-![ULMDB, LMDB and SQLite throughput](benchmark/graphs/resident-three-way-20261105.svg)
-
 [Full three-way comparison](benchmark/ULMDB_VS_LMDB_VS_SQLITE.md).
 
 
@@ -81,8 +79,6 @@ Operations per second, geometric means of three runs. SQLite uses WAL with
 | Load | 1,396,940 | 1,539,753 | 817,306 | 1.71x |
 | Read | 2,776,989 | 1,660,288 | 455,490 | 6.10x |
 | Update | 145,257 | 128,143 | 58,247 | 2.49x |
-
-![ULMDB, LMDB and SQLite throughput](benchmark/graphs/resident-three-way-20261105.svg)
 
 [Full three-way comparison](benchmark/ULMDB_VS_LMDB_VS_SQLITE.md).
 
@@ -163,17 +159,6 @@ flowchart LR
     Rust -.-> Snapshot --> Journal
 ```
 
-## Influential research
-Below references have been meaningful to performance, architecture and design of ULMDB
-
-- [How to Write to SSDs (PVLDB 2026)](https://www.vldb.org/pvldb/vol19/p1469-lee.pdf)
-- [An Evaluation of B-tree Compression Techniques (VLDB Journal 2026)](https://cs.purdue.edu/homes/csjgwang/pubs/VLDBJ26_BtreeCompression.pdf)
-- [B-Trees Are Back: Engineering Fast and Pageable Node Layouts (SIGMOD 2025)](https://www.cs.cit.tum.de/fileadmin/w00cfj/dis/papers/btrees-are-back.pdf)
-- [Moving on From Group Commit: Autonomous Commit Enables High Throughput and Low Latency on NVMe SSDs (SIGMOD 2025)](https://www.cs.cit.tum.de/fileadmin/w00cfj/dis/papers/latency.pdf)
-- [PermART (SIGMOD 2026)](https://cs.uwaterloo.ca/~kdaudjee/Daudjee-PermART.pdf)
-- [xNVMe (CIDR 2026)](https://www.vldb.org/cidrdb/papers/2026/p6-houlborg.pdf)
-- [Bf-Tree (PVLDB 2024)](https://www.vldb.org/pvldb/vol17/p3442-hao.pdf)
-- [FastCommit (USENIX ATC 2024)](https://www.usenix.org/conference/atc24/presentation/shirwadkar)
 
 ## LMDB compatibility
 
@@ -189,6 +174,20 @@ established. ipdon (an IP intelligence platform in development) is using it.
 More: [Engine source](crates/ulmdb) · [IPDon regional database](crates/ulmdb-ipdon/README.md) ·
 [Utilities](utility/README.md)
 
+
+## Influential research
+
+Below references have been meaningful to performance, architecture and design of ULMDB
+
+- [How to Write to SSDs (PVLDB 2026)](https://www.vldb.org/pvldb/vol19/p1469-lee.pdf)
+- [An Evaluation of B-tree Compression Techniques (VLDB Journal 2026)](https://cs.purdue.edu/homes/csjgwang/pubs/VLDBJ26_BtreeCompression.pdf)
+- [B-Trees Are Back: Engineering Fast and Pageable Node Layouts (SIGMOD 2025)](https://www.cs.cit.tum.de/fileadmin/w00cfj/dis/papers/btrees-are-back.pdf)
+- [Moving on From Group Commit: Autonomous Commit Enables High Throughput and Low Latency on NVMe SSDs (SIGMOD 2025)](https://www.cs.cit.tum.de/fileadmin/w00cfj/dis/papers/latency.pdf)
+- [PermART (SIGMOD 2026)](https://cs.uwaterloo.ca/~kdaudjee/Daudjee-PermART.pdf)
+- [xNVMe (CIDR 2026)](https://www.vldb.org/cidrdb/papers/2026/p6-houlborg.pdf)
+- [Bf-Tree (PVLDB 2024)](https://www.vldb.org/pvldb/vol17/p3442-hao.pdf)
+- [FastCommit (USENIX ATC 2024)](https://www.usenix.org/conference/atc24/presentation/shirwadkar)
+
 ## AI Disclosure
 
-AI has been used for benchmarking and scaffolding the clients. It's also been used for security review
+AI has been used as general companion for benchmarking and scaffolding the clients. It's also been used for security review
