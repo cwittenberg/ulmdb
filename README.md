@@ -85,6 +85,23 @@ fn main() -> Result<()> {
 [Rust examples](clients/rust/examples) | [IPv4/IPv6 example](clients/rust/examples/routes.rs) |
 [C, C++, Rust, Python and Node.js clients](clients/README.md)
 
+For sorted imports into existing indexes, Rust file transactions provide
+`upsert_sorted_kv` (including `upsert_sorted_kv_with_ordering`) and
+`upsert_sorted_prefixes` for IPv4/IPv6. They insert new records and replace
+existing values in bounded chunks, sharing tree work and preserving untouched
+subtrees. Input must increase strictly in the index's ordering; iterator or
+mutation errors require abort or savepoint rollback. The `load_sorted_*` APIs
+remain available for direct construction of empty indexes.
+
+Resumable file maintenance retires empty physical-pin generations under the
+registry and scan locks. Admission below the pin quota uses conservative
+reservation counts; full scans visit retained generations. Enabling discovery
+upgrades the coordination registry to the one-way RG3 profile, which older
+binaries reject. Existing RG2 registries upgrade within the discovery work
+budget. An interrupted generation-link mutation fails closed. Reopening does
+not repair it; recovery requires offline operator intervention after all owners
+have stopped, and no registry repair utility is provided.
+
 ## Explore your data
 
 **ulmdb explorer** (`uexplorer`) is a terminal app for browsing and editing your

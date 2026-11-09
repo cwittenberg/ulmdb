@@ -674,6 +674,7 @@ impl Environment {
         }
         Ok(())
     }
+    #[inline]
     pub fn begin_read(&self) -> ReadTxn {
         ReadTxn {
             snapshot: self.current.load_full(),

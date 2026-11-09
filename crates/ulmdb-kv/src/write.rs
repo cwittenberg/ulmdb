@@ -61,6 +61,8 @@ impl Separator {
 mod inline_insert;
 pub use inline_insert::classify_dense_v1_leaf;
 mod many;
+mod batch;
+pub use batch::{BatchUpsert, upsert_sorted, upsert_sorted_with};
 mod prune;
 mod reserved;
 use many::persist_many;

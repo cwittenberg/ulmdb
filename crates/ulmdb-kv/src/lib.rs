@@ -25,6 +25,7 @@ pub use read::{get, get_pair, height};
 pub use reader::Reader;
 pub use write::ordered::{delete_with, put_with};
 pub use write::{delete, put};
+pub use write::{BatchUpsert, upsert_sorted, upsert_sorted_with};
 pub use write::classify_dense_v1_leaf;
 pub use write::{put_reserved, put_reserved_with};
 

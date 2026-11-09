@@ -3,6 +3,7 @@
 //! Each root belongs to one address family. Writes use the store's copy-on-write
 //! policy; keep old roots only across immutable snapshots, not private rewrites.
 mod bulk;
+mod batch;
 mod cursor;
 #[cfg(any(not(feature = "scalar-family"), test))]
 mod lookup;
@@ -17,6 +18,7 @@ mod scalar_lookup;
 mod scalar_reader;
 
 pub use bulk::{BulkBuild, build_sorted};
+pub use batch::{BatchUpsert, upsert_sorted};
 pub use cursor::{Cursor, SubnetPosition, ancestors, overlaps, subnets};
 #[cfg(not(feature = "scalar-family"))]
 pub use lookup::{covering, exact, get, longest_match};

@@ -8,6 +8,10 @@ const HEADER_BYTES: usize = 128;
 const SCAN: &str = "_scan";
 const MAX_PENDING_RECORDS: u64 = 4096;
 
+#[path = "generation_index.rs"]
+mod index;
+use index::LINKS;
+
 /// Birth namespace identities, observed under Registry before creating the pin.
 /// Existing walkers hold their directory/scan handles, preventing identity reuse
 /// while membership must remain immutable. No extra FD is retained per reader.
@@ -98,6 +102,7 @@ pub(super) fn release(
     }
     if remove_owned(path, record)? {
         removed(inner, &registry.file, record)?;
+        index::retire(inner, &registry.file, birth.id, &held, &exclusion)?;
     }
     Ok(())
 }
@@ -114,6 +119,12 @@ pub(super) struct Profile {
     // an explicit owner rebuild. It can never undercount a published record.
     records: u64,
     pending_records: u64,
+    indexed: bool,
+    legacy: bool,
+    dirty: bool,
+    first: u64,
+    generations: u64,
+    index_cursor: u64,
 }
 fn generation(inner: &Inner, number: u64) -> PathBuf {
     inner.pins.join(format!("gen-{number:016x}"))
@@ -141,16 +152,20 @@ pub(super) fn profile(inner: &Inner, file: &File) -> Result<Option<Profile>> {
     }
     let mut b = [0; HEADER_BYTES];
     file.read_exact_at(&mut b, 0)?;
-    if &b[..8] != b"ULMDBRG2"
-        || b[8..10] != 2u16.to_le_bytes()
+    let legacy = &b[..8] == b"ULMDBRG2" && b[8..10] == 2u16.to_le_bytes();
+    let indexed_profile = &b[..8] == b"ULMDBRG3" && b[8..10] == 3u16.to_le_bytes();
+    if !(legacy || indexed_profile)
         || b[10..12] != (HEADER_BYTES as u16).to_le_bytes()
-        || b[12..16] != [0; 4]
+        || b[12] > 3
+        || b[13..16] != [0; 3]
+        || (legacy && b[12] != 0)
         || b[16..32] != inner.uuid
         || b[32..40] != inner.identity.device.to_le_bytes()
         || b[40..48] != inner.identity.inode.to_le_bytes()
         || b[56] > 1
         || b[57..64] != [0; 7]
-        || b[80..120] != [0; 40]
+        || (legacy && b[80..120] != [0; 40])
+        || b[104..120] != [0; 16]
         || b[120..124] != crate::publication::crc(&b[..120]).to_le_bytes()
         || b[124..] != [0; 4]
     {
@@ -159,7 +174,23 @@ pub(super) fn profile(inner: &Inner, file: &File) -> Result<Option<Profile>> {
     let active = u64::from_le_bytes(b[48..56].try_into().unwrap());
     let records = u64::from_le_bytes(b[64..72].try_into().unwrap());
     let pending_records = u64::from_le_bytes(b[72..80].try_into().unwrap());
+    let indexed = b[12] & 1 != 0;
+    let dirty = b[12] & 2 != 0;
+    let first = u64::from_le_bytes(b[80..88].try_into().unwrap());
+    let generations = u64::from_le_bytes(b[88..96].try_into().unwrap());
+    let index_cursor = u64::from_le_bytes(b[96..104].try_into().unwrap());
+    if dirty {
+        return Err(Error::Corrupt("interrupted pin registry index mutation"));
+    }
     if active == 0
+        || active == index::NONE
+        || index_cursor > active
+        || (indexed
+            && (generations == 0
+                || generations > active + 1
+                || first > active
+                || index_cursor != 0))
+        || (!indexed && (first != 0 || generations != 0))
         || records > MAX_LIMIT as u64
         || pending_records > MAX_PENDING_RECORDS
         || pending_records > records
@@ -171,13 +202,20 @@ pub(super) fn profile(inner: &Inner, file: &File) -> Result<Option<Profile>> {
         migrating: b[56] != 0,
         records,
         pending_records,
+        indexed,
+        legacy,
+        dirty,
+        first,
+        generations,
+        index_cursor,
     }))
 }
 fn store(inner: &Inner, file: &File, p: Profile) -> Result<()> {
     inner.check()?;
     let mut b = [0; HEADER_BYTES];
-    b[..8].copy_from_slice(b"ULMDBRG2");
-    b[8..10].copy_from_slice(&2u16.to_le_bytes());
+    b[..8].copy_from_slice(if p.legacy { b"ULMDBRG2" } else { b"ULMDBRG3" });
+    b[8..10].copy_from_slice(&(if p.legacy { 2u16 } else { 3u16 }).to_le_bytes());
+    b[12] = u8::from(p.indexed) | (u8::from(p.dirty) << 1);
     b[10..12].copy_from_slice(&(HEADER_BYTES as u16).to_le_bytes());
     b[16..32].copy_from_slice(&inner.uuid);
     b[32..40].copy_from_slice(&inner.identity.device.to_le_bytes());
@@ -186,6 +224,9 @@ fn store(inner: &Inner, file: &File, p: Profile) -> Result<()> {
     b[56] = u8::from(p.migrating);
     b[64..72].copy_from_slice(&p.records.to_le_bytes());
     b[72..80].copy_from_slice(&p.pending_records.to_le_bytes());
+    b[80..88].copy_from_slice(&p.first.to_le_bytes());
+    b[88..96].copy_from_slice(&p.generations.to_le_bytes());
+    b[96..104].copy_from_slice(&p.index_cursor.to_le_bytes());
     let crc = crate::publication::crc(&b[..120]);
     b[120..124].copy_from_slice(&crc.to_le_bytes());
     // Partial metadata writes fail closed at the next CRC/length check. These
@@ -203,14 +244,14 @@ fn create_generation(inner: &Inner, id: u64) -> Result<()> {
 fn is_empty(inner: &Inner, id: u64) -> Result<bool> {
     let path = generation(inner, id);
     // Registry exclusion prevents births in active while this is observed.
-    // There is exactly one control entry, so finding a member is constant work.
+    // There are at most two fixed control entries, so finding a member is constant work.
     for entry in fs::read_dir(&path)? {
         let entry = entry?;
         let name = entry.file_name();
         let name = name
             .to_str()
             .ok_or(Error::Corrupt("invalid generation entry"))?;
-        if name == SCAN {
+        if name == SCAN || name == LINKS {
             continue;
         }
         parse_name(name)?;
@@ -223,9 +264,13 @@ pub(super) fn paths(inner: &Inner) -> Result<Option<Vec<(PathBuf, u128)>>> {
     let Some(p) = profile(inner, &file)? else {
         return Ok(None);
     };
-    // Compatibility full scan, used only by existing full admission/scanning.
-    // It is deliberately not the incremental discovery API.
     let mut out = Vec::new();
+    let ids = if p.indexed {
+        Some(index::ids(inner, p)?.into_iter().collect::<BTreeSet<_>>())
+    } else {
+        None
+    };
+    let mut directories = 0u64;
     for entry in fs::read_dir(&inner.pins)? {
         let entry = entry?;
         let name = entry.file_name();
@@ -237,20 +282,26 @@ pub(super) fn paths(inner: &Inner) -> Result<Option<Vec<(PathBuf, u128)>>> {
             continue;
         }
         let id = number(name)?;
-        if id > p.active || !opened(&entry.path(), false, true)?.metadata()?.is_dir() {
+        if id > p.active || ids.as_ref().is_some_and(|ids| !ids.contains(&id)) {
             return Err(Error::Corrupt("invalid registry generation"));
         }
-        for member in fs::read_dir(entry.path())? {
+        directories = directories.checked_add(1).ok_or(Error::LimitExceeded)?;
+        let directory = entry.path();
+        let _held = opened(&directory, false, true)?;
+        for member in fs::read_dir(&directory)? {
             let member = member?;
             let name = member.file_name();
             let name = name
                 .to_str()
                 .ok_or(Error::Corrupt("invalid generation entry"))?;
-            if name == SCAN {
+            if name == SCAN || name == LINKS {
                 continue;
             }
             push_path(inner, &mut out, member.path(), parse_name(name)?)?;
         }
+    }
+    if p.indexed && directories != p.generations {
+        return Err(Error::Corrupt("pin generation directory count"));
     }
     Ok(Some(out))
 }
@@ -298,7 +349,11 @@ fn reserve_record(inner: &Inner, registry: &File, pending: bool) -> Result<Optio
             return Err(Error::LimitExceeded);
         }
         p.pending_records += 1;
-    } else {
+    } else if p.migrating || p.records >= inner.limits.max_pin_records as u64 {
+        // Conservative total reservations below the cap prove admission in
+        // constant work. During migration unmoved flat pins are not counted.
+        // At/above the cap preserve the live-record walk so stale reservations
+        // do not consume an application's ordinary reader allowance.
         // Preserve the existing ordinary admission walk; only live ordinary
         // records charge that cap. Stale immutable generation members do not.
         let mut live = 0usize;
@@ -352,20 +407,42 @@ pub(super) fn removed(inner: &Inner, registry: &File, record: &File) -> Result<(
     }
     Ok(())
 }
-pub(super) fn cleanup_leases(inner: &Inner, registry: &File) -> Result<Vec<Lease>> {
+pub(super) fn cleanup_leases(inner: &Inner, registry: &File) -> Result<Vec<(u64, File, Lease)>> {
     let Some(p) = profile(inner, registry)? else {
         return Ok(Vec::new());
     };
-    if p.migrating {
+    if p.migrating || !p.indexed {
         return Err(Error::Busy);
     }
+    if p.generations == 1 && p.first == p.active {
+        // No sealed membership needs exclusion. The caller immediately runs
+        // paths() under this same Registry lease; it still validates links,
+        // counts and every directory before granting any unlink authority.
+        return Ok(Vec::new());
+    }
     let mut leases = Vec::new();
-    for id in 0..p.active {
+    for id in index::ids(inner, p)? {
+        if id == p.active {
+            continue;
+        }
         // A scanner holding generation SH makes this return Busy. No sealed
         // member can then be removed while a resumable ReadDir is alive.
-        leases.push(gate(&generation(inner, id).join(SCAN), false)?);
+        let directory = opened(&generation(inner, id), false, true)?;
+        let lease = gate(&generation(inner, id).join(SCAN), false)?;
+        leases.push((id, directory, lease));
     }
     Ok(leases)
+}
+
+pub(super) fn retire_empty(
+    inner: &Inner,
+    registry: &File,
+    generations: &[(u64, File, Lease)],
+) -> Result<()> {
+    for (id, directory, exclusion) in generations {
+        index::retire(inner, registry, *id, directory, exclusion)?;
+    }
+    Ok(())
 }
 
 /// Source protection for one boundedly validated physical record. Its sequence
@@ -460,6 +537,7 @@ pub struct PinDiscovery {
     inner: Arc<Inner>,
     next: u64,
     end: u64,
+    seek: Option<u64>,
     walk: Option<Walk>,
     cleanup: Option<Cleanup>,
     own_records: BTreeSet<PathBuf>,
@@ -474,7 +552,7 @@ impl MaintenanceLease {
         writer.check_directory(&self.inner.directory)?;
         let registry = self.inner.registry()?;
         writer.check_directory(&self.inner.directory)?;
-        let p = match profile(&self.inner, &registry.file)? {
+        let mut p = match profile(&self.inner, &registry.file)? {
             Some(p) => {
                 if p.migrating {
                     create_generation(&self.inner, 0)?;
@@ -488,6 +566,12 @@ impl MaintenanceLease {
                     migrating: true,
                     records: 0,
                     pending_records: 0,
+                    indexed: false,
+                    legacy: false,
+                    dirty: false,
+                    first: 0,
+                    generations: 0,
+                    index_cursor: 0,
                 };
                 // Publish the rejecting header before adding directory entries.
                 // A failure is fail-closed; no physical files are reclaimed.
@@ -497,11 +581,18 @@ impl MaintenanceLease {
                 p
             }
         };
+        if p.legacy {
+            // Explicit RG3 negotiation fences old clients before index controls
+            // appear. Ordinary RG2 admission/release alone never upgrades it.
+            p.legacy = false;
+            store(&self.inner, &registry.file, p)?;
+        }
         self.check()?;
         Ok(PinDiscovery {
             inner: self.inner.clone(),
             next: 0,
             end: p.active - 1,
+            seek: None,
             walk: None,
             cleanup: None,
             own_records: BTreeSet::new(),
@@ -622,12 +713,25 @@ impl PinDiscovery {
         if p.migrating {
             return Ok(out);
         }
+        while !p.indexed && out.work_units < budget.records {
+            index::index_one(&self.inner, &registry.file, &mut p)?;
+            out.work_units += 1;
+        }
+        if !p.indexed {
+            return Ok(out);
+        }
         while self.next <= self.end && out.work_units < budget.records {
             if let Some(cleanup) = self.cleanup.as_mut() {
                 if cleanup.exclusion.is_none() {
                     match gate(&generation(&self.inner, cleanup.id).join(SCAN), false) {
                         Ok(lease) => cleanup.exclusion = Some(lease),
                         Err(Error::Busy) => return Ok(out),
+                        Err(Error::Io(e)) if e.kind() == std::io::ErrorKind::NotFound => {
+                            self.cleanup = None;
+                            self.seek = None;
+                            out.work_units += 1;
+                            continue;
+                        }
                         Err(e) => return Err(e),
                     }
                 }
@@ -661,11 +765,47 @@ impl PinDiscovery {
                     }
                     continue;
                 }
+                let links = index::read(&self.inner, cleanup.id)?;
+                index::retire(
+                    &self.inner,
+                    &registry.file,
+                    cleanup.id,
+                    &cleanup.directory,
+                    cleanup.exclusion.as_ref().unwrap(),
+                )?;
                 self.cleanup = None;
                 self.next = self.next.checked_add(1).ok_or(Error::LimitExceeded)?;
+                self.seek = Some(links.next);
+                p = profile(&self.inner, &registry.file)?
+                    .ok_or(Error::Corrupt("pin discovery profile lost"))?;
                 continue;
             }
             if self.walk.is_none() {
+                let id = self.seek.take().unwrap_or(p.first);
+                if id == index::NONE || id > self.end {
+                    self.next = self.end.checked_add(1).ok_or(Error::LimitExceeded)?;
+                    break;
+                }
+                let links = match index::read(&self.inner, id) {
+                    Ok(links) => links,
+                    // Another exclusive owner may already have retired a saved
+                    // candidate. Restart from the authoritative linked head.
+                    Err(Error::Io(e))
+                        if e.kind() == std::io::ErrorKind::NotFound && id != p.first =>
+                    {
+                        out.work_units += 1;
+                        self.seek = Some(p.first);
+                        continue;
+                    }
+                    Err(e) => return Err(e),
+                };
+                let links = index::check_edges(&self.inner, p, id, links)?;
+                if id < self.next {
+                    out.work_units += 1;
+                    self.seek = Some(links.next);
+                    continue;
+                }
+                self.next = id;
                 let path = generation(&self.inner, self.next);
                 let directory = opened(&path, false, true)?;
                 let membership = gate(&path.join(SCAN), true)?;
@@ -714,7 +854,7 @@ impl PinDiscovery {
             let name = name
                 .to_str()
                 .ok_or(Error::Corrupt("invalid generation entry"))?;
-            if name == SCAN {
+            if name == SCAN || name == LINKS {
                 continue;
             }
             let nonce = parse_name(name)?;
@@ -790,18 +930,15 @@ impl PinDiscovery {
         owner.check()?;
         let mut p = profile(&self.inner, &registry.file)?
             .ok_or(Error::Corrupt("pin discovery profile lost"))?;
-        if p.migrating {
+        if p.migrating || !p.indexed {
             return Ok(true);
         }
         if is_empty(&self.inner, p.active)? {
             owner.check()?;
             return Ok(false);
         }
-        let next = p.active.checked_add(1).ok_or(Error::LimitExceeded)?;
-        create_generation(&self.inner, next)?;
         self.end = p.active;
-        p.active = next;
-        store(&self.inner, &registry.file, p)?;
+        index::append(&self.inner, &registry.file, &mut p)?;
         owner.check()?;
         Ok(true)
     }

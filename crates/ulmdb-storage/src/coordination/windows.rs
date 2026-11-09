@@ -229,7 +229,7 @@ pub struct PinScan<'a> {
     stale: Vec<Stale>,
     owner: &'a mut MaintenanceLease,
     _registry: Lease,
-    _generations: Vec<Lease>,
+    _generations: Vec<(u64, File, Lease)>,
 }
 impl PinScan<'_> {
     pub fn live_roots(&self) -> &[PinnedRoot] {
@@ -249,6 +249,7 @@ impl PinScan<'_> {
                 removed += 1;
             }
         }
+        generations::retire_empty(&self.owner.inner, self._registry.file(), &self._generations)?;
         Ok(removed)
     }
 }

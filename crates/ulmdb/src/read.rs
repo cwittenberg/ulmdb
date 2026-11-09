@@ -159,6 +159,7 @@ impl ReadTxn {
             .get(name)
             .ok_or(Error::MissingDatabase)
     }
+    #[inline]
     pub fn get(&self, name: &[u8], key: &[u8]) -> Result<Option<&[u8]>> {
         if key.len() > self.snapshot.manifest.page_size.native_key_limit() {
             return Err(Error::InvalidInput("key size limit exceeded"));

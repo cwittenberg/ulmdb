@@ -684,7 +684,7 @@ pub fn migrate(
                     return Err(Error::Corrupt("invalid migration generation pin name"));
                 }
                 has_scan |= name == "_scan";
-                name == "_scan" || pin_record_name(name)
+                name == "_scan" || name == "_links" || pin_record_name(name)
             } else if depth == 0 {
                 known_root.contains(&name)
             } else {
@@ -729,6 +729,27 @@ pub fn migrate(
             }
             if in_generation && name == "_scan" && actual.len() != 0 {
                 return Err(Error::Corrupt("nonempty migration generation scan gate"));
+            }
+            if in_generation && name == "_links" {
+                use ulmdb_platform::FileExt;
+                let mut bytes = [0; 128];
+                if actual.len() != bytes.len() as u64 {
+                    return Err(Error::Corrupt("migration generation links length"));
+                }
+                fd.read_exact_at(&mut bytes, 0)?;
+                let id = u64::from_str_radix(&parent_name[4..], 16)
+                    .map_err(|_| Error::Corrupt("migration generation links id"))?;
+                if &bytes[..8] != b"ULMDBRL3"
+                    || bytes[8..10] != 1u16.to_le_bytes()
+                    || bytes[10..12] != 128u16.to_le_bytes()
+                    || bytes[12..16] != [0; 4]
+                    || bytes[56..64] != id.to_le_bytes()
+                    || bytes[104..120] != [0; 16]
+                    || bytes[120..124] != crate::publication::crc(&bytes[..120]).to_le_bytes()
+                    || bytes[124..] != [0; 4]
+                {
+                    return Err(Error::Corrupt("migration generation links binding"));
+                }
             }
             let immutable = relative.starts_with("segments")
                 || relative.starts_with("cohorts")

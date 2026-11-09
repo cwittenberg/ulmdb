@@ -117,7 +117,7 @@ fn plan_with<S: WriteStore, C: Comparator + ?Sized>(
     })
 }
 
-fn change_with<S: WriteStore, C: Comparator + ?Sized>(
+pub(super) fn change_with<S: WriteStore, C: Comparator + ?Sized>(
     store: &mut S,
     root: Reference,
     key: &[u8],
