@@ -43,7 +43,9 @@ pub(crate) fn validate_entries(entries: &[SegmentEntry]) -> Result<()> {
     }
     let mut prior = 0;
     let first = entries.first().map_or(0, |e| e.id >> 8);
+    let observer = ulmdb_core::work::current_observer();
     for e in entries {
+        if let Some(observer) = &observer { observer.checkpoint(1, 64)?; }
         if e.id <= prior
             || e.id == u64::MAX
             || (e.id >> 8) - first >= crate::table::MAX_DIRECTORY_CHUNKS

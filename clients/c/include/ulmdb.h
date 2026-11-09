@@ -9,6 +9,14 @@ extern "C" {
 #define ULMDB_DUPLICATES 1
 #define ULMDB_IPV4 4
 #define ULMDB_IPV6 6
+/* Copy the immutable base checkpoint into a caller-owned, writable 64-byte buffer.
+ * A top-level read reports its pinned snapshot; a top-level writer reports the
+ * immutable base before its uncommitted changes. Compare all 64 bytes, rather
+ * than transaction sequence numbers, to detect a changed snapshot. No new read
+ * transaction or physical pin is acquired. Only live top-level readers/writers
+ * are supported: reset, nested, private-read and prepared transactions fail.
+ * The output buffer is unchanged on error. Ordinary thread ownership applies. */
+int ulmdb_txn_base_checkpoint(MDB_txn *, unsigned char out[64]);
 /* Linux, macOS and Windows coordinated file backends: automatic commit-time maintenance, including
  * progress across C transactions. Call after open with no live transactions.
  * A zero segment_threshold disables it. Other arguments bound rewrite input

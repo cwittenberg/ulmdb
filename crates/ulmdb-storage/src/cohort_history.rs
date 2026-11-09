@@ -2,7 +2,6 @@
 //! Archives never certify availability of user data. Full graph admission is
 //! unchanged; only historical metadata/NodeRef discovery can outlive a payload.
 use crate::{Error, Manifest, Result, manifest::number, read_mode::ReadMode};
-use sha2::{Digest, Sha256};
 use std::{
     fs::{self, File},
     io::{Read, Seek, SeekFrom, Write},
@@ -47,7 +46,7 @@ impl Archive {
             let mut bytes =
                 vec![0; usize::try_from(self.physical).map_err(|_| Error::LimitExceeded)?];
             self.file.seek(SeekFrom::Start(self.body))?;
-            self.file.read_exact(&mut bytes)?;
+            crate::work::read_exact(&mut self.file, &mut bytes)?;
             Ok(bytes)
         }
     }
@@ -58,7 +57,7 @@ pub(crate) fn open(directory: &Path, generation: u128) -> Result<Archive> {
     let mode = ReadMode::Sync;
     let mut file = mode.open(&named)?;
     let mut header = [0; HEADER];
-    file.read_exact(&mut header)?;
+    crate::work::read_exact(&mut file, &mut header)?;
     let minor = u16::from_le_bytes(number(&header, 12)?);
     let transformed = u16::from_le_bytes(number(&header, 14)?);
     let physical = u64::from_le_bytes(number(&header, 32)?);
@@ -119,7 +118,7 @@ pub(crate) fn decode(
         return Err(Error::Corrupt("history checkpoint mismatch"));
     }
     let bytes = archive.descriptor(generation, &mode)?;
-    if <[u8; 32]>::from(Sha256::digest(&bytes)) != hash {
+    if crate::work::digest(&bytes)? != hash {
         return Err(Error::Corrupt("history descriptor hash"));
     }
     let manifest = if archive.minor == 4 {
@@ -168,7 +167,7 @@ pub(crate) fn archive(
     if inventory_entries > max_inventory_entries {
         return Err(Error::LimitExceeded);
     }
-    let hash = Sha256::digest(&bytes).into();
+    let hash = crate::work::digest(&bytes)?;
     let manifest =
         crate::cohort::decode_with_mode(directory, None, generation, hash, mode.clone())?;
     if manifest.uuid != uuid {

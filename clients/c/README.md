@@ -38,6 +38,11 @@ cc -std=c11 -Wall -Wextra -Werror -I clients/c/include \
 - Parent directories must exist. Native files use ULMDB's storage format.
 - [Compatibility and resource limits](../lmdb-ulmdb/PARITY_GAPS.md)
 
+`ulmdb_txn_base_checkpoint()` in `ulmdb.h` copies the immutable 64-byte checkpoint
+of a live top-level read, or an active writer's base snapshot. Compare all bytes
+when checking snapshot identity: native branch publication can reuse a transaction
+sequence number. The accessor creates no new transaction or physical pin.
+
 ## Test
 
 ```sh

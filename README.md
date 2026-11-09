@@ -85,6 +85,13 @@ fn main() -> Result<()> {
 [Rust examples](clients/rust/examples) | [IPv4/IPv6 example](clients/rust/examples/routes.rs) |
 [C, C++, Rust, Python and Node.js clients](clients/README.md)
 
+Optional [SQLite and PostgreSQL storage adapters](storage-engines/README.md)
+live in `storage-engines/`, separately from ULMDB core. Native SQLite virtual
+tables and the PostgreSQL `ulmdb_fdw` extension expose keyed SQL tables backed
+by ULMDB. The guide includes build/use examples, integration limits and a SQL
+performance chart; these adapters do not replace either
+database's default storage or implement arbitrary SQL table schemas.
+
 For sorted imports into existing indexes, Rust file transactions provide
 `upsert_sorted_kv` (including `upsert_sorted_kv_with_ordering`) and
 `upsert_sorted_prefixes` for IPv4/IPv6. They insert new records and replace
@@ -101,6 +108,14 @@ binaries reject. Existing RG2 registries upgrade within the discovery work
 budget. An interrupted generation-link mutation fails closed. Reopening does
 not repair it; recovery requires offline operator intervention after all owners
 have stopped, and no registry repair utility is provided.
+
+Snapshot verification and export also have cooperative control APIs in
+`ulmdb::backup`: `BackupControl` supplies cancellation, total work/byte limits
+and deadlines; `BackupJob::advance` grants bounded work while preserving the
+running operation between calls. The IPDon package and its snapshot CLI use
+these jobs. See the [controlled snapshot guide](crates/ulmdb-ipdon/README.md#cooperative-snapshot-work)
+for application integration, supported formats, incomplete-output handling and
+the initial pin-bootstrap and final-publication boundaries.
 
 ## Explore your data
 

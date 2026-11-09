@@ -454,6 +454,9 @@ impl Environment {
         let configured_uuid =
             ulmdb_storage::transform::check_configuration(directory, transform.as_ref())?;
         if ulmdb_storage::range::is_selected(directory)? {
+            if ulmdb_core::work::current_observer().is_some() {
+                return Err(Error::InvalidInput("controlled Range snapshot admission is unsupported"));
+            }
             if cache.is_some() {
                 return Err(Error::InvalidInput("chunk cache does not support Range"));
             }
@@ -475,6 +478,16 @@ impl Environment {
                 transform.clone(),
             )?
             .capture_current_with_durability()?;
+        #[cfg(any(target_os = "linux", target_os = "macos", windows))]
+        let capture = if ulmdb_core::work::current_observer().is_some() {
+            // The exact physical pin now protects every root dependency. A
+            // controlled cold load may pause for caller work grants; do not
+            // retain shared Capture across those pauses or defer maintenance.
+            drop(capture);
+            None
+        } else {
+            Some(capture)
+        };
         #[cfg(any(target_os = "linux", target_os = "macos", windows))]
         let mut snapshot = {
             // The storage pin owns the exact decoded CURRENT descriptor. Keep
@@ -511,6 +524,13 @@ impl Environment {
             read_ahead,
         )?;
         snapshot.admission = Some(controller.admit(&snapshot.segments)?);
+        #[cfg(any(target_os = "linux", target_os = "macos", windows))]
+        if capture.is_none()
+            && let Some(pin) = &snapshot.physical_pin
+            && !pin.matches_directory(directory)?
+        {
+            return Err(Error::Corrupt("file namespace changed during admission"));
+        }
         let environment =
             Self::from_verified_with_controller(directory, snapshot, lock, controller)?;
         #[cfg(any(target_os = "linux", target_os = "macos", windows))]

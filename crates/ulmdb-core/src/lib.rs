@@ -14,6 +14,7 @@ pub mod object_graph;
 pub mod page_geometry;
 pub mod radix_wire;
 pub mod storage;
+pub mod work;
 
 use std::net::IpAddr;
 

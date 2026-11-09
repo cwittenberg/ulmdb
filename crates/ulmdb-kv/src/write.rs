@@ -369,6 +369,27 @@ fn plan<S: WriteStore>(
             if flags & 2 == 0
                 && u32::from_le_bytes(raw[4..8].try_into().unwrap()) as usize == value.len()
             {
+                if flags == 0 {
+                    // raw_cell already validated this inline key/value span,
+                    // flags and padding. Preserve that check before Noop.
+                    let key_size = usize::from(page::u16_at(raw, 0)?);
+                    let key_end = 8 + key_size;
+                    let old_value = raw
+                        .get(key_end..key_end + value.len())
+                        .ok_or(Error::Corrupt("short leaf value"))?;
+                    if old_value == value {
+                        return Ok(Plan::Noop);
+                    }
+                    // raw_cell returned this page's checked physical subslice.
+                    // Recover its start without decoding the same slot twice.
+                    let offset = raw
+                        .as_ptr()
+                        .addr()
+                        .checked_sub(page.bytes.as_ptr().addr())
+                        .and_then(|start| start.checked_add(key_end))
+                        .ok_or(Error::LimitExceeded)?;
+                    return Ok(Plan::PatchValue { offset });
+                }
                 let cell = page.cell(store, index)?;
                 if cell.value == value {
                     return Ok(Plan::Noop);
@@ -896,6 +917,10 @@ fn common_change_and_decoder_layout_accounting() {
 #[cfg(test)]
 #[path = "write/plan_tests.rs"]
 mod plan_tests;
+
+#[cfg(test)]
+#[path = "write/inline_patch_tests.rs"]
+mod inline_patch_tests;
 
 #[cfg(test)]
 #[path = "write/inline_append_tests.rs"]

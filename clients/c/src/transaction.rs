@@ -877,6 +877,34 @@ pub unsafe extern "C" fn mdb_txn_id(txn: *mut MDB_txn) -> usize {
     unsafe { txn.as_ref() }.map_or(0, |txn| txn.txnid)
 }
 #[unsafe(no_mangle)]
+pub unsafe extern "C" fn ulmdb_txn_base_checkpoint(txn: *mut MDB_txn, out: *mut u8) -> c_int {
+    boundary(|| {
+        let txn = unsafe { get_ref(txn)? };
+        txn.live()?;
+        if !txn.parent.is_null() {
+            return Err(BAD_TXN);
+        }
+        if out.is_null() {
+            return Err(libc::EINVAL);
+        }
+        let checkpoint = match txn.state.as_ref() {
+            Some(State::Read(read)) => read.file_checkpoint().map_err(code)?,
+            Some(State::Write(_)) => txn
+                .writer_environment
+                .as_ref()
+                .ok_or(BAD_TXN)?
+                .begin_read()
+                .file_checkpoint()
+                .map_err(code)?,
+            _ => return Err(BAD_TXN),
+        };
+        // SAFETY: the C caller supplies a writable buffer of at least 64 bytes.
+        // Copy only after all fallible checks, leaving output untouched on error.
+        unsafe { ptr::copy_nonoverlapping(checkpoint.as_ptr(), out, checkpoint.len()) };
+        Ok(())
+    })
+}
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn mdb_txn_flags(txn: *mut MDB_txn, flags: *mut u32) -> c_int {
     boundary(|| {
         let txn = unsafe { get_ref(txn)? };
@@ -1020,6 +1048,165 @@ mod registry_tests {
             0
         );
         value
+    }
+    fn checkpoint(txn: *mut MDB_txn) -> [u8; 64] {
+        let mut out = [0; 64];
+        assert_eq!(
+            unsafe { ulmdb_txn_base_checkpoint(txn, out.as_mut_ptr()) },
+            0
+        );
+        out
+    }
+    fn reader(fixture: &Fixture) -> *mut MDB_txn {
+        let mut txn = ptr::null_mut();
+        assert_eq!(
+            unsafe { mdb_txn_begin(fixture.env, ptr::null_mut(), RDONLY, &mut txn) },
+            0
+        );
+        txn
+    }
+    #[test]
+    fn transaction_base_checkpoint_tracks_pinned_reads_and_write_base() {
+        let fixture = modern_fixture_with_flags(0x200000);
+        let seed = fixture.begin();
+        let dbi = open(seed, c"checkpoint");
+        put_value(seed, dbi, b"old");
+        assert_eq!(unsafe { mdb_txn_commit(seed) }, 0);
+        let read = reader(&fixture);
+        let base = checkpoint(read);
+        let native = ReadTxn::open_coordinated_snapshot(&fixture.path).unwrap();
+        assert_eq!(base, native.file_checkpoint().unwrap());
+        drop(native);
+        let write = fixture.begin();
+        assert_eq!(checkpoint(write), base);
+        put_value(write, dbi, b"new");
+        assert_eq!(checkpoint(write), base, "uncommitted rows changed the base");
+
+        let mut unchanged = [0xa5; 64];
+        assert_eq!(
+            unsafe { ulmdb_txn_base_checkpoint(ptr::null_mut(), unchanged.as_mut_ptr()) },
+            libc::EINVAL
+        );
+        assert_eq!(
+            unsafe { ulmdb_txn_base_checkpoint(write, ptr::null_mut()) },
+            libc::EINVAL
+        );
+        let mut nested = ptr::null_mut();
+        assert_eq!(
+            unsafe { mdb_txn_begin(fixture.env, write, 0, &mut nested) },
+            0
+        );
+        assert_eq!(
+            unsafe { ulmdb_txn_base_checkpoint(nested, unchanged.as_mut_ptr()) },
+            BAD_TXN
+        );
+        assert_eq!(
+            unsafe { ulmdb_txn_base_checkpoint(write, unchanged.as_mut_ptr()) },
+            BAD_TXN
+        );
+        unsafe { mdb_txn_abort(nested) };
+        let private = readonly_child(fixture.env, write);
+        assert_eq!(
+            unsafe { ulmdb_txn_base_checkpoint(private, unchanged.as_mut_ptr()) },
+            BAD_TXN
+        );
+        assert_eq!(
+            unsafe { ulmdb_txn_base_checkpoint(write, unchanged.as_mut_ptr()) },
+            BAD_TXN
+        );
+        unsafe { mdb_txn_abort(private) };
+        let raw_write = write as usize;
+        let (wrong_thread, buffer) = std::thread::spawn(move || {
+            let mut buffer = [0xa5; 64];
+            let result = unsafe {
+                ulmdb_txn_base_checkpoint(raw_write as *mut MDB_txn, buffer.as_mut_ptr())
+            };
+            (result, buffer)
+        })
+        .join()
+        .unwrap();
+        assert_eq!(wrong_thread, BAD_TXN);
+        assert_eq!(buffer, unchanged);
+        assert_eq!(unchanged, [0xa5; 64]);
+        assert_eq!(unsafe { mdb_txn_commit(write) }, 0);
+        assert_eq!(
+            checkpoint(read),
+            base,
+            "an existing read changed after publication"
+        );
+
+        let fresh = reader(&fixture);
+        let selected = checkpoint(fresh);
+        assert_ne!(selected, base);
+        unsafe { mdb_txn_reset(fresh) };
+        assert_eq!(
+            unsafe { ulmdb_txn_base_checkpoint(fresh, unchanged.as_mut_ptr()) },
+            BAD_TXN
+        );
+        assert_eq!(unchanged, [0xa5; 64]);
+        assert_eq!(unsafe { mdb_txn_renew(fresh) }, 0);
+        assert_eq!(checkpoint(fresh), selected);
+        let prepared = fixture.begin();
+        put_value(prepared, dbi, b"unpublished");
+        assert_eq!(unsafe { mdb_txn_prepare(prepared) }, 0);
+        assert_eq!(
+            unsafe { ulmdb_txn_base_checkpoint(prepared, unchanged.as_mut_ptr()) },
+            BAD_TXN
+        );
+        assert_eq!(unchanged, [0xa5; 64]);
+        unsafe {
+            mdb_txn_abort(prepared);
+            mdb_txn_abort(fresh);
+            mdb_txn_abort(read);
+        }
+    }
+    #[cfg(any(target_os = "linux", target_os = "macos", windows))]
+    #[test]
+    fn transaction_base_checkpoint_distinguishes_same_sequence_native_branch() {
+        let fixture = modern_fixture_with_flags(0x200000);
+        let first = fixture.begin();
+        let dbi = open(first, c"checkpoint");
+        put_value(first, dbi, b"first");
+        assert_eq!(unsafe { mdb_txn_commit(first) }, 0);
+        let selected = fixture.begin();
+        put_value(selected, dbi, b"selected");
+        assert_eq!(unsafe { mdb_txn_commit(selected) }, 0);
+        let read = reader(&fixture);
+        let old_id = unsafe { mdb_txn_id(read) };
+        let old_checkpoint = checkpoint(read);
+
+        let previous = ulmdb::PreviousSession::open(&fixture.path).unwrap();
+        let mut branch = previous.begin_write().unwrap();
+        branch.put(b"checkpoint", b"k", b"branch").unwrap();
+        assert_eq!(branch.commit().unwrap(), old_id as u64);
+        drop(previous);
+
+        let write = fixture.begin();
+        assert_eq!(unsafe { mdb_txn_id(write) }, old_id + 1);
+        assert_ne!(
+            checkpoint(write),
+            old_checkpoint,
+            "sequence reuse concealed a different base"
+        );
+        assert_eq!(checkpoint(read), old_checkpoint);
+        let old_value = value(read, dbi);
+        assert_eq!(
+            unsafe {
+                std::slice::from_raw_parts(old_value.mv_data.cast::<u8>(), old_value.mv_size)
+            },
+            b"selected"
+        );
+        let branch_value = value(write, dbi);
+        assert_eq!(
+            unsafe {
+                std::slice::from_raw_parts(branch_value.mv_data.cast::<u8>(), branch_value.mv_size)
+            },
+            b"branch"
+        );
+        unsafe {
+            mdb_txn_abort(write);
+            mdb_txn_abort(read);
+        }
     }
     #[cfg(target_os = "linux")]
     fn check_abandoned_preparations_rearm_orphan_scan(count: u8) {

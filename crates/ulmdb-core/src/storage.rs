@@ -319,3 +319,121 @@ pub trait WriteStore: ReadStore {
 
 #[cfg(test)]
 mod patch_tests;
+
+// Keep cooperative stop classification out of the common query Error enum.
+// The private payload distinguishes explicit stops from ordinary IO failures
+// with the same kind, errno, or display text. Allocation occurs only on stop.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum BackupStopMarker {
+    Cancelled,
+    WorkLimitExceeded,
+}
+impl fmt::Display for BackupStopMarker {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(match self {
+            Self::Cancelled => "operation cancelled",
+            Self::WorkLimitExceeded => "operation work or deadline limit exceeded",
+        })
+    }
+}
+impl std::error::Error for BackupStopMarker {}
+
+impl Error {
+    /// A caller explicitly stopped a cooperative background operation.
+    #[cold]
+    pub fn cancelled() -> Self {
+        Self::Io(std::io::Error::other(BackupStopMarker::Cancelled))
+    }
+    /// A caller work or deadline allowance was exhausted.
+    #[cold]
+    pub fn work_limit_exceeded() -> Self {
+        Self::Io(std::io::Error::other(BackupStopMarker::WorkLimitExceeded))
+    }
+    /// Whether this is an engine-created cooperative cancellation marker.
+    pub fn is_cancelled(&self) -> bool {
+        self.stop_marker() == Some(BackupStopMarker::Cancelled)
+    }
+    /// Whether this is an engine-created work or deadline limit marker.
+    pub fn is_work_limit_exceeded(&self) -> bool {
+        self.stop_marker() == Some(BackupStopMarker::WorkLimitExceeded)
+    }
+    fn stop_marker(&self) -> Option<BackupStopMarker> {
+        let Self::Io(error) = self else {
+            return None;
+        };
+        error.get_ref()?.downcast_ref::<BackupStopMarker>().copied()
+    }
+}
+
+#[cfg(test)]
+mod stop_marker_tests {
+    use super::{BackupStopMarker, Error};
+    use std::{error::Error as _, io};
+
+    #[test]
+    fn cooperative_stops_preserve_display_and_typed_io_payloads() {
+        for (error, marker, text) in [
+            (
+                Error::cancelled(),
+                BackupStopMarker::Cancelled,
+                "operation cancelled",
+            ),
+            (
+                Error::work_limit_exceeded(),
+                BackupStopMarker::WorkLimitExceeded,
+                "operation work or deadline limit exceeded",
+            ),
+        ] {
+            assert_eq!(error.to_string(), text);
+            assert_eq!(error.is_cancelled(), marker == BackupStopMarker::Cancelled);
+            assert_eq!(
+                error.is_work_limit_exceeded(),
+                marker == BackupStopMarker::WorkLimitExceeded
+            );
+            // Preserve the existing public Error::source behavior. The IO
+            // envelope still owns its concrete, inspectable error payload.
+            assert!(error.source().is_none());
+            let Error::Io(inner) = error else {
+                panic!("cooperative stop changed the ordinary Error enum");
+            };
+            assert_eq!(inner.kind(), io::ErrorKind::Other);
+            assert_eq!(inner.raw_os_error(), None);
+            let payload = inner.get_ref().unwrap();
+            assert_eq!(payload.downcast_ref::<BackupStopMarker>(), Some(&marker));
+            assert!(payload.source().is_none());
+            let restored = Error::from(inner);
+            assert_eq!(
+                restored.is_cancelled(),
+                marker == BackupStopMarker::Cancelled
+            );
+            assert_eq!(
+                restored.is_work_limit_exceeded(),
+                marker == BackupStopMarker::WorkLimitExceeded
+            );
+        }
+    }
+
+    #[test]
+    fn ordinary_io_kinds_codes_and_messages_are_not_cooperative_stops() {
+        for error in [
+            Error::from(io::Error::new(
+                io::ErrorKind::Interrupted,
+                "operation cancelled",
+            )),
+            Error::from(io::Error::other("operation cancelled")),
+            Error::from(io::Error::other(
+                "operation work or deadline limit exceeded",
+            )),
+            // POSIX E2BIG and Linux ECANCELED values must not be interpreted
+            // as typed markers; classification never consults raw errno.
+            Error::from(io::Error::from_raw_os_error(7)),
+            Error::from(io::Error::from_raw_os_error(125)),
+            Error::from(io::Error::other(Error::cancelled())),
+            Error::LimitExceeded,
+            Error::Busy,
+        ] {
+            assert!(!error.is_cancelled(), "{error:?}");
+            assert!(!error.is_work_limit_exceeded(), "{error:?}");
+        }
+    }
+}

@@ -110,6 +110,29 @@ fn archived_metadata_origin_verify_export_restore_and_dependency_validation() {
 }
 
 #[test]
+fn controlled_export_retains_archived_metadata_dependencies() {
+    let (dir, env, original, archive, _) = archived_origin();
+    let target = dir.0.join("controlled-export");
+    let control = super::BackupControl::default();
+    let summary = super::export_with_control(&env, &target, &control).unwrap();
+    assert!(!original.exists());
+    let relative = archive.strip_prefix(&dir.0).unwrap();
+    assert_eq!(
+        fs::read(&archive).unwrap(),
+        fs::read(target.join(relative)).unwrap()
+    );
+    let copy = Environment::open(&target).unwrap();
+    assert_eq!(super::verify(&copy).unwrap(), summary);
+    for n in 0..21u64 {
+        assert_eq!(
+            copy.begin_read().get(b"kv", &n.to_be_bytes()).unwrap(),
+            Some([n as u8; 12_000].as_slice())
+        );
+    }
+    assert!(control.progress().units != 0);
+}
+
+#[test]
 fn opened_metadata_origin_copy_survives_archival_without_holding_capture() {
     let (dir, env, original, archive, bytes) = archived_origin();
     fs::write(&original, &bytes).unwrap();

@@ -3,7 +3,7 @@ use crate::{Error, Result};
 use std::{
     collections::{BTreeMap, VecDeque},
     fs::{self, File},
-    io::{Read, Seek, SeekFrom},
+    io::{Seek, SeekFrom},
     path::{Path, PathBuf},
 };
 pub(crate) trait NodeSource {
@@ -113,7 +113,7 @@ impl Resolver {
             );
         } else {
             file.seek(SeekFrom::Start(payload))?;
-            file.read_exact(&mut header)?;
+            crate::work::read_exact(&mut file, &mut header)?;
         }
         if &header[..8] != b"ULMDBROT"
             || header[8..10] != [0; 2]
@@ -146,6 +146,7 @@ impl Resolver {
         self.origins.len()
     }
     pub(super) fn read(&mut self, r: NodeRef, bytes: &mut [u8; 160]) -> Result<()> {
+        ulmdb_core::work::checkpoint(1, u64::from(r.length))?;
         if let Some(source) = &mut self.source {
             return source.read(
                 r.origin,
@@ -186,7 +187,7 @@ impl Resolver {
             );
         } else {
             origin.file.seek(SeekFrom::Start(offset))?;
-            origin.file.read_exact(&mut bytes[..r.length as usize])?;
+            crate::work::read_exact(&mut origin.file, &mut bytes[..r.length as usize])?;
         }
         if let Some(path) = &origin.checked_path {
             crate::read_mode::ReadMode::Sync.check(path, &origin.file)?;

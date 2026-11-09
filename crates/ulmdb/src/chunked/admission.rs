@@ -418,6 +418,20 @@ pub(crate) fn admit_with_policy<S: ScopedReadStore>(
     structural_custom: bool,
     callbacks: &BTreeMap<Vec<u8>, DatabaseComparators>,
 ) -> Result<BTreeMap<Vec<u8>, Database>> {
+    if let Some(observer) = ulmdb_core::work::current_observer() {
+        return crate::backup::controlled_verify::admit_scoped_with_observer(
+            table, manifest, limits, structural_custom, callbacks, observer.as_ref(),
+        );
+    }
+    admit_with_policy_unobserved(table, manifest, limits, structural_custom, callbacks)
+}
+pub(crate) fn admit_with_policy_unobserved<S: ScopedReadStore>(
+    table: &S,
+    manifest: &Manifest,
+    limits: AdmissionLimits,
+    structural_custom: bool,
+    callbacks: &BTreeMap<Vec<u8>, DatabaseComparators>,
+) -> Result<BTreeMap<Vec<u8>, Database>> {
     limits.validate()?;
     let bytes = manifest.segments.iter().try_fold(0u64, |n, e| {
         n.checked_add(e.length).ok_or(Error::LimitExceeded)

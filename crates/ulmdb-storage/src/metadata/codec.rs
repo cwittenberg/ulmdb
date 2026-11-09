@@ -150,7 +150,7 @@ impl Decode<'_, '_> {
                 .read(r, &mut storage)?;
         }
         let b = &storage[..r.length as usize];
-        if <[u8; 32]>::from(Sha256::digest(b)) != r.hash
+        if crate::work::digest(b)? != r.hash
             || b[2..4] != 1u16.to_le_bytes()
             || b[4..8] != r.length.to_le_bytes()
             || b[17..32].iter().any(|v| *v != 0)

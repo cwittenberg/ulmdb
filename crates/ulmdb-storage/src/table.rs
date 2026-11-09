@@ -64,7 +64,6 @@ impl SegmentTable {
     /// bind every mapping to the freshly selected immutable source namespace.
     /// Chunked and transformed views keep their own admission protocol.
     pub fn revalidate_mapped_content(&self) -> Result<u64> {
-        use sha2::{Digest, Sha256};
         if self.cached.is_some() || self.transform.is_some() {
             return Err(Error::InvalidInput("mapped revalidation requires ordinary files"));
         }
@@ -75,7 +74,7 @@ impl SegmentTable {
                     return Err(Error::InvalidInput("range mapping revalidation unsupported"));
                 }
                 let content = mapping.data_bytes()?;
-                if <[u8; 32]>::from(Sha256::digest(content)) != mapping.entry.hash {
+                if crate::work::digest(content)? != mapping.entry.hash {
                     return Err(Error::Corrupt("reused segment hash validation failed"));
                 }
                 bytes = bytes.checked_add(mapping.entry.length).ok_or(Error::LimitExceeded)?;
@@ -370,9 +369,11 @@ impl SegmentTable {
         if entries.len() >= 1_048_576 {
             return Err(Error::LimitExceeded);
         }
+        let observer = ulmdb_core::work::current_observer();
         let mut prior = 0;
         let first = entries.first().map_or(0, |entry| entry.id >> 8);
         for entry in entries {
+            if let Some(observer) = &observer { observer.checkpoint(1, 64)?; }
             if entry.id <= prior || entry.id == u64::MAX {
                 return Err(Error::Corrupt("invalid segment inventory IDs"));
             }
@@ -384,6 +385,7 @@ impl SegmentTable {
         let mut table =
             Self::empty_with_transform(read_ahead, transform)?.with_value_limit(value_limit)?;
         for entry in entries {
+            if let Some(observer) = &observer { observer.checkpoint(1, 0)?; }
             table.add(directory, entry.clone())?;
         }
         table.append_lineage = None;

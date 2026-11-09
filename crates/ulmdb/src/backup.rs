@@ -1,7 +1,11 @@
 //! Independent, verified copies of one committed snapshot.
 mod client_copy;
 mod client_export;
+mod controlled_export;
+mod control;
+pub(crate) mod controlled_verify;
 mod incremental;
+mod job;
 #[cfg(test)]
 mod archive_tests;
 use crate::{
@@ -14,7 +18,17 @@ pub use client_copy::{
     create_empty_file_copy_with_transform, export_file_pair,
 };
 pub use client_export::export_independent_snapshot;
+pub use controlled_export::{export_independent_snapshot_with_control, export_snapshot_with_control, export_with_control};
+pub use control::{BackupControl, BackupLimits, BackupProgress, BackupStopReason, CancellationToken};
+pub use controlled_verify::{
+    verify_independent_snapshot_with_control, verify_snapshot_with_control,
+    verify_with_comparators_and_control, verify_with_control,
+};
 pub use incremental::{IncrementalLimits, IncrementalReport};
+pub use job::{
+    BackupJob, JobStep, WorkBudget, export_independent_snapshot_job,
+    export_snapshot_job, verify_independent_snapshot_job, verify_snapshot_job,
+};
 use sha2::{Digest, Sha256};
 use std::{
     cell::Cell,
@@ -655,6 +669,11 @@ fn validate_with_policy<S: ReadStore>(
     structural_custom: bool,
     callbacks: &BTreeMap<Vec<u8>, crate::ordering::DatabaseComparators>,
 ) -> Result<ValidationWork> {
+    if let Some(observer) = ulmdb_core::work::current_observer() {
+        return controlled_verify::validate_store_with_observer(
+            store, manifest, structural_custom, callbacks, observer.as_ref(),
+        );
+    }
     let budget = ValidationBudget::for_manifest(manifest)?;
     let checked = ValidationStore {
         inner: store,

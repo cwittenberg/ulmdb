@@ -342,6 +342,14 @@ impl ReadTxn {
             transform.clone(),
         )?;
         let (_, capture, pin) = unbound.capture_current()?;
+        let capture = if ulmdb_core::work::current_observer().is_some() {
+            // Pin admission is complete. Permit reclamation and publishers
+            // while controlled mapping/graph admission waits for another slice.
+            drop(capture);
+            None
+        } else {
+            Some(capture)
+        };
         let read = Self::from_physical_pin_with_cache_options(
             directory,
             ResidencyPolicy::Demand,
@@ -350,6 +358,12 @@ impl ReadTxn {
             transform,
             cache,
         )?;
+        if capture.is_none()
+            && let Some(pin) = &read.snapshot.physical_pin
+            && !pin.matches_directory(directory)?
+        {
+            return Err(Error::Corrupt("snapshot namespace changed during admission"));
+        }
         drop(capture);
         Ok(read)
     }

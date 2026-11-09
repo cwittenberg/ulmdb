@@ -199,6 +199,7 @@ impl AuthenticatedFile {
             .map(|c| transform::FrameScratch::new(c));
         for start in (0..identity.length).step_by(PAGE) {
             let count = (identity.length - start).min(PAGE as u64) as usize;
+            ulmdb_core::work::checkpoint(1, count as u64)?;
             source.frame(
                 source.file.as_ref().unwrap(),
                 start,
@@ -338,6 +339,7 @@ impl AuthenticatedFile {
             .map(|c| transform::FrameScratch::new(c));
         for index in (0..length).step_by(PAGE) {
             let count = (length - index).min(PAGE);
+            ulmdb_core::work::checkpoint(1, count as u64)?;
             self.frame(
                 file,
                 start + index as u64,

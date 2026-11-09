@@ -10,6 +10,12 @@ use std::{
 };
 use ulmdb::{Environment, Error, ReadTxn, Result, WriteTxn, backup};
 
+mod controlled;
+pub use controlled::{
+    export_snapshot_job, export_snapshot_with_control, verify_snapshot_job,
+    verify_snapshot_with_control,
+};
+
 const MAGIC: &[u8; 8] = b"IPDJNL01";
 const BASELINE_MAGIC: &[u8; 8] = b"IPDJNL02";
 const MANIFEST: &str = "SNAPSHOT";
@@ -210,6 +216,14 @@ fn read_manifest(target: &Path) -> Result<SnapshotReceipt> {
     }
     let at = bytes.len() - 32;
     let id: [u8; 32] = Sha256::digest(&bytes[..at]).into();
+    decode_manifest(&bytes, id)
+}
+
+fn decode_manifest(bytes: &[u8], id: [u8; 32]) -> Result<SnapshotReceipt> {
+    if bytes.len() < 32 || bytes.len() > MAX_MANIFEST {
+        return Err(Error::Corrupt("snapshot manifest length"));
+    }
+    let at = bytes.len() - 32;
     if id.as_slice() != &bytes[at..] {
         return Err(Error::Corrupt("snapshot manifest digest"));
     }

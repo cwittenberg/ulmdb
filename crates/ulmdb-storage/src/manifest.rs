@@ -280,7 +280,9 @@ impl Manifest {
             b[256..].copy_from_slice(blob);
             return Ok(b);
         }
+        let observer = ulmdb_core::work::current_observer();
         for (i, s) in self.segments.iter().enumerate() {
+            if let Some(observer) = &observer { observer.checkpoint(1, 64)?; }
             let o = 192 + i * 64;
             b[o..o + 8].copy_from_slice(&s.id.to_le_bytes());
             b[o + 8..o + 16].copy_from_slice(&s.length.to_le_bytes());
@@ -350,7 +352,9 @@ impl Manifest {
             let mut segments = Vec::with_capacity(count);
             let mut prior = 0;
             let mut first_chunk = None;
+            let observer = ulmdb_core::work::current_observer();
             for i in 0..count {
+                if let Some(observer) = &observer { observer.checkpoint(1, 64)?; }
                 let o = 192 + i * 64;
                 let id = u64::from_le_bytes(number(b, o)?);
                 if id <= prior

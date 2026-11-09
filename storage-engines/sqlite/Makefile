@@ -1,0 +1,53 @@
+ULMDB_ROOT ?= ../..
+ULMDB_LIBDIR ?= $(abspath $(ULMDB_ROOT)/target/release)
+ULMDB_NATIVE_TARGET ?= $(abspath $(ULMDB_ROOT)/target/sqlite-native-owned-versioned)
+ULMDB_NATIVE_FEATURES ?= versioned
+ULMDB_NATIVE_BUILD := 0
+ifeq ($(origin ULMDB_NATIVE_LIB), undefined)
+ULMDB_NATIVE_LIB = $(ULMDB_NATIVE_TARGET)/release/libulmdb_sqlite_native.a
+ULMDB_NATIVE_BUILD := 1
+endif
+CC ?= cc
+INCLUDES = -I$(ULMDB_ROOT)/clients/c/include
+CFLAGS ?= -O2 -g
+BASE_CFLAGS = -std=c11 -Wall -Wextra -Werror -fPIC
+
+.PHONY: all owned owned-prepare clean test test-owned test-owned-capacity
+all: ulmdb_sqlite.so
+
+owned: ulmdb_sqlite_owned.so
+
+owned-prepare:
+ifeq ($(ULMDB_NATIVE_BUILD),1)
+	cargo build --release --locked --manifest-path native/Cargo.toml --target-dir $(ULMDB_NATIVE_TARGET) $(if $(strip $(ULMDB_NATIVE_FEATURES)),--features $(ULMDB_NATIVE_FEATURES))
+else
+	test -f $(ULMDB_NATIVE_LIB)
+endif
+
+ulmdb_sqlite_owned.so: ulmdb_sqlite.c native/owned_backend.h owned.exports owned-prepare
+	$(CC) $(CPPFLAGS) $(INCLUDES) $(CFLAGS) $(BASE_CFLAGS) -DULMDB_SQLITE_OWNED -shared $< \
+	  $(ULMDB_NATIVE_LIB) -Wl,-z,nodelete -Wl,--version-script=owned.exports \
+	  -Wl,-Bsymbolic-functions -ldl -lpthread -lm -lrt -lutil $(LDFLAGS) -o $@
+
+ulmdb_sqlite.so: ulmdb_sqlite.c $(ULMDB_ROOT)/clients/c/include/lmdb.h
+	$(CC) $(CPPFLAGS) $(INCLUDES) $(CFLAGS) $(BASE_CFLAGS) -shared $< -L$(ULMDB_LIBDIR) -lulmdb_c \
+	  -Wl,-rpath,$(ULMDB_LIBDIR) $(LDFLAGS) -o $@
+
+test_commit_failure.so: test_commit_failure.c $(ULMDB_ROOT)/clients/c/include/lmdb.h
+	$(CC) $(CPPFLAGS) $(INCLUDES) $(CFLAGS) $(BASE_CFLAGS) -shared $< -ldl -o $@
+
+test: all test_commit_failure.so
+	python3 test.py $(abspath ulmdb_sqlite.so)
+	LD_PRELOAD=$(abspath test_commit_failure.so) \
+	  ULMDB_SQLITE_TEST_LIBRARY=$(ULMDB_LIBDIR)/libulmdb_c.so \
+	  python3 test.py $(abspath ulmdb_sqlite.so) --commit-failure
+
+test-owned: owned
+	python3 test.py $(abspath ulmdb_sqlite_owned.so) --module ulmdb_owned
+	python3 test_owned.py $(abspath ulmdb_sqlite_owned.so)
+
+test-owned-capacity: owned
+	python3 test_owned_commit.py $(abspath ulmdb_sqlite_owned.so)
+
+clean:
+	rm -f ulmdb_sqlite.so ulmdb_sqlite_owned.so test_commit_failure.so

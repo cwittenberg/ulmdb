@@ -175,12 +175,22 @@ fn eligible(manifest: &ulmdb_storage::Manifest) -> bool {
             .try_fold(0u64, |sum, e| sum.checked_add(e.length))
             .is_some_and(|bytes| bytes <= MAX_BYTES)
 }
+#[cfg(unix)]
+#[inline]
+fn regular_file_mode(mode: u32) -> bool {
+    // MetadataExt stores u32, while Darwin's libc mode constants use u16.
+    #[cfg(target_os = "macos")]
+    let (mask, regular) = (u32::from(libc::S_IFMT), u32::from(libc::S_IFREG));
+    #[cfg(not(target_os = "macos"))]
+    let (mask, regular) = (libc::S_IFMT, libc::S_IFREG);
+    mode & mask == regular
+}
 fn retained_bytes_within_budget(sources: &[Source]) -> bool {
     #[cfg(unix)]
     {
         let mut total = 0u64;
         for source in sources {
-            if source.metadata.mode & libc::S_IFMT == libc::S_IFREG {
+            if regular_file_mode(source.metadata.mode) {
                 let charge = source
                     .metadata
                     .length
@@ -204,7 +214,7 @@ fn check_current_file_access(sources: &[Source]) -> Result<()> {
     {
         use std::os::unix::fs::{MetadataExt, OpenOptionsExt};
         for source in sources {
-            if source.metadata.mode & libc::S_IFMT != libc::S_IFREG {
+            if !regular_file_mode(source.metadata.mode) {
                 continue;
             }
             let file = std::fs::OpenOptions::new()

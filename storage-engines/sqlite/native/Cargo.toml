@@ -1,0 +1,25 @@
+[package]
+name = "ulmdb-sqlite-native"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94"
+publish = false
+
+[workspace]
+
+[lib]
+name = "ulmdb_sqlite_native"
+crate-type = ["staticlib", "rlib"]
+
+[features]
+default = []
+versioned = []
+
+[dependencies]
+ulmdb = { path = "../../../crates/ulmdb", features = ["snapshot-log"] }
+libc = "=0.2.191"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+debug = 1

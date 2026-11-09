@@ -47,6 +47,7 @@ pub mod snapshot_log;
 pub mod snapshot_versions;
 mod table;
 mod temporary;
+mod work;
 
 pub use arena::{Arena, ArenaCheckpoint, ArenaReservation};
 pub use builder::SegmentBuilder;

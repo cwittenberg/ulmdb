@@ -491,6 +491,9 @@ impl DirectoryCapture {
     /// Select, decode and pin CURRENT while retaining the bootstrap gate.
     /// Realm discovery and descriptor verification occur once, inside storage.
     pub fn capture_current(self) -> Result<(Coordination, CaptureLease, PhysicalPin)> {
+        ulmdb_core::work::critical(|| self.capture_current_inner())
+    }
+    fn capture_current_inner(self) -> Result<(Coordination, CaptureLease, PhysicalPin)> {
         self.inner.check()?;
         let (manifest, checkpoint) = crate::publication::read_current_checkpoint_with_transform(
             &self.inner.directory,
@@ -505,6 +508,16 @@ impl DirectoryCapture {
     }
     /// Capture CURRENT and immutable durability facts in the same metadata decode.
     pub fn capture_current_with_durability(
+        self,
+    ) -> Result<(
+        Coordination,
+        CaptureLease,
+        PhysicalPin,
+        crate::FileDurabilityState,
+    )> {
+        ulmdb_core::work::critical(|| self.capture_current_with_durability_inner())
+    }
+    fn capture_current_with_durability_inner(
         self,
     ) -> Result<(
         Coordination,
@@ -814,6 +827,9 @@ impl CaptureLease {
     /// Verify and pin one complete current descriptor without decoding it twice.
     /// The returned manifest is descriptor authority, not a graph certificate.
     pub fn pin_current(&self) -> Result<PhysicalPin> {
+        ulmdb_core::work::critical(|| self.pin_current_inner())
+    }
+    fn pin_current_inner(&self) -> Result<PhysicalPin> {
         self.inner.check()?;
         let (manifest, checkpoint) = crate::publication::read_current_checkpoint_with_transform(
             &self.inner.directory,
@@ -829,6 +845,9 @@ impl CaptureLease {
     }
     /// Return the pin and durability facts from one actual CURRENT decode.
     pub fn pin_current_with_durability(&self) -> Result<(PhysicalPin, crate::FileDurabilityState)> {
+        ulmdb_core::work::critical(|| self.pin_current_with_durability_inner())
+    }
+    fn pin_current_with_durability_inner(&self) -> Result<(PhysicalPin, crate::FileDurabilityState)> {
         self.inner.check()?;
         let (manifest, checkpoint, state) =
             crate::publication::read_current_checkpoint_with_durability_and_transform(
@@ -852,6 +871,9 @@ impl CaptureLease {
     /// Registers one persisted root under capture exclusion. This validates its
     /// descriptor/checkpoint binding only; callers separately validate data.
     pub fn pin_checkpoint(&self, checkpoint: &[u8; 64]) -> Result<PhysicalPin> {
+        ulmdb_core::work::critical(|| self.pin_checkpoint_inner(checkpoint))
+    }
+    fn pin_checkpoint_inner(&self, checkpoint: &[u8; 64]) -> Result<PhysicalPin> {
         self.inner.check()?;
         let root = root(&self.inner, checkpoint)?;
         self.register(root)
@@ -877,6 +899,9 @@ impl CaptureLease {
         })
     }
     fn register(&self, root: PinnedRoot) -> Result<PhysicalPin> {
+        ulmdb_core::work::critical(|| self.register_inner(root))
+    }
+    fn register_inner(&self, root: PinnedRoot) -> Result<PhysicalPin> {
         self.inner.check()?;
         let _registry = self.inner.registry()?;
         let pin_directory = match generations::reserve_birth(&self.inner, _registry.file())? {

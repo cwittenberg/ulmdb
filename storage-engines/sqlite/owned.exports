@@ -1,0 +1,7 @@
+{
+    global:
+        sqlite3_ulmdbsqliteowned_init;
+        usql_*;
+    local:
+        *;
+};

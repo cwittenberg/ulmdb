@@ -348,6 +348,12 @@ pub struct MDB_cursor {
     continuation: Option<cursor_stream::ReadContinuation>,
 }
 fn code(error: Error) -> i32 {
+    if error.is_cancelled() {
+        return libc::ECANCELED;
+    }
+    if error.is_work_limit_exceeded() {
+        return libc::E2BIG;
+    }
     match error {
         Error::MissingDatabase => NOTFOUND,
         Error::StaleHandle => BAD_DBI,
@@ -364,6 +370,30 @@ fn code(error: Error) -> i32 {
         Error::Io(e) => e.raw_os_error().unwrap_or(libc::EIO),
     }
 }
+
+#[cfg(test)]
+mod background_stop_error_tests {
+    use super::{Error, code};
+
+    #[test]
+    fn typed_background_stops_have_distinct_ffi_codes() {
+        assert_eq!(code(Error::cancelled()), libc::ECANCELED);
+        assert_eq!(code(Error::work_limit_exceeded()), libc::E2BIG);
+        assert_eq!(code(Error::LimitExceeded), -30792);
+        assert_eq!(
+            code(Error::Io(std::io::Error::other("operation cancelled"))),
+            libc::EIO
+        );
+        assert_eq!(
+            code(Error::Io(std::io::Error::new(
+                std::io::ErrorKind::Interrupted,
+                "operation cancelled"
+            ))),
+            libc::EIO,
+        );
+    }
+}
+
 fn boundary(body: impl FnOnce() -> FfiResult<()>) -> i32 {
     match catch_unwind(AssertUnwindSafe(body)) {
         Ok(Ok(())) => 0,

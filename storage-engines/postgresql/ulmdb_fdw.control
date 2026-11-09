@@ -1,0 +1,5 @@
+comment = 'Optional ULMDB-backed bigint/bytea tables (experimental FDW)'
+default_version = '0.1.0'
+module_pathname = '$libdir/ulmdb_fdw'
+relocatable = true
+superuser = true

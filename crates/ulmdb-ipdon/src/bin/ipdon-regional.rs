@@ -8,8 +8,11 @@ use ulmdb_ipdon::{
     rrsets,
 };
 
+#[path = "ipdon-regional/backup_control.rs"]
+mod backup_control;
+
 const TIME: u64 = 1_700_000_000;
-const USAGE: &str = "usage: ipdon-regional init DIRECTORY REALM POLICY; demo DIRECTORY; hostname DIRECTORY TIME HOST; lookup DIRECTORY TIME IP; candidates DIRECTORY TIME IP FIELD; checkpoint DIRECTORY ORIGIN SEQUENCE; replicate SOURCE DESTINATION ORIGIN; baseline SOURCE NEW_DIRECTORY NEW_REALM IMPORT_TIME; changes DIRECTORY ORIGIN AFTER; expire DIRECTORY TIME; snapshot DIRECTORY BUNDLE; restore BUNDLE NEW_DIRECTORY; recover BUNDLE LOCAL_DIRECTORY NEW_DIRECTORY";
+const USAGE: &str = "usage: ipdon-regional init DIRECTORY REALM POLICY; demo DIRECTORY; hostname DIRECTORY TIME HOST; lookup DIRECTORY TIME IP; candidates DIRECTORY TIME IP FIELD; checkpoint DIRECTORY ORIGIN SEQUENCE; replicate SOURCE DESTINATION ORIGIN; baseline SOURCE NEW_DIRECTORY NEW_REALM IMPORT_TIME; changes DIRECTORY ORIGIN AFTER; expire DIRECTORY TIME; snapshot DIRECTORY BUNDLE [backup options]; verify-snapshot BUNDLE [backup options]; restore BUNDLE NEW_DIRECTORY; recover BUNDLE LOCAL_DIRECTORY NEW_DIRECTORY";
 fn n(text: &str) -> Result<u64> {
     text.parse()
         .map_err(|_| Error::InvalidInput("expected unsigned integer"))
@@ -170,6 +173,29 @@ fn execute() -> std::result::Result<(), Box<dyn std::error::Error>> {
     }
     if command == "demo" {
         demo(path)?;
+        return Ok(());
+    }
+    if command == "snapshot" {
+        let target = at(2)?.to_owned();
+        let options = backup_control::Options::parse(&args[3..])?;
+        let source = path.to_owned();
+        let job = ulmdb::backup::BackupJob::spawn(options.control.clone(), move |control| {
+            control.scope(|| {
+                let env = Environment::open(source)?;
+                let read = env.begin_read();
+                Regional::view(&read)?;
+                journal::export_snapshot_with_control(&env, &read, target, &control)
+            })
+        })?;
+        let receipt = options.run(job)?;
+        println!("snapshot {:?}; watermarks {:?}", receipt.id(), receipt.cursors());
+        return Ok(());
+    }
+    if command == "verify-snapshot" {
+        let options = backup_control::Options::parse(&args[2..])?;
+        let job = journal::verify_snapshot_job(path, options.control.clone())?;
+        let receipt = options.run(job)?;
+        println!("verified snapshot {:?}; watermarks {:?}", receipt.id(), receipt.cursors());
         return Ok(());
     }
     if command == "replicate" {
@@ -355,15 +381,6 @@ fn execute() -> std::result::Result<(), Box<dyn std::error::Error>> {
             let mut write = env.begin_write()?;
             let report = rrsets::Rrsets::expire(&mut write, &plan)?;
             println!("expired {:?}; commit {}", report, write.commit()?);
-        }
-        "snapshot" => {
-            Regional::view(&read)?;
-            let receipt = journal::export_snapshot(&env, &read, at(2)?)?;
-            println!(
-                "snapshot {:?}; watermarks {:?}",
-                receipt.id(),
-                receipt.cursors()
-            );
         }
         _ => return Err(Error::InvalidInput(USAGE).into()),
     }

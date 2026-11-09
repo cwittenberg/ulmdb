@@ -145,14 +145,14 @@ impl ReadMode {
             if fs::metadata(path)?.len() > maximum {
                 return Err(Error::LimitExceeded);
             }
-            return Ok(fs::read(path)?);
+            return crate::work::read(path);
         }
         let mut file = self.open(path)?;
         if file.metadata()?.len() > maximum {
             return Err(Error::LimitExceeded);
         }
         let mut bytes = Vec::new();
-        (&mut file).take(maximum + 1).read_to_end(&mut bytes)?;
+        crate::work::read_to_end_limited(&mut (&mut file).take(maximum + 1), &mut bytes, maximum + 1)?;
         if bytes.len() as u64 > maximum {
             return Err(Error::LimitExceeded);
         }

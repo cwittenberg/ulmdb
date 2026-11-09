@@ -377,3 +377,64 @@ fn custom_branch_savepoint_and_callback_authority_are_not_global() {
         Some(b"A".as_slice())
     );
 }
+
+#[test]
+fn typed_builtin_views_validate_empty_roots_before_null_shortcut_and_keep_old_snapshots() {
+    for mode in [PublicationMode::Legacy, PublicationMode::Indexed] {
+        let d = Dir::new();
+        let e = Environment::create_with_publication(&d.0, mode).unwrap();
+        let mut w = e.begin_write().unwrap();
+        for (name, keys) in [
+            (b"byte".as_slice(), O::Bytewise),
+            (b"reverse", O::ReverseBytes),
+            (b"integer", integer()),
+            (b"wide", O::UnsignedInteger { width: Width::U64, endian: Endian::Big }),
+            (b"custom", O::Custom),
+        ] {
+            w.create_database_ordered(name, DatabaseKind::Kv, Spec { keys, duplicates: O::Bytewise }).unwrap();
+        }
+        w.commit().unwrap();
+        let empty = e.begin_read();
+        let oversize = vec![0; 4097];
+        for (name, key) in [
+            (b"byte".as_slice(), b"".as_slice()),
+            (b"reverse", b""),
+            (b"integer", 12u32.to_le_bytes().as_slice()),
+            (b"wide", 34u64.to_be_bytes().as_slice()),
+        ] {
+            let view = empty.kv(name).unwrap();
+            assert_eq!(view.get(key).unwrap(), None);
+            assert!(matches!(view.get(&oversize), Err(Error::InvalidInput("key size limit exceeded"))));
+        }
+        for name in [b"integer".as_slice(), b"wide"] {
+            assert!(matches!(empty.kv(name).unwrap().get(b""), Err(Error::InvalidInput("integer key width mismatch"))));
+            assert!(matches!(empty.kv(name).unwrap().get(b"wrong"), Err(Error::InvalidInput("integer key width mismatch"))));
+        }
+        assert_eq!(empty.kv(b"reverse").unwrap().get(b"arbitrary").unwrap(), None);
+        let calls = Arc::new(AtomicUsize::new(0));
+        let callbacks = DatabaseComparators { keys: Some(fold(calls.clone())), duplicates: None };
+        assert_eq!(empty.kv_with_ordering(b"custom", &callbacks).unwrap().get(b"key").unwrap(), None);
+        assert_eq!(calls.load(Ordering::Relaxed), 0);
+        assert!(matches!(empty.kv(b"custom"), Err(Error::InvalidInput(_))));
+
+        let mut w = e.begin_write().unwrap();
+        w.put(b"byte", b"", b"byte value").unwrap();
+        w.put(b"reverse", b"ab", b"reverse value").unwrap();
+        w.put(b"integer", &12u32.to_le_bytes(), b"integer value").unwrap();
+        w.put(b"wide", &34u64.to_be_bytes(), b"wide value").unwrap();
+        w.put_with_ordering(b"custom", b"Key", b"custom value", &callbacks).unwrap();
+        w.commit().unwrap();
+        let current = e.begin_read();
+        assert_eq!(current.kv(b"byte").unwrap().get(b"").unwrap(), Some(b"byte value".as_slice()));
+        assert_eq!(current.kv(b"reverse").unwrap().get(b"ab").unwrap(), Some(b"reverse value".as_slice()));
+        let borrowed = {
+            let query = 12u32.to_le_bytes();
+            current.kv(b"integer").unwrap().get(&query).unwrap().unwrap()
+        };
+        assert_eq!(borrowed, b"integer value");
+        assert_eq!(current.kv(b"wide").unwrap().get(&34u64.to_be_bytes()).unwrap(), Some(b"wide value".as_slice()));
+        assert_eq!(current.kv_with_ordering(b"custom", &callbacks).unwrap().get(b"KEY").unwrap(), Some(b"custom value".as_slice()));
+        assert_eq!(empty.kv(b"integer").unwrap().get(&12u32.to_le_bytes()).unwrap(), None);
+        assert!(matches!(empty.kv(b"integer").unwrap().get(b"wrong"), Err(Error::InvalidInput("integer key width mismatch"))));
+    }
+}

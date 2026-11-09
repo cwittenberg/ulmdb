@@ -432,15 +432,15 @@ impl ReaderLease {
         self.file
             .seek(SeekFrom::Start(0))
             .map_err(|error| code(error.into()))?;
-        let sequence = sequence.map_or_else(|| "-".to_owned(), |sequence| sequence.to_string());
-        writeln!(
-            self.file,
-            "{} {:?} {}",
-            std::process::id(),
-            std::thread::current().id(),
-            sequence
-        )
-        .map_err(|error| code(error.into()))
+        let process = std::process::id();
+        let thread = std::thread::current().id();
+        let record = match sequence {
+            Some(sequence) => format!("{process} {thread:?} {sequence}\n"),
+            None => format!("{process} {thread:?} -\n"),
+        };
+        self.file
+            .write_all(record.as_bytes())
+            .map_err(|error| code(error.into()))
     }
 }
 impl Drop for ReaderLease {

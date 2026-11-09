@@ -177,9 +177,8 @@ pub fn observe_selector(bytes: &[u8]) -> Result<SelectorObservation> {
 }
 fn read_bounded(path: &Path, maximum: usize) -> Result<Vec<u8>> {
     let mut bytes = Vec::with_capacity(maximum + 1);
-    File::open(path)?
-        .take((maximum + 1) as u64)
-        .read_to_end(&mut bytes)?;
+    ulmdb_core::work::checkpoint(1, 0)?;
+    crate::work::read_to_end_limited(&mut File::open(path)?.take((maximum + 1) as u64), &mut bytes, (maximum + 1) as u64)?;
     if bytes.len() > maximum {
         return Err(Error::Corrupt("oversized publication pointer"));
     }
@@ -192,9 +191,7 @@ fn read_sync_pointer(path: &Path, maximum: usize) -> Result<Vec<u8>> {
     let mode = crate::read_mode::ReadMode::Sync;
     let mut file = mode.open(path)?;
     let mut bytes = Vec::with_capacity(maximum + 1);
-    (&mut file)
-        .take((maximum + 1) as u64)
-        .read_to_end(&mut bytes)?;
+    crate::work::read_to_end_limited(&mut (&mut file).take((maximum + 1) as u64), &mut bytes, (maximum + 1) as u64)?;
     if bytes.len() > maximum {
         return Err(Error::Corrupt("oversized publication pointer"));
     }
@@ -370,7 +367,7 @@ fn write_descriptor_policy(
         ulmdb_platform::sync_directory(&directory.join("commits"))?;
         crate::fault_point!("descriptor.after_directory_sync");
     }
-    Ok(Sha256::digest(&bytes).into())
+    crate::work::digest(&bytes)
 }
 
 /// Prepared immutable bytes bound to one directory. Consuming publication does
@@ -970,7 +967,7 @@ pub fn prepare_publication(directory: &Path, manifest: &Manifest) -> Result<Prep
     }
 }
 pub fn checkpoint_bytes(manifest: &Manifest) -> Result<[u8; 64]> {
-    Ok(record(manifest, Sha256::digest(manifest.encode()?).into()))
+    Ok(record(manifest, crate::work::digest(&manifest.encode()?)?))
 }
 /// Decode a retained immutable generation. Callers must retain capture/writer
 /// exclusion and check its lineage against their authenticated selected root.
@@ -1001,7 +998,7 @@ pub fn read_generation(directory: &Path, generation: u128, minor: u16) -> Result
     } else {
         read_bounded(&path, 67_109_056)?
     };
-    let hash = Sha256::digest(&bytes).into();
+    let hash = crate::work::digest(&bytes)?;
     let mut checkpoint = pointer(generation, hash);
     if minor >= 3 {
         checkpoint[..8].copy_from_slice(if minor == 4 { b"ULMDBT04" } else { b"ULMDBC03" });
@@ -1077,7 +1074,7 @@ pub fn read_generation_with_transform(
     } else {
         mode.read_legacy(&path, 67_109_056)?
     };
-    let hash = Sha256::digest(&bytes).into();
+    let hash = crate::work::digest(&bytes)?;
     let mut pointer = pointer(generation, hash);
     if minor >= 3 {
         pointer[..8].copy_from_slice(if minor == 4 { b"ULMDBT04" } else { b"ULMDBC03" });
@@ -1230,7 +1227,7 @@ fn read_checkpoint_inner(
         .join("commits")
         .join(format!("{generation:032x}.root"));
     let bytes = mode.read_legacy(&path, 67_109_056)?;
-    if <[u8; 32]>::from(Sha256::digest(&bytes)) != hash {
+    if crate::work::digest(&bytes)? != hash {
         return Err(Error::Corrupt("root descriptor hash mismatch"));
     }
     let manifest = Manifest::decode(&bytes)?;

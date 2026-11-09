@@ -2,7 +2,6 @@
 //! File backends seal whole files; range appends/heads are outside mapped pages.
 use crate::{Error, Result, SegmentEntry};
 use memmap2::{Mmap, MmapOptions};
-use sha2::{Digest, Sha256};
 use std::{fs::File, path::Path};
 
 // Keep Linux's hot mapped-byte header unchanged. Other fixed-capable platforms
@@ -432,8 +431,8 @@ impl Mapping {
             _ => return Err(Error::Corrupt("unsupported segment minor version")),
         };
         let content_matches = match written {
-            Some(expected) => bytes[..] == *expected,
-            None => <[u8; 32]>::from(Sha256::digest(&bytes[..])) == entry.hash,
+            Some(expected) => crate::work::equal(&bytes[..], expected)?,
+            None => crate::work::digest(&bytes[..])? == entry.hash,
         };
         if !content_matches
             || &bytes[..8] != b"ULMDBSEG"

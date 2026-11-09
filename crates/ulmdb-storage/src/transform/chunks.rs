@@ -28,6 +28,7 @@ pub(crate) fn decode_frame(
     destination: &mut [u8],
     scratch: &mut FrameScratch,
 ) -> Result<()> {
+    ulmdb_core::work::checkpoint(1, destination.len() as u64)?;
     if destination.is_empty() || destination.len() > PAGE {
         return Err(Error::InvalidInput("decoded frame length"));
     }

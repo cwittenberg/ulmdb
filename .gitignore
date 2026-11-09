@@ -46,3 +46,11 @@
 /experiments/
 
 .playwright-mcp/page-2026-11-08T19-55-14-821Z.yml
+
+# Optional SQL adapters expose README documentation only; research stays local.
+!storage-engines/**/README.md
+!storage-engines/README.md
+/storage-engines/**/*.o
+/storage-engines/**/*.so
+/storage-engines/**/*.bc
+/storage-engines/benchmark/

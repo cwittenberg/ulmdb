@@ -17,8 +17,10 @@ pub use baseline::{Baseline, BaselineActivation, BaselineReceipt, create_from_ba
 pub(crate) use baseline::reset_copied_journal;
 
 pub use snapshot::{
-    HandoverGuard, SnapshotReceipt, export_snapshot, rebase_all_snapshot, rebase_snapshot,
-    restore_snapshot, validate_full_handover, validate_handover, validate_baseline_handover, verify_snapshot,
+    HandoverGuard, SnapshotReceipt, export_snapshot, export_snapshot_job, export_snapshot_with_control,
+    rebase_all_snapshot, rebase_snapshot, restore_snapshot, validate_full_handover,
+    validate_handover, validate_baseline_handover, verify_snapshot, verify_snapshot_job,
+    verify_snapshot_with_control,
 };
 pub use store::{
     apply_page, cursor, cursors, initialize, initialize_with_realm, mark_serving, page, prune,

@@ -279,14 +279,107 @@ pruner does not guarantee that a caller will keep its recovery bundle afterward.
 
 Logical journal pruning does not itself reduce native allocated files. Physical
 compaction, inventory pruning, reclamation, disk headroom and live-reader limits
-remain the selected engine's maintenance policy. Automatic bounded native
-maintenance is still part of the separate LMDB parity backlog. Avoid retaining
-live read transactions for unbounded historical investigations.
+remain the selected engine's maintenance policy. Resumable native maintenance
+retires empty physical-pin generations while preserving generations protected
+by active readers. Its steady-state discovery and reclamation work depends on
+retained generations rather than total update history. Avoid retaining live
+read transactions for unbounded historical investigations.
 
 Failed export/rebase can leave an incomplete bundle or unactivated candidate.
 The live source remains unchanged; verify or remove only the failed operation's
 own destination. A rebase copies a captured source snapshot; the final handover
 guard is required to detect writes that arrived afterward.
+
+Native pin discovery negotiates the one-way RG3 coordination profile. Older
+engine binaries reject that profile; replacing the executable is not an
+in-place rollback procedure. Stop all owners before changing engine versions.
+For rollback, restore a verified snapshot compatible with the older engine
+into a new directory, replay any authenticated retained journal required to
+reach the intended watermarks, and validate it before switching the active
+handle. Preserve the current directory until that handover succeeds. Never
+delete or rewrite `.ulmdb-coordination` while owners are live. An interrupted
+generation-link mutation fails closed and requires offline operator recovery;
+there is no automatic registry repair utility.
+
+## Cooperative snapshot work
+
+Use `journal::export_snapshot_with_control` and
+`journal::verify_snapshot_with_control` to impose a `backup::BackupControl` on
+the complete package journey. Verification includes cold native opening and
+admission; it does not open the database first and start accounting afterward.
+The control accepts cumulative unit/byte limits, an optional `Instant` deadline,
+a cloneable cancellation token, and a progress callback. Cancellation returns an
+error identified by
+`Error::is_cancelled()`; exhausted work or deadline allowance is identified by
+`Error::is_work_limit_exceeded()`. Requested work includes repeated reads and hashing,
+so byte allowances are work budgets rather than output-size limits.
+
+For an application event loop, use `journal::export_snapshot_job` or
+`journal::verify_snapshot_job`. Export takes an `Arc<Environment>` and an owned
+`ReadTxn`, retaining exactly that snapshot while the application's writer can
+advance independently. Verification owns the bundle path and performs cold
+opening on the worker only after the caller grants work. For example, a caller
+with an existing `job` performs one slice and returns to its scheduler:
+
+```rust
+use ulmdb::backup::{JobStep, WorkBudget};
+
+match job.advance(WorkBudget { max_units: 256, max_bytes: 8 * 1024 * 1024 })? {
+    JobStep::Pending { progress, required } => {
+        // Keep the job; schedule another advance later. If one indivisible
+        // native action exceeds the slice, explicitly admit required or cancel.
+    }
+    JobStep::Complete(receipt) => {
+        // Only this result authorizes publishing the completed journal bundle.
+    }
+}
+```
+
+After initial pin bootstrap, exhaustion of an individual slice preserves the
+worker's actual stack and progress; the next grant resumes without replaying
+earlier verification or copy work. The initial descriptor/pin bootstrap cannot
+pause while holding source capture/registry gates: an insufficient initial
+slice returns a work-limit error and releases those gates. Use a larger initial
+slice, or supply an already admitted owned read to the application export job.
+Cancellation, total limits and deadlines remain checked during bootstrap;
+caller callbacks resume after the gates have been released.
+Total-limit exhaustion aborts the operation. `job.cancel()` wakes a
+paused worker, and dropping a job requests cancellation and joins its worker.
+The operation control passed to a custom `BackupJob::spawn` closure belongs to
+that worker while it runs. Use `job.control()` to share total limits, progress
+and cancellation with other threads.
+Callbacks and one kernel call cannot be forcibly preempted, and the final
+publication/synchronization boundary can complete after a late cancel request.
+
+The `ipdon-regional snapshot` and `verify-snapshot` commands drive these jobs:
+
+```sh
+ipdon-regional snapshot DATABASE NEW_BUNDLE --slice-units 256 --max-bytes 8589934592 --deadline-ms 30000 --cancel-file /tmp/ipdon-backup.cancel
+ipdon-regional verify-snapshot NEW_BUNDLE --slice-units 256 --deadline-ms 30000
+```
+
+Additional options are `--max-units N`, `--slice-bytes N` and `--progress`.
+Creating the cancellation file requests a cooperative stop; an already present
+or inaccessible signal file stops before cold opening. The watcher polls every
+10 ms. The default slice grants 4096 units, and an explicit byte slice is never
+silently raised to accommodate a larger native action.
+
+Stopped exports can leave only their newly created incomplete target and
+pending files. The package publishes `SNAPSHOT` last, after native verification
+and synchronization. If a stop arrives after native `database/CURRENT` commits
+but before that final marker, the database can be complete while the journal
+bundle remains unready. No `SnapshotReceipt` is returned, and journal verify or
+restore rejects the incomplete bundle. Preexisting destinations are never
+overwritten or removed. A synchronization error after publication can return
+`OutcomeUnknown`; verify the destination before choosing recovery actions.
+
+Controlled exports currently admit ordinary mapped, untransformed Legacy,
+Cohort and Indexed file snapshots. Range, chunked, transformed and externally
+synchronized sources reject before the native destination is created; the
+package can already have created its outer incomplete directory. Existing
+synchronous APIs retain their original compatibility. External collector/feed
+applications must wire these package APIs into their own scheduler and
+cancellation handling; no external application checkout is modified here.
 
 ## History and application boundaries
 

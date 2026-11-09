@@ -1,9 +1,8 @@
 //! Immutable one-segment commit files. Origins dispatch only when opening maps.
 use crate::{Error, Manifest, Result, SegmentEntry, manifest::number, mapping::hex};
-use sha2::{Digest, Sha256};
 use std::{
     fs::{File, OpenOptions},
-    io::{Read, Seek, SeekFrom, Write},
+    io::{Seek, SeekFrom, Write},
     path::{Path, PathBuf},
 };
 pub const MAX_COHORT_BYTES: u64 = (10u64 << 30) + 32;
@@ -213,7 +212,7 @@ pub(crate) fn write_open_with_transform(
         crate::fault_point!("cohort.after_directory_sync");
     }
     Ok(WrittenCohort {
-        hash: Sha256::digest(&descriptor).into(),
+        hash: crate::work::digest(&descriptor)?,
         file,
         physical,
         segment: entry,
@@ -258,7 +257,7 @@ pub(crate) fn geometry_details(file: &mut File) -> Result<(u64, u64, u16, u64)> 
     }
     file.seek(SeekFrom::End(-(FOOTER as i64)))?;
     let mut trailer = [0; FOOTER as usize];
-    file.read_exact(&mut trailer)?;
+    crate::work::read_exact(file, &mut trailer)?;
     let transformed = &trailer[..8] == b"ULMDBCT3"
         || &trailer[..8] == b"ULMDBCT4"
         || &trailer[..8] == b"ULMDBCM3"
@@ -337,7 +336,7 @@ pub(crate) fn read_descriptor(
     } else {
         file.seek(SeekFrom::Start(payload))?;
         let mut bytes = vec![0; physical as usize];
-        file.read_exact(&mut bytes)?;
+        crate::work::read_exact(file, &mut bytes)?;
         if bytes.starts_with(b"ULMDBTX1") {
             return Err(Error::CryptoMismatch);
         }
@@ -349,7 +348,7 @@ pub(crate) fn read(directory: &Path, generation: u128) -> Result<(Vec<u8>, u64)>
     let (payload, length, _, logical) = geometry_details(&mut file)?;
     let mut descriptor = vec![0; usize::try_from(length).map_err(|_| Error::LimitExceeded)?];
     file.seek(SeekFrom::Start(payload))?;
-    file.read_exact(&mut descriptor)?;
+    crate::work::read_exact(&mut file, &mut descriptor)?;
     Ok((descriptor, logical))
 }
 pub(crate) fn decode(directory: &Path, generation: u128, hash: [u8; 32]) -> Result<Manifest> {
@@ -386,7 +385,7 @@ pub(crate) fn decode_with_mode(
     };
     let (_, _, minor, _) = geometry_details(&mut file)?;
     let (bytes, logical) = read_descriptor(&mut file, generation, &mode)?;
-    if <[u8; 32]>::from(Sha256::digest(&bytes)) != hash {
+    if crate::work::digest(&bytes)? != hash {
         return Err(Error::Corrupt("cohort descriptor hash mismatch"));
     }
     let manifest = if minor == 4 {
@@ -408,7 +407,7 @@ pub(crate) fn decode_with_mode(
 /// Installing a verified copy preserves its immutable cohort bytes exactly.
 pub(crate) fn install(directory: &Path, manifest: &Manifest) -> Result<[u8; 32]> {
     let bytes = manifest.encode()?;
-    let hash = Sha256::digest(&bytes).into();
+    let hash = crate::work::digest(&bytes)?;
     if path(directory, manifest.generation).try_exists()? {
         let mode = crate::read_mode::ReadMode::Ordinary
             .with_transform(manifest.transform_context().cloned());
