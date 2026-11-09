@@ -85,12 +85,9 @@ fn main() -> Result<()> {
 [Rust examples](clients/rust/examples) | [IPv4/IPv6 example](clients/rust/examples/routes.rs) |
 [C, C++, Rust, Python and Node.js clients](clients/README.md)
 
-Optional [SQLite and PostgreSQL storage adapters](storage-engines/README.md)
-live in `storage-engines/`, separately from ULMDB core. Native SQLite virtual
-tables and the PostgreSQL `ulmdb_fdw` extension expose keyed SQL tables backed
-by ULMDB. The guide includes build/use examples, integration limits and a SQL
-performance chart; these adapters do not replace either
-database's default storage or implement arbitrary SQL table schemas.
+Optional SQL storage: [SQLite](storage-engines/sqlite/README.md) · [PostgreSQL](storage-engines/postgresql/README.md) · [Benchmarks](storage-engines/README.md)
+
+![Native SQLite and PostgreSQL without ULMDB versus ULMDB-backed SQL tables](storage-engines/performance.svg)
 
 For sorted imports into existing indexes, Rust file transactions provide
 `upsert_sorted_kv` (including `upsert_sorted_kv_with_ordering`) and
