@@ -3,6 +3,10 @@
 //! SQL transaction's actual write set, not a cache of committed query results.
 #![allow(non_camel_case_types)]
 mod delta;
+#[cfg(feature = "vfs")]
+mod pages;
+#[cfg(feature = "vfs")]
+mod pages_codec;
 use delta::{Pending, Value};
 use std::{
     cell::RefCell,
@@ -586,7 +590,8 @@ pub unsafe extern "C" fn usql_env_open(
         if !path.is_absolute() {
             return Err(INVALID);
         }
-        if !path.exists() {
+        let created_directory = !path.exists();
+        if created_directory {
             use std::os::unix::fs::DirBuilderExt;
             std::fs::DirBuilder::new()
                 .mode(0o700)
@@ -633,6 +638,11 @@ pub unsafe extern "C" fn usql_env_open(
                 native::Environment::create(&path, options())
             }
             .map_err(code)?;
+            if created_directory {
+                std::fs::File::open(path.parent().ok_or(INVALID)?)
+                    .and_then(|parent| parent.sync_all())
+                    .map_err(|e| e.raw_os_error().unwrap_or(IO))?;
+            }
             let owner = Arc::new(Owner {
                 engine,
                 writing: AtomicBool::new(false),
@@ -1337,7 +1347,8 @@ mod tests {
             let old = begin(f.env, ptr::null_mut(), true);
             let mut cursor = ptr::null_mut();
             assert_eq!(usql_cursor_open(old, DBI, &mut cursor), 0);
-            let mut k = val(&key(i64::MIN));
+            let lower = key(i64::MIN);
+            let mut k = val(&lower);
             let mut v = val(&[]);
             assert_eq!(usql_cursor_get(cursor, &mut k, &mut v, 17), 0);
             assert_eq!(
@@ -1711,7 +1722,8 @@ mod tests {
                 assert!(child >= 0);
                 if child == 0 {
                     let mut out = val(&[]);
-                    let mut k = val(&key(i64::MIN));
+                    let lower = key(i64::MIN);
+                    let mut k = val(&lower);
                     let wrong_handle = usql_get(read, DBI, &val(&key(1)), &mut out);
                     let wrong_writer = put(active_writer, 2, b"child");
                     let wrong_cursor = usql_cursor_get(cursor, &mut k, &mut out, 17);
@@ -1774,3 +1786,7 @@ mod tests {
         }
     }
 }
+
+#[cfg(feature = "btree")]
+#[path = "../../btree/native.rs"]
+mod btree;

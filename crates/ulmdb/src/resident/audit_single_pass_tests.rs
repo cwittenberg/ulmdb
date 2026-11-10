@@ -252,12 +252,17 @@ fn mapped_shared_trace(capacity: crate::CatalogCapacity) {
         .unwrap_or_default();
     assert_eq!(found_capacity, capacity);
     assert_eq!(old.reads.get() - before_profile, 1);
+    let before_catalog_cursor = old.reads.get();
     for row in
         ulmdb_kv::Cursor::new(&old, catalog, Bound::Unbounded, Bound::Unbounded, false).unwrap()
     {
         row.unwrap();
     }
-    legacy_kv(&old, root, 100_000, &mut 0).unwrap();
+    let catalog_cursor_reads = old.reads.get() - before_catalog_cursor;
+    ulmdb_kv::audit_tree(&old, root, 100_000).unwrap();
+    let before_value_cursor = old.reads.get();
+    bounded_values(&old, root).unwrap();
+    let value_cursor_reads = old.reads.get() - before_value_cursor;
     let result = audit(&view, catalog, 2, 100_000).unwrap();
     assert_eq!(result.catalog_capacity, capacity);
     assert_eq!(result.live, *old.live.borrow());
@@ -269,8 +274,17 @@ fn mapped_shared_trace(capacity: crate::CatalogCapacity) {
         old.reads.get(),
         result.live.len()
     );
+    assert!(catalog_cursor_reads > 0 && value_cursor_reads > 0);
     #[cfg(feature = "resident-single-pass-audit")]
-    assert!(old.reads.get() >= result.reads + 513);
+    {
+        // Both audits retain the catalog cursor. The removed database-value
+        // pass retains its checked leaf, so charge its real page transitions
+        // rather than assuming one read per record.
+        assert_eq!(
+            old.reads.get(),
+            result.reads + value_cursor_reads
+        );
+    }
     #[cfg(not(feature = "resident-single-pass-audit"))]
     assert_eq!(old.reads.get(), result.reads);
     assert!(matches!(

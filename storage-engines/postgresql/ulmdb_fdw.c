@@ -9,6 +9,7 @@
 #include "access/xact.h"
 #include "catalog/pg_foreign_server.h"
 #include "catalog/pg_foreign_table.h"
+#include "catalog/pg_operator_d.h"
 #include "catalog/pg_type_d.h"
 #include "commands/defrem.h"
 #include "commands/explain.h"
@@ -21,16 +22,24 @@
 #include "optimizer/appendinfo.h"
 #include "optimizer/optimizer.h"
 #include "optimizer/pathnode.h"
+#include "optimizer/paths.h"
 #include "optimizer/planmain.h"
 #include "optimizer/restrictinfo.h"
 #include "parser/parsetree.h"
+#include "port/pg_bswap.h"
 #include "utils/array.h"
 #include "utils/builtins.h"
 #include "utils/fmgroids.h"
+#include "utils/inval.h"
 #include "utils/lsyscache.h"
 #include "utils/memutils.h"
 #include "utils/rel.h"
+#include "utils/syscache.h"
 #include "ulmdb.h"
+#ifdef ULMDB_FDW_SQL_BATCH
+#include "native/sql_batch.h"
+#define SQL_SCAN_BATCH 256
+#endif
 
 PG_MODULE_MAGIC;
 PG_FUNCTION_INFO_V1(ulmdb_fdw_handler);
@@ -52,8 +61,26 @@ typedef struct ULMDBScanState
     int64 *batch_keys;
     int batch_count;
     int batch_at;
+    bool need_value;
+    bytea *payload;
+    Size payload_capacity;
+#ifdef ULMDB_FDW_SQL_BATCH
+    bool sql_batch_enabled;
+    ulmdb_sql_row *sql_rows;
+    ulmdb_sql_hit *sql_hits;
+    size_t sql_count, sql_at;
+    uint64 sql_refills;
+#endif
     struct ULMDBScanState *next;
 } ULMDBScanState;
+
+typedef struct DatabaseState
+{
+    char *name;
+    MDB_dbi read_dbi, write_dbi;
+    bool read_checked, read_found, write_checked, write_found;
+    struct DatabaseState *next;
+} DatabaseState;
 
 typedef struct ModifyState
 {
@@ -61,12 +88,24 @@ typedef struct ModifyState
     AttrNumber id_attno;
 } ModifyState;
 
+typedef struct RelationState
+{
+    Oid relid;
+    uint64 generation;
+    char *canonical_path;
+    char *database;
+    struct RelationState *next;
+} RelationState;
+
 /* One environment per backend; one external snapshot per PG transaction. */
 static MDB_env *cached_env;
 static char *cached_path;
 static MDB_txn *reader;
 static MDB_txn *writer;
 static ULMDBScanState *scans;
+static DatabaseState *databases;
+static RelationState *relations;
+static uint64 metadata_generation = 1;
 
 static void
 check_mdb(int rc, const char *operation)
@@ -125,14 +164,39 @@ xact_callback(XactEvent event, void *arg)
             reader = NULL;
         }
         if (event != XACT_EVENT_PRE_COMMIT)
+        {
             scans = NULL;
+            databases = NULL;
+            relations = NULL;
+        }
     }
+}
+
+/* Invalidation callbacks hold no transaction-owned pointers. */
+static void
+relation_changed(Datum arg, Oid relid)
+{
+    (void) arg;
+    (void) relid;
+    if (++metadata_generation == 0) ++metadata_generation;
+}
+
+static void
+options_changed(Datum arg, int cacheid, uint32 hashvalue)
+{
+    (void) arg;
+    (void) cacheid;
+    (void) hashvalue;
+    if (++metadata_generation == 0) ++metadata_generation;
 }
 
 void
 _PG_init(void)
 {
     RegisterXactCallback(xact_callback, NULL);
+    CacheRegisterRelcacheCallback(relation_changed, (Datum) 0);
+    CacheRegisterSyscacheCallback(FOREIGNTABLEREL, options_changed, (Datum) 0);
+    CacheRegisterSyscacheCallback(FOREIGNSERVEROID, options_changed, (Datum) 0);
 }
 
 static char *
@@ -199,21 +263,8 @@ check_schema(Relation rel)
 }
 
 static MDB_env *
-get_environment(Relation rel, char **database)
+canonical_environment(const char *canonical)
 {
-    ForeignTable *table = GetForeignTable(RelationGetRelid(rel));
-    ForeignServer *server = GetForeignServer(table->serverid);
-    char *path = option_value(server->options, "path");
-    char canonical[PATH_MAX];
-    require_access();
-    check_schema(rel);
-    *database = option_value(table->options, "database");
-    if (!path || !*database)
-        ereport(ERROR, (errcode(ERRCODE_FDW_OPTION_NAME_NOT_FOUND),
-                       errmsg("ULMDB requires server option path and table option database")));
-    if (!realpath(path, canonical))
-        ereport(ERROR, (errcode_for_file_access(),
-                       errmsg("ULMDB environment directory is unavailable: %m")));
     if (cached_env && strcmp(cached_path, canonical) != 0)
     {
         if (writer || reader || scans)
@@ -222,6 +273,7 @@ get_environment(Relation rel, char **database)
         mdb_env_close(cached_env);
         cached_env = NULL;
         pfree(cached_path);
+        cached_path = NULL;
     }
     if (!cached_env)
     {
@@ -239,6 +291,52 @@ get_environment(Relation rel, char **database)
         cached_env = env;
     }
     return cached_env;
+}
+
+static MDB_env *
+get_environment(Relation rel, char **database)
+{
+    Oid relid = RelationGetRelid(rel);
+    RelationState *state;
+    ForeignTable *table;
+    ForeignServer *server;
+    char *path, *name;
+    char canonical[PATH_MAX];
+    MDB_env *env;
+    require_access();
+    for (state = relations; state; state = state->next)
+        if (state->relid == relid) break;
+    if (state && state->generation == metadata_generation)
+    {
+        *database = state->database;
+        return canonical_environment(state->canonical_path);
+    }
+    check_schema(rel);
+    table = GetForeignTable(relid);
+    server = GetForeignServer(table->serverid);
+    path = option_value(server->options, "path");
+    name = option_value(table->options, "database");
+    if (!path || !name)
+        ereport(ERROR, (errcode(ERRCODE_FDW_OPTION_NAME_NOT_FOUND),
+                       errmsg("ULMDB requires server option path and table option database")));
+    if (!realpath(path, canonical))
+        ereport(ERROR, (errcode_for_file_access(),
+                       errmsg("ULMDB environment directory is unavailable: %m")));
+    env = canonical_environment(canonical);
+    if (!state)
+    {
+        state = MemoryContextAllocZero(TopTransactionContext, sizeof(*state));
+        state->relid = relid;
+        state->next = relations;
+        relations = state;
+    }
+    if (state->canonical_path) pfree(state->canonical_path);
+    if (state->database) pfree(state->database);
+    state->canonical_path = MemoryContextStrdup(TopTransactionContext, canonical);
+    state->database = MemoryContextStrdup(TopTransactionContext, name);
+    state->generation = metadata_generation;
+    *database = state->database;
+    return env;
 }
 
 static MDB_txn *
@@ -277,27 +375,75 @@ get_writer(MDB_env *env)
 static void
 encode_id(int64 id, unsigned char bytes[8])
 {
-    uint64 sortable = ((uint64) id) ^ UINT64CONST(0x8000000000000000);
-    int i;
-    for (i = 7; i >= 0; --i)
-    {
-        bytes[i] = sortable & 255;
-        sortable >>= 8;
-    }
+    uint64 sortable = pg_hton64(((uint64) id) ^ UINT64CONST(0x8000000000000000));
+    memcpy(bytes, &sortable, sizeof(sortable));
 }
 
 static int64
 decode_id(MDB_val *key)
 {
-    const unsigned char *bytes = key->mv_data;
-    uint64 sortable = 0;
-    int i;
+    uint64 sortable;
     if (key->mv_size != 8)
         ereport(ERROR, (errcode(ERRCODE_DATA_CORRUPTED),
                        errmsg("ULMDB SQL table contains an invalid key")));
-    for (i = 0; i < 8; ++i)
-        sortable = (sortable << 8) | bytes[i];
-    return (int64) (sortable ^ UINT64CONST(0x8000000000000000));
+    memcpy(&sortable, key->mv_data, sizeof(sortable));
+    return (int64) (pg_ntoh64(sortable) ^ UINT64CONST(0x8000000000000000));
+}
+
+/* DBI admission is stable within each real read/write transaction. */
+static int
+open_database(MDB_txn *txn, const char *name, bool create, MDB_dbi *dbi)
+{
+    DatabaseState *d;
+    bool writing = txn == writer;
+    bool *checked, *found;
+    MDB_dbi *cached_dbi;
+    int rc;
+    for (d = databases; d; d = d->next)
+        if (strcmp(d->name, name) == 0) break;
+    if (!d)
+    {
+        d = MemoryContextAllocZero(TopTransactionContext, sizeof(*d));
+        d->name = MemoryContextStrdup(TopTransactionContext, name);
+        d->next = databases;
+        databases = d;
+    }
+    checked = writing ? &d->write_checked : &d->read_checked;
+    found = writing ? &d->write_found : &d->read_found;
+    cached_dbi = writing ? &d->write_dbi : &d->read_dbi;
+    if (*checked && (*found || !create))
+    {
+        if (*found) *dbi = *cached_dbi;
+        return *found ? MDB_SUCCESS : MDB_NOTFOUND;
+    }
+    rc = mdb_dbi_open(txn, name, create ? MDB_CREATE : 0, cached_dbi);
+    if (rc == MDB_SUCCESS)
+    {
+        unsigned int flags;
+        check_mdb(mdb_dbi_flags(txn, *cached_dbi, &flags), "read database flags");
+        if (flags != 0)
+            ereport(ERROR,
+                    (errcode(ERRCODE_FDW_INVALID_DATA_TYPE),
+                     errmsg("ULMDB SQL tables require an ordinary bytewise KV database"),
+                     errdetail("Database \"%s\" has incompatible flags 0x%x.", name, flags)));
+#ifdef ULMDB_FDW_SQL_BATCH
+        rc = ulmdb_sql_bytewise_format(txn, *cached_dbi);
+        if (rc == MDB_INCOMPATIBLE)
+            ereport(ERROR,
+                    (errcode(ERRCODE_FDW_INVALID_DATA_TYPE),
+                     errmsg("ULMDB SQL tables require an ordinary native bytewise KV database"),
+                     errdetail("Database \"%s\" has an unsupported native format or comparator.", name),
+                     errhint("Use a new SQL-created database, or migrate records into a native bytewise KV database.")));
+        check_mdb(rc, "validate database format");
+#endif
+    }
+    if (rc == MDB_SUCCESS || rc == MDB_NOTFOUND)
+    {
+        *checked = true;
+        *found = rc == MDB_SUCCESS;
+        if (*found) *dbi = *cached_dbi;
+    }
+    return rc;
 }
 
 static bool
@@ -389,9 +535,15 @@ get_size(PlannerInfo *root, RelOptInfo *rel, Oid tableid)
 static void
 get_paths(PlannerInfo *root, RelOptInfo *rel, Oid tableid)
 {
+    List *pathkeys = NIL;
     (void) tableid;
+    /* Full cursors and sorted/deduplicated key batches both emit signed ASC. */
+    if (root->query_pathkeys)
+        pathkeys = build_expression_pathkey(root,
+            (Expr *) makeVar(rel->relid, 1, INT8OID, -1, InvalidOid, 0),
+            Int8LessOperator, rel->relids, false);
     add_path(rel, (Path *) create_foreignscan_path(root, rel, NULL, rel->rows,
-                5, 5 + rel->rows * 0.02, NIL, rel->lateral_relids, NULL,
+                5, 5 + rel->rows * 0.02, pathkeys, rel->lateral_relids, NULL,
 #if PG_VERSION_NUM >= 170000
                 NIL,
 #endif
@@ -404,20 +556,33 @@ get_plan(PlannerInfo *root, RelOptInfo *rel, Oid tableid, ForeignPath *path,
 {
     ListCell *lc;
     List *exprs = NIL;
+    List *local = NIL;
+    List *recheck = NIL;
+    Bitmapset *attributes = NULL;
+    bool need_value;
     (void) root;
     (void) tableid;
     (void) path;
     clauses = extract_actual_clauses(clauses, false);
     foreach(lc, clauses)
     {
-        Expr *expr = lookup_expr(lfirst(lc), rel->relid);
+        Expr *expr = exprs ? NULL : lookup_expr(lfirst(lc), rel->relid);
         if (expr)
         {
             exprs = list_make1(expr);
-            break;
+            recheck = list_make1(lfirst(lc));
         }
+        else
+            local = lappend(local, lfirst(lc));
     }
-    return make_foreignscan(tlist, clauses, rel->relid, exprs, NIL, NIL, NIL, outer);
+    pull_varattnos((Node *) tlist, rel->relid, &attributes);
+    pull_varattnos((Node *) local, rel->relid, &attributes);
+    pull_varattnos((Node *) recheck, rel->relid, &attributes);
+    need_value = bms_is_member(2 - FirstLowInvalidHeapAttributeNumber, attributes) ||
+                 bms_is_member(0 - FirstLowInvalidHeapAttributeNumber, attributes);
+    bms_free(attributes);
+    return make_foreignscan(tlist, local, rel->relid, exprs,
+                            list_make1(makeInteger(need_value)), NIL, recheck, outer);
 }
 
 static void
@@ -437,6 +602,7 @@ begin_scan(ForeignScanState *node, int eflags)
     s->next = scans;
     scans = s;
     node->fdw_state = s;
+    s->need_value = intVal(linitial(plan->fdw_private)) != 0;
     if (plan->fdw_exprs)
     {
         Expr *expr = linitial(plan->fdw_exprs);
@@ -455,7 +621,10 @@ begin_scan(ForeignScanState *node, int eflags)
             check_mdb(mdb_txn_begin(env, NULL, MDB_RDONLY, &reader), "begin read");
         s->txn = reader;
     }
-    rc = mdb_dbi_open(s->txn, database, 0, &s->dbi);
+#ifdef ULMDB_FDW_SQL_BATCH
+    s->sql_batch_enabled = s->txn == reader;
+#endif
+    rc = open_database(s->txn, database, false, &s->dbi);
     if (rc == MDB_NOTFOUND)
     {
         s->missing_database = true;
@@ -465,7 +634,9 @@ begin_scan(ForeignScanState *node, int eflags)
     {
         check_mdb(rc, "open database");
         if (!s->key_expr)
+        {
             check_mdb(mdb_cursor_open(s->txn, s->dbi, &s->cursor), "open cursor");
+        }
     }
 }
 
@@ -539,6 +710,101 @@ evaluate_batch(ULMDBScanState *s, ForeignScanState *node)
     MemoryContextSwitchTo(previous);
 }
 
+static inline int
+fetch_exact_keys(ULMDBScanState *s, ForeignScanState *node, int64 *id, MDB_val *value)
+{
+    int rc;
+    unsigned char bytes[8];
+    MDB_val key;
+#ifdef ULMDB_FDW_SQL_BATCH
+    while (s->sql_batch_enabled)
+    {
+        if (s->sql_at < s->sql_count)
+        {
+            *id = s->sql_hits[s->sql_at].id;
+            *value = s->sql_hits[s->sql_at++].value;
+            return MDB_SUCCESS;
+        }
+        if (s->batch_at >= s->batch_count) return MDB_NOTFOUND;
+        if (!s->sql_hits)
+            s->sql_hits = MemoryContextAlloc(node->ss.ps.state->es_query_cxt,
+                                            sizeof(*s->sql_hits) * SQL_SCAN_BATCH);
+        {
+            size_t candidates = Min((size_t) (s->batch_count - s->batch_at),
+                                    (size_t) SQL_SCAN_BATCH);
+            size_t consumed = 0;
+            CHECK_FOR_INTERRUPTS();
+            rc = ulmdb_sql_get_batch(s->txn, s->dbi, s->batch_keys + s->batch_at,
+                                    candidates, s->sql_hits, SQL_SCAN_BATCH,
+                                    &consumed, &s->sql_count);
+            if ((rc == MDB_INCOMPATIBLE || rc == MDB_BAD_VALSIZE) &&
+                consumed == 0 && s->sql_count == 0)
+            {
+                s->sql_batch_enabled = false;
+                break;
+            }
+            if (rc != MDB_SUCCESS) return rc;
+            if (consumed == 0 || consumed > candidates || s->sql_count > consumed)
+                elog(ERROR, "invalid ULMDB bulk lookup response");
+            s->batch_at += consumed;
+            s->sql_at = 0;
+            ++s->sql_refills;
+        }
+    }
+#else
+    (void) node;
+#endif
+    do
+    {
+        if (s->batch_at >= s->batch_count) return MDB_NOTFOUND;
+        *id = s->batch_keys[s->batch_at++];
+        encode_id(*id, bytes);
+        key.mv_size = 8;
+        key.mv_data = bytes;
+        rc = mdb_get(s->txn, s->dbi, &key, value);
+    } while (rc == MDB_NOTFOUND);
+    return rc;
+}
+
+static inline int
+fetch_cursor(ULMDBScanState *s, ForeignScanState *node, MDB_val *key, MDB_val *value)
+{
+    int rc;
+#ifdef ULMDB_FDW_SQL_BATCH
+    if (s->sql_batch_enabled)
+    {
+        if (s->sql_at == s->sql_count)
+        {
+            if (!s->sql_rows)
+                s->sql_rows = MemoryContextAlloc(node->ss.ps.state->es_query_cxt,
+                                                sizeof(*s->sql_rows) * SQL_SCAN_BATCH);
+            rc = ulmdb_sql_cursor_batch(s->cursor, s->sql_rows, SQL_SCAN_BATCH,
+                                       &s->sql_count, s->started ? MDB_NEXT : MDB_FIRST);
+            if ((rc == MDB_INCOMPATIBLE || rc == MDB_BAD_VALSIZE) && s->sql_count == 0)
+                s->sql_batch_enabled = false;
+            else
+            {
+                if (rc != MDB_SUCCESS) return rc;
+                ++s->sql_refills;
+                s->started = true;
+                s->sql_at = 0;
+            }
+        }
+        if (s->sql_batch_enabled)
+        {
+            *key = s->sql_rows[s->sql_at].key;
+            *value = s->sql_rows[s->sql_at++].value;
+            return MDB_SUCCESS;
+        }
+    }
+#else
+    (void) node;
+#endif
+    rc = mdb_cursor_get(s->cursor, key, value, s->started ? MDB_NEXT : MDB_FIRST);
+    s->started = true;
+    return rc;
+}
+
 static TupleTableSlot *
 iterate_scan(ForeignScanState *node)
 {
@@ -547,7 +813,8 @@ iterate_scan(ForeignScanState *node)
     MDB_val key, value;
     unsigned char bytes[8];
     int rc;
-    bytea *payload;
+    int64 known_id = 0;
+    bool id_is_known = false;
     ExecClearTuple(slot);
     if (s->done) return slot;
     if (s->key_expr)
@@ -558,18 +825,8 @@ iterate_scan(ForeignScanState *node)
         if (s->batch)
         {
             if (!s->batch_evaluated) evaluate_batch(s, node);
-            do
-            {
-                if (s->batch_at >= s->batch_count)
-                {
-                    s->done = true;
-                    return slot;
-                }
-                encode_id(s->batch_keys[s->batch_at++], bytes);
-                key.mv_size = 8;
-                key.mv_data = bytes;
-                rc = mdb_get(s->txn, s->dbi, &key, &value);
-            } while (rc == MDB_NOTFOUND);
+            rc = fetch_exact_keys(s, node, &known_id, &value);
+            id_is_known = true;
         }
         else
         {
@@ -588,11 +845,7 @@ iterate_scan(ForeignScanState *node)
         }
     }
     else
-    {
-        rc = mdb_cursor_get(s->cursor, &key, &value,
-                            s->started ? MDB_NEXT : MDB_FIRST);
-        s->started = true;
-    }
+        rc = fetch_cursor(s, node, &key, &value);
     if (rc == MDB_NOTFOUND)
     {
         s->done = true;
@@ -602,13 +855,25 @@ iterate_scan(ForeignScanState *node)
     if (value.mv_size > MaxAllocSize - VARHDRSZ)
         ereport(ERROR, (errcode(ERRCODE_PROGRAM_LIMIT_EXCEEDED),
                        errmsg("ULMDB value exceeds PostgreSQL allocation limit")));
-    payload = MemoryContextAlloc(node->ss.ps.ps_ExprContext->ecxt_per_tuple_memory,
-                                 value.mv_size + VARHDRSZ);
-    SET_VARSIZE(payload, value.mv_size + VARHDRSZ);
-    memcpy(VARDATA(payload), value.mv_data, value.mv_size);
-    slot->tts_values[0] = Int64GetDatum(decode_id(&key));
-    slot->tts_values[1] = PointerGetDatum(payload);
-    slot->tts_isnull[0] = slot->tts_isnull[1] = false;
+    if (s->need_value)
+    {
+        Size needed = value.mv_size + VARHDRSZ;
+        if (needed > s->payload_capacity)
+        {
+            Size capacity = Max(needed, Min(MaxAllocSize, Max((Size) 128, s->payload_capacity * 2)));
+            if (s->payload)
+                s->payload = repalloc(s->payload, capacity);
+            else
+                s->payload = MemoryContextAlloc(node->ss.ps.state->es_query_cxt, capacity);
+            s->payload_capacity = capacity;
+        }
+        SET_VARSIZE(s->payload, needed);
+        memcpy(VARDATA(s->payload), value.mv_data, value.mv_size);
+    }
+    slot->tts_values[0] = Int64GetDatum(id_is_known ? known_id : decode_id(&key));
+    slot->tts_values[1] = PointerGetDatum(s->payload);
+    slot->tts_isnull[0] = false;
+    slot->tts_isnull[1] = !s->need_value;
     ExecStoreVirtualTuple(slot);
     return slot;
 }
@@ -621,6 +886,9 @@ rescan(ForeignScanState *node)
     s->done = s->missing_database || s->txn == NULL;
     s->batch_evaluated = false;
     s->batch_count = s->batch_at = 0;
+#ifdef ULMDB_FDW_SQL_BATCH
+    s->sql_count = s->sql_at = 0;
+#endif
     if (s->batch_keys) pfree(s->batch_keys);
     s->batch_keys = NULL;
 }
@@ -638,6 +906,11 @@ end_scan(ForeignScanState *node)
         *link = s->next;
     close_scan(s);
     if (s->batch_keys) pfree(s->batch_keys);
+    if (s->payload) pfree(s->payload);
+#ifdef ULMDB_FDW_SQL_BATCH
+    if (s->sql_rows) pfree(s->sql_rows);
+    if (s->sql_hits) pfree(s->sql_hits);
+#endif
     pfree(s);
     node->fdw_state = NULL;
 }
@@ -651,6 +924,16 @@ explain_scan(ForeignScanState *node, ExplainState *es)
         access = integer_array(exprType(linitial(plan->fdw_exprs))) ?
                  "primary-key batch" : "primary-key lookup";
     ExplainPropertyText("ULMDB access", access, es);
+#ifdef ULMDB_FDW_SQL_BATCH
+    ExplainPropertyBool("ULMDB native format checks", true, es);
+#else
+    ExplainPropertyBool("ULMDB native format checks", false, es);
+#endif
+#ifdef ULMDB_FDW_SQL_BATCH
+    if (node->fdw_state && ((ULMDBScanState *) node->fdw_state)->sql_refills)
+        ExplainPropertyInteger("ULMDB batch refills", NULL,
+                               ((ULMDBScanState *) node->fdw_state)->sql_refills, es);
+#endif
 }
 
 static void
@@ -692,7 +975,7 @@ begin_modify(ModifyTableState *mtstate, ResultRelInfo *rinfo,
     env = get_environment(rinfo->ri_RelationDesc, &database);
     m = palloc0(sizeof(*m));
     rinfo->ri_FdwState = m;
-    check_mdb(mdb_dbi_open(get_writer(env), database, MDB_CREATE, &m->dbi), "open database");
+    check_mdb(open_database(get_writer(env), database, true, &m->dbi), "open database");
     if (mtstate->operation == CMD_UPDATE || mtstate->operation == CMD_DELETE)
     {
         m->id_attno = ExecFindJunkAttributeInTlist(outerPlanState(mtstate)->plan->targetlist,

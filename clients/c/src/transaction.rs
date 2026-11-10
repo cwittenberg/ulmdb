@@ -112,6 +112,8 @@ pub unsafe extern "C" fn mdb_txn_begin(
                 &mut reader_lease,
             )?);
             map_size::check(&shared, &read, e.mapsize)?;
+            #[cfg(feature = "sql-hash")]
+            let read = cursor_stream::sql_batch::sql_hash::SqlReadTxn::try_new(read)?;
             State::Read(read)
         } else {
             if shared.writer_thread.lock().map_err(|_| BAD_TXN)?.as_ref() == Some(&thread) {
@@ -861,6 +863,8 @@ pub unsafe extern "C" fn mdb_txn_renew(txn: *mut MDB_txn) -> c_int {
         )?;
         map_size::check(&t.shared, &read, unsafe { get_ref(t.env)? }.mapsize)?;
         *t.dbis.lock().map_err(|_| BAD_TXN)? = dbi_state::TxnDbis::from_shared(&t.shared)?;
+        #[cfg(feature = "sql-hash")]
+        let read = cursor_stream::sql_batch::sql_hash::SqlReadTxn::try_new(read)?;
         setup.finish();
         t.txnid = read.sequence() as usize;
         t.state = Some(State::Read(read));

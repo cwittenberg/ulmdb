@@ -14,10 +14,18 @@ crate-type = ["staticlib", "rlib"]
 [features]
 default = []
 versioned = []
+vfs = ["dep:lz4_flex"]
+vfs-profile = ["vfs", "ulmdb/snapshot-log-profile"]
+btree = ["dep:self_cell"]
+btree-read-hash = ["btree"]
+btree-blocks = ["btree-read-hash"]
 
 [dependencies]
 ulmdb = { path = "../../../crates/ulmdb", features = ["snapshot-log"] }
 libc = "=0.2.191"
+self_cell = { version = "=1.3.0", optional = true }
+# Encode fixed, caller-owned pages through the optimized encoder; keep decoding checked.
+lz4_flex = { version = "=0.12.2", default-features = false, features = ["std", "safe-decode"], optional = true }
 
 [profile.release]
 lto = "thin"

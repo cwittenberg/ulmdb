@@ -645,7 +645,11 @@ fn change_leaf<S: WriteStore>(
             });
         }
         if let Some(layout) = page.compact() {
-            page.validate_compact()?;
+            if !cfg!(feature = "compact-pages")
+                || !store.admitted_compact_leaf(root, page.bytes)
+            {
+                page.validate_compact()?;
+            }
             #[cfg(feature = "compact-pages")]
             if right_edge
                 && !exists
@@ -921,6 +925,10 @@ mod plan_tests;
 #[cfg(test)]
 #[path = "write/inline_patch_tests.rs"]
 mod inline_patch_tests;
+
+#[cfg(test)]
+#[path = "write/compact_admission_tests.rs"]
+mod compact_admission_tests;
 
 #[cfg(test)]
 #[path = "write/inline_append_tests.rs"]

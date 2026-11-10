@@ -29,6 +29,29 @@ fn record(path: PathBuf, name: &str) -> PathBuf {
     path
 }
 
+fn generation_links(path: &Path, generation: u64) {
+    let metadata = fs::symlink_metadata(path).unwrap();
+    assert!(metadata.is_file() && !metadata.file_type().is_symlink());
+    assert_eq!(metadata.len(), 128);
+    let bytes = fs::read(path).unwrap();
+    assert_eq!(bytes.len(), 128);
+    assert_eq!(&bytes[..8], b"ULMDBRL3");
+    assert_eq!(&bytes[8..10], &1u16.to_le_bytes());
+    assert_eq!(&bytes[10..12], &128u16.to_le_bytes());
+    assert_eq!(&bytes[12..16], &[0; 4]);
+    assert_ne!(generation, u64::MAX);
+    assert_eq!(
+        u64::from_le_bytes(bytes[56..64].try_into().unwrap()),
+        generation
+    );
+    let previous = u64::from_le_bytes(bytes[88..96].try_into().unwrap());
+    let next = u64::from_le_bytes(bytes[96..104].try_into().unwrap());
+    assert!(previous == u64::MAX || previous < generation);
+    assert!(next == u64::MAX || next > generation);
+    assert_eq!(&bytes[104..120], &[0; 16]);
+    assert_eq!(&bytes[124..128], &[0; 4]);
+}
+
 pub fn paths(environment: &Path) -> Vec<PathBuf> {
     let root = environment.join(".ulmdb-coordination/pins");
     let entries = match fs::read_dir(&root) {
@@ -46,6 +69,7 @@ pub fn paths(environment: &Path) -> Vec<PathBuf> {
         let name = name.to_str().unwrap();
         if let Some(id) = name.strip_prefix("gen-") {
             assert!(lower_hex(id, 16));
+            let generation = u64::from_str_radix(id, 16).unwrap();
             let path = entry.path();
             let metadata = fs::symlink_metadata(&path).unwrap();
             assert!(metadata.is_dir() && !metadata.file_type().is_symlink());
@@ -60,6 +84,10 @@ pub fn paths(environment: &Path) -> Vec<PathBuf> {
                     assert!(metadata.is_file() && !metadata.file_type().is_symlink());
                     assert_eq!(metadata.len(), 0);
                     scan_gate = true;
+                } else if name == "_links" {
+                    // RG3 index control, not a physical lease. RG2 generations
+                    // may omit it; _scan and every actual record stay strict.
+                    generation_links(&member.path(), generation);
                 } else {
                     records.push(record(member.path(), name));
                 }

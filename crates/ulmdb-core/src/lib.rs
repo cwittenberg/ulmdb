@@ -4,6 +4,7 @@ mod catalog_capacity;
 #[cfg(feature = "range-chunks")]
 pub mod chunk_geometry;
 pub mod compact_page_geometry;
+pub mod compact_leaf;
 pub use catalog_capacity::CatalogCapacity;
 pub mod descriptor_count;
 pub mod endian;

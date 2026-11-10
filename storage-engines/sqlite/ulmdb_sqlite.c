@@ -33,6 +33,7 @@ typedef struct {
 #ifdef ULMDB_SQLITE_OWNED
     Cursor *idle_cursor;
     MDB_txn *idle_reader;
+    Cursor *cursors;
 #endif
 } Module;
 typedef struct {
@@ -56,6 +57,7 @@ struct Cursor {
     sqlite3_int64 *keys;
     sqlite3_uint64 batch_bytes;
     int borrowed;
+    Cursor *previous, *following;
 #else
     BatchRow *rows;
 #endif
@@ -213,6 +215,17 @@ static int reconnect_table(sqlite3 *db, void *aux, int n, const char *const *arg
 }
 static int rollback(sqlite3_vtab *base) {
     Table *t = (Table *)base;
+#ifdef ULMDB_SQLITE_OWNED
+    Cursor *c;
+    /* Rollback cannot fail to allocate a saved row. Drop borrowed writer
+     * pointers before abort frees their backing delta; the epoch rejects any
+     * subsequent access through an outstanding writer cursor. */
+    for (c = t->module->cursors; c; c = c->following) {
+        if (c->writer && c->borrowed) {
+            c->value = 0; c->bytes = 0; c->borrowed = 0;
+        }
+    }
+#endif
     if (t->module->write) mdb_txn_abort(t->module->write); /* recursively aborts nested children */
     t->module->write = 0; t->module->nsaves = 0; ++t->module->epoch;
     return SQLITE_OK;
@@ -281,6 +294,11 @@ static int open_cursor(sqlite3_vtab *base, sqlite3_vtab_cursor **out) {
 #endif
     if (!c) return SQLITE_NOMEM;
     memset(c, 0, sizeof(*c)); c->base.pVtab = base; c->eof = 1;
+#ifdef ULMDB_SQLITE_OWNED
+    c->following = m->cursors;
+    if (m->cursors) m->cursors->previous = c;
+    m->cursors = c;
+#endif
     *out = &c->base;
     return SQLITE_OK;
 }
@@ -295,21 +313,35 @@ static void clear_value(Cursor *c) {
 }
 static int set_value(Cursor *c, MDB_val *value, sqlite3_int64 id) {
 #ifdef ULMDB_SQLITE_OWNED
-    if (!c->writer) {
-        /* filter() resets ownership before entering readonly mode; subsequent
-         * rows replace only borrowed pointers while the same read stays live. */
-        c->value = value->mv_size ? value->mv_data : (void *)""; c->borrowed = 1;
-    } else
-#endif
+    /* Read snapshots retain their bytes. Writer rows are preserved below
+     * before any operation that can replace or move staged values. */
+    if (c->writer) clear_value(c);
+    c->value = value->mv_size ? value->mv_data : (void *)""; c->borrowed = 1;
+#else
     {
         void *copy = sqlite3_malloc64(value->mv_size ? value->mv_size : 1);
         if (!copy) return SQLITE_NOMEM;
         if (value->mv_size) memcpy(copy, value->mv_data, value->mv_size);
         clear_value(c); c->value = copy;
     }
+#endif
     c->bytes = (int)value->mv_size; c->id = id;
     return SQLITE_OK;
 }
+#ifdef ULMDB_SQLITE_OWNED
+static int preserve_writer_values(Table *t) {
+    Cursor *c;
+    for (c = t->module->cursors; c; c = c->following) {
+        if (c->writer && c->borrowed) {
+            void *copy = sqlite3_malloc64(c->bytes ? (sqlite3_uint64)c->bytes : 1);
+            if (!copy) return SQLITE_NOMEM;
+            if (c->bytes) memcpy(copy, c->value, (size_t)c->bytes);
+            c->value = copy; c->borrowed = 0;
+        }
+    }
+    return SQLITE_OK;
+}
+#endif
 static void reset_cursor(Cursor *c) {
 #ifndef ULMDB_SQLITE_OWNED
     int i;
@@ -337,6 +369,10 @@ static int close_cursor(sqlite3_vtab_cursor *base) {
 #ifdef ULMDB_SQLITE_OWNED
     Module *m = ((Table *)base->pVtab)->module;
     reset_cursor(c);
+    if (c->previous) c->previous->following = c->following;
+    else m->cursors = c->following;
+    if (c->following) c->following->previous = c->previous;
+    c->previous = c->following = 0;
     /* reset_cursor dropped every storage capability. open_cursor initializes
      * scalar state on reuse; retain no table pointer or last business key. */
     c->base.pVtab = 0; c->id = 0;
@@ -572,6 +608,10 @@ static int next(sqlite3_vtab_cursor *base) {
 static int eof(sqlite3_vtab_cursor *base) { return ((Cursor *)base)->eof; }
 static int column(sqlite3_vtab_cursor *base, sqlite3_context *ctx, int col) {
     Cursor *c = (Cursor *)base;
+    Table *t = (Table *)base->pVtab;
+    if (c->writer && (!t->module->write || c->epoch != t->module->epoch))
+        return message(t, SQLITE_ABORT, "ULMDB write cursor invalidated by transaction end");
+    if (c->writer && sqlite3_vtab_nochange(ctx)) return SQLITE_OK;
     if (col == 0) sqlite3_result_int64(ctx, c->id);
 #ifndef ULMDB_SQLITE_OWNED
     else if (c->batch) sqlite3_result_blob(ctx, c->rows[c->row].value, c->rows[c->row].bytes, SQLITE_TRANSIENT);
@@ -596,19 +636,25 @@ static int update(sqlite3_vtab *base, int argc, sqlite3_value **args, sqlite3_in
 #endif
     sqlite3_int64 old_id = 0, new_id;
     int rc, deleting = argc == 1, inserting = sqlite3_value_type(args[0]) == SQLITE_NULL;
+    int unchanged_value;
     if (!t->module->write) return message(t, SQLITE_MISUSE, "ULMDB update without transaction");
     if (!inserting) old_id = sqlite3_value_int64(args[0]);
     if (deleting) {
+#ifdef ULMDB_SQLITE_OWNED
+        rc = preserve_writer_values(t); if (rc) return rc;
+#endif
         encode(old_id, old_key); key.mv_size = 8; key.mv_data = old_key;
         rc = mdb_del(current(t), t->module->dbi, &key, 0);
         return rc && rc != MDB_NOTFOUND ? error(t, rc, "delete") : SQLITE_OK;
     }
-    if (sqlite3_value_type(args[2]) != SQLITE_INTEGER)
+    if (!inserting && sqlite3_value_nochange(args[2])) new_id = old_id;
+    else if (sqlite3_value_type(args[2]) != SQLITE_INTEGER)
         return message(t, SQLITE_CONSTRAINT_PRIMARYKEY, "ULMDB id must be an explicit signed 64-bit INTEGER");
-    new_id = sqlite3_value_int64(args[2]);
+    else new_id = sqlite3_value_int64(args[2]);
     if (sqlite3_value_type(args[1]) != SQLITE_NULL && sqlite3_value_int64(args[1]) != (inserting ? new_id : old_id))
         return message(t, SQLITE_CONSTRAINT_PRIMARYKEY, "set id to change the key; explicit rowid must agree with id");
-    if (sqlite3_value_type(args[3]) != SQLITE_BLOB)
+    unchanged_value = !inserting && sqlite3_value_nochange(args[3]);
+    if (!unchanged_value && sqlite3_value_type(args[3]) != SQLITE_BLOB)
         return message(t, SQLITE_CONSTRAINT_NOTNULL, "ULMDB value must be a non-NULL BLOB");
     encode(new_id, new_key); key.mv_size = 8; key.mv_data = new_key;
 #ifndef ULMDB_SQLITE_OWNED
@@ -621,9 +667,18 @@ static int update(sqlite3_vtab *base, int argc, sqlite3_value **args, sqlite3_in
         } else if (rc != MDB_NOTFOUND) return error(t, rc, "check id");
     }
 #endif
-    value.mv_size = (size_t)sqlite3_value_bytes(args[3]);
-    value.mv_data = (void *)sqlite3_value_blob(args[3]);
+    if (unchanged_value) {
+        if (old_id == new_id) { *id = new_id; return SQLITE_OK; }
+        encode(old_id, old_key);
+        { MDB_val old = {8, old_key};
+          rc = mdb_get(current(t), t->module->dbi, &old, &value); }
+        if (rc) return error(t, rc, "unchanged value");
+    } else {
+        value.mv_size = (size_t)sqlite3_value_bytes(args[3]);
+        value.mv_data = (void *)sqlite3_value_blob(args[3]);
+    }
 #ifdef ULMDB_SQLITE_OWNED
+    rc = preserve_writer_values(t); if (rc) return rc;
     rc = mdb_put(current(t), t->module->dbi, &key, &value,
         inserting || old_id != new_id ? MDB_NOOVERWRITE : 0);
     if (rc == MDB_KEYEXIST) {
@@ -649,6 +704,9 @@ static int savepoint(sqlite3_vtab *base, int id) {
     int rc;
     if (!t->module->write) return SQLITE_OK;
     if (t->module->nsaves && t->module->saves[t->module->nsaves - 1].id == id) return SQLITE_OK;
+#ifdef ULMDB_SQLITE_OWNED
+    rc = preserve_writer_values(t); if (rc) return rc;
+#endif
     if (t->module->nsaves == t->module->capacity) {
         int capacity = t->module->capacity ? t->module->capacity * 2 : 8;
         Save *saves;
@@ -664,6 +722,9 @@ static int savepoint(sqlite3_vtab *base, int id) {
 }
 static int release(sqlite3_vtab *base, int id) {
     Table *t = (Table *)base;
+#ifdef ULMDB_SQLITE_OWNED
+    int rc = preserve_writer_values(t); if (rc) return rc;
+#endif
     while (t->module->nsaves && t->module->saves[t->module->nsaves - 1].id >= id) {
         MDB_txn *child = t->module->saves[--t->module->nsaves].txn;
         int rc = mdb_txn_commit(child);
@@ -675,6 +736,9 @@ static int rollback_to(sqlite3_vtab *base, int id) {
     Table *t = (Table *)base;
     int found = 0;
     if (!t->module->write) return SQLITE_OK;
+#ifdef ULMDB_SQLITE_OWNED
+    { int rc = preserve_writer_values(t); if (rc) return rc; }
+#endif
     while (t->module->nsaves && t->module->saves[t->module->nsaves - 1].id >= id) {
         Save s = t->module->saves[--t->module->nsaves];
         found |= s.id == id;

@@ -174,7 +174,10 @@ fn duplicate_inner_trees_custom_callbacks_private_scopes_and_savepoints() {
             },
         )
         .unwrap();
-        for n in 0..512u32 {
+        // A compact leaf holds up to 1,016 four-byte duplicate keys. Force
+        // actual inner-tree splits with both compact and slotted layouts.
+        const ROWS: u32 = 2048;
+        for n in 0..ROWS {
             w.insert_duplicate_with_ordering(b"dups", b"key", &n.to_be_bytes(), &callbacks)
                 .unwrap();
         }
@@ -183,7 +186,7 @@ fn duplicate_inner_trees_custom_callbacks_private_scopes_and_savepoints() {
         count.store(0, Ordering::Relaxed);
         let base = old.database_stats(b"dups").unwrap();
         assert_eq!(count.load(Ordering::Relaxed), 0);
-        assert_eq!(base.entries, 512);
+        assert_eq!(base.entries, u64::from(ROWS));
         assert_eq!(base.depth, 1);
         assert!(base.max_tree_depth >= 2 && base.branch_pages > 0 && base.leaf_pages >= 3);
         assert_eq!(base.overflow_bytes, 0);
@@ -191,11 +194,11 @@ fn duplicate_inner_trees_custom_callbacks_private_scopes_and_savepoints() {
         let h = w.open_database(b"dups").unwrap();
         let a = w.open_database_view_with_ordering(&h, &callbacks).unwrap();
         let b = w.open_database_view_with_ordering(&h, &callbacks).unwrap();
-        w.view_insert_duplicate(&a, b"key", &900u32.to_be_bytes())
+        w.view_insert_duplicate(&a, b"key", &(ROWS + 1).to_be_bytes())
             .unwrap();
         count.store(0, Ordering::Relaxed);
         let changed = w.view_database_stats(&a).unwrap();
-        assert_eq!(changed.entries, 513);
+        assert_eq!(changed.entries, u64::from(ROWS) + 1);
         assert_eq!(w.view_database_stats(&b).unwrap(), base);
         assert_eq!(count.load(Ordering::Relaxed), 0);
         {

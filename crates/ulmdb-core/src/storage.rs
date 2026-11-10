@@ -187,6 +187,16 @@ pub trait WriteStore: ReadStore {
     /// must not infer it from a header, allocation, or patch capability alone.
     /// Default stores retain strict validation and perform no additional read.
     fn admitted_dense_leaf(&self, _at: Reference, _page_bytes: &[u8]) -> bool { false }
+    /// Assert that this exact current 4 KiB V2 leaf image has valid geometry,
+    /// strict local bytewise key ordering, and an all-zero unused tail.
+    /// Authority must be bound to this store's exact current image and revoked
+    /// after unsupported edits; a header, allocation, or equal byte copy alone
+    /// is insufficient. This is not graph, routing, or application-comparator
+    /// authority. Default stores perform no extra read and retain the ordinary
+    /// KV validator, which remains the authority for corruption errors.
+    fn admitted_compact_leaf(&self, _at: Reference, _page_bytes: &[u8]) -> bool {
+        false
+    }
     fn allocate(&mut self, bytes: &[u8], alignment: usize) -> Result<Reference>;
     /// Optional receipt that a successful tree edit removed one incoming page
     /// edge (including the tree's root position). This is not payload removal,

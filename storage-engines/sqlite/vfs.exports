@@ -1,0 +1,7 @@
+{
+    global:
+        sqlite3_ulmdbvfs_init;
+        upg_*;
+    local:
+        *;
+};

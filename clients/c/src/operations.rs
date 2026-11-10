@@ -569,6 +569,14 @@ pub unsafe extern "C" fn mdb_get(
         if let Some(reserved) = t.reserve_value(&h, key) {
             return set_value(value, reserved);
         }
+        #[cfg(feature = "sql-hash")]
+        if let Some(found) =
+            crate::cursor_stream::sql_batch::sql_hash::ordinary_get(t, &h, key, settings)?
+        {
+            let found = found.ok_or(NOTFOUND)?;
+            *unsafe { get_mut(value)? } = found;
+            return Ok(());
+        }
         if let Some(found) = ordinary_read_value(t, &h, key, settings)? {
             if let Some(found) = found {
                 return set_value(value, found);
@@ -640,6 +648,12 @@ fn put_one(
     let settings = t.checked_sizes(h, key, Some(data), true)?;
     if t.readonly {
         return Err(t.shared.readonly_error());
+    }
+    #[cfg(feature = "sql-batch")]
+    if flags == 0x10
+        && cursor_stream::sql_batch::sql_write::try_nooverwrite(t, h, key, data, out, settings)?
+    {
+        return Ok(());
     }
     if flags == 0 && ordinary_write_alias(t, h, settings)? {
         // With bytewise equality the canonical key is the already-copied

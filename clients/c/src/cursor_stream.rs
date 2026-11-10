@@ -14,6 +14,11 @@ pub(super) struct Query<'a> {
     pub only_key: Option<&'a [u8]>,
     pub exact_value: Option<&'a [u8]>,
 }
+
+// Optional adapter implementation; the ordinary C ABI is unchanged.
+#[cfg(feature = "sql-batch")]
+#[path = "../../../storage-engines/postgresql/native/sql_batch.rs"]
+pub(crate) mod sql_batch;
 impl<'a> Query<'a> {
     pub(super) fn edge(reverse: bool) -> Self {
         Self {

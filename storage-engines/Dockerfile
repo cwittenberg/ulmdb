@@ -16,7 +16,8 @@ COPY crates ./crates
 COPY clients/c ./clients/c
 COPY clients/rust ./clients/rust
 COPY utility/explorer ./utility/explorer
-RUN cargo build --release --locked -p ulmdb-c
+COPY storage-engines/postgresql/native ./storage-engines/postgresql/native
+RUN cargo build --release --locked -p ulmdb-c --features sql-batch
 
 FROM engine AS sqlite-owned
 COPY storage-engines/sqlite/native ./storage-engines/sqlite/native
@@ -36,5 +37,5 @@ COPY --from=sqlite-owned /src/target/sqlite-native/release/libulmdb_sqlite_nativ
 RUN ldconfig \
     && make -C storage-engines/sqlite all test_commit_failure.so ULMDB_LIBDIR=/usr/local/lib \
     && make -C storage-engines/sqlite owned ULMDB_NATIVE_LIB=/usr/local/lib/libulmdb_sqlite_native.a \
-    && make -C storage-engines/postgresql ULMDB_LIBDIR=/usr/local/lib \
-    && make -C storage-engines/postgresql ULMDB_LIBDIR=/usr/local/lib install
+    && make -C storage-engines/postgresql ULMDB_LIBDIR=/usr/local/lib ULMDB_SQL_BATCH=1 \
+    && make -C storage-engines/postgresql ULMDB_LIBDIR=/usr/local/lib ULMDB_SQL_BATCH=1 install

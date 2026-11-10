@@ -44,6 +44,8 @@ impl Arena {
             }) {
                 return Ok(old);
             }
+            let preserve_compact = p.has_compact_leaf_certificate()
+                && ulmdb_core::compact_leaf::preserves_append(bytes, patches);
             self.remember_private(slot)?;
             self.revision = self.revision.checked_add(1).ok_or(Error::LimitExceeded)?;
             let p = self.private.get_mut(&slot)?.unwrap();
@@ -52,6 +54,9 @@ impl Arena {
             // remains between writes to this exclusively owned private page.
             for &(offset, replacement) in patches {
                 p.write(offset, replacement)?;
+            }
+            if preserve_compact {
+                p.restore_compact_leaf_certificate();
             }
             return Ok(old);
         }

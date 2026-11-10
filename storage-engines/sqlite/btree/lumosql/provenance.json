@@ -1,0 +1,27 @@
+{
+  "retrieved_utc": "2026-11-10",
+  "upstream": "LumoSQL Fossil trunk",
+  "license": "MIT; see LICENSE",
+  "files": {
+    "btree.c": {
+      "url": "https://lumosql.org/src/lumosql/raw/not-fork.d/lmdb/files/btree.c?ci=trunk",
+      "sha256": "916c967a2660453a64f9b27783380bac67e0fd6447e8d877f3a94289a40c39ba",
+      "bytes": 166999
+    },
+    "pager.c": {
+      "url": "https://lumosql.org/src/lumosql/raw/not-fork.d/lmdb/files/pager.c?ci=trunk",
+      "sha256": "c0caa995768bbc728526a299a3dee982cbf6551f51b030f5e5b9d7b02bd41b1b",
+      "bytes": 7224
+    },
+    "backup.c": {
+      "url": "https://lumosql.org/src/lumosql/raw/not-fork.d/lmdb/files/backup.c?ci=trunk",
+      "sha256": "2d0ce111c7545f5e0a34b0f3468e9bda2c705207f5be105db91ceb7e244ac33f",
+      "bytes": 4478
+    },
+    "ephemeral.c": {
+      "url": "https://lumosql.org/src/lumosql/raw/not-fork.d/lmdb/files/ephemeral.c?ci=trunk",
+      "sha256": "5f2e9e0854c18b1bcc09b32166148dd39dfb2937150640d0bae9a2fa66eb5b1a",
+      "bytes": 21168
+    }
+  }
+}

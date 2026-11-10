@@ -36,11 +36,19 @@ impl Arena {
             if bytes[offset..end] == *replacement {
                 return Ok(old);
             }
+            let preserve_compact = object_len == PAGE
+                && alignment == PAGE
+                && start == 0
+                && p.has_compact_leaf_certificate()
+                && ulmdb_core::compact_leaf::preserves_value_patch(bytes, offset, replacement);
             // Admit undo before the checked revision tick and private write.
             self.remember_private(slot)?;
             self.revision = self.revision.checked_add(1).ok_or(Error::LimitExceeded)?;
             let p = self.private.get_mut(&slot)?.unwrap();
             p.write(start + offset, replacement)?;
+            if preserve_compact {
+                p.restore_compact_leaf_certificate();
+            }
             return Ok(old);
         }
         let source = self.base.version(slot).ok_or(Error::InvalidInput(

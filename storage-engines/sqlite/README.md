@@ -4,10 +4,38 @@ Requires Linux, Rust 1.94, make, C compiler, SQLite 3.38+ headers/CLI.
 
 | Module | Extension | Storage |
 | --- | --- | --- |
+| VFS `ulmdb` | `ulmdb_vfs.so` | Ordinary tables/indexes; experimental page store, one process |
 | `ulmdb` | `ulmdb_sqlite.so` | Cooperative clients; existing ULMDB format/C library |
 | `ulmdb_owned` | `ulmdb_sqlite_owned.so` | One owning process, shared connections; separate snapshot-log format |
+| [B-tree prototype](btree/README.md) | Custom SQLite build | Replaces persistent B-trees; incomplete, no qualified speedup |
 
-## Build
+## Page VFS
+
+Requires SQLite built with `-DSQLITE_ENABLE_BATCH_ATOMIC_WRITE`.
+
+```sh
+SQLITE_SRC=/path/to/sqlite-amalgamation-3540100
+cc -O2 -DSQLITE_ENABLE_BATCH_ATOMIC_WRITE -DSQLITE_THREADSAFE=1 \
+  "$SQLITE_SRC/shell.c" "$SQLITE_SRC/sqlite3.c" \
+  -ldl -lpthread -lm -o /tmp/sqlite3-ulmdb
+make -C storage-engines/sqlite vfs CPPFLAGS="-I$SQLITE_SRC"
+/tmp/sqlite3-ulmdb :memory:
+```
+
+```sql
+.load ./storage-engines/sqlite/ulmdb_vfs
+.open file:/tmp/pages?vfs=ulmdb
+PRAGMA journal_mode=DELETE;
+PRAGMA synchronous=FULL;
+CREATE TABLE items(id INTEGER PRIMARY KEY, name TEXT);
+CREATE INDEX items_name ON items(name);
+```
+
+Dedicated directory; 64 MiB logical database; FULL/EXTRA durability; rollback and
+savepoints. WAL is unsupported. Initialize schema before optional EXCLUSIVE locking.
+Pages use lossless compression with a raw fallback.
+
+## Virtual tables: build
 
 From repository root:
 
@@ -16,7 +44,7 @@ From repository root:
 cargo build --release --locked -p ulmdb-c
 make -C storage-engines/sqlite
 
-# Owned (versioned profile)
+# Owned
 make -C storage-engines/sqlite owned
 ```
 
@@ -30,7 +58,7 @@ make -C storage-engines/sqlite owned \
 
 [Direct Rust commands](native/README.md).
 
-## Use
+## Virtual tables: use
 
 `sqlite3 /tmp/catalog.sqlite`; choose one:
 
@@ -56,7 +84,7 @@ UPDATE cache SET value=CAST('updated' AS BLOB) WHERE id=42;
 DELETE FROM cache WHERE id=42;
 ```
 
-## Limits
+## Virtual table limits
 
 | Area | Limit/behavior |
 | --- | --- |

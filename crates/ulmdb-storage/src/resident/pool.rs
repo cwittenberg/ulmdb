@@ -311,6 +311,7 @@ impl Pool {
                 ranges: f.ranges,
                 cursor: 0,
                 tiny,
+                compact_leaf_valid: AtomicBool::new(false),
             });
         }
     }
@@ -356,6 +357,7 @@ impl Pool {
             ranges: f.ranges,
             cursor: 0,
             tiny,
+            compact_leaf_valid: AtomicBool::new(false),
         })
     }
     pub(super) fn restore_retired(&self, slot: u32, generation: u64) -> Result<()> {
@@ -432,8 +434,37 @@ pub(super) struct Permit {
     pub ranges: Vec<(u16, u16)>,
     pub cursor: usize,
     tiny: bool,
+    // Writer-local validity of this exact mutable image. Never sealed into a
+    // Version or carried across a fresh reservation of the same physical map.
+    compact_leaf_valid: AtomicBool,
 }
 impl Permit {
+    pub(super) fn admitted_compact_leaf(&self, bytes: &[u8]) -> bool {
+        if self.tiny || !self.exact(0, PAGE) {
+            return false;
+        }
+        let Ok(current) = self.read(0, PAGE) else {
+            return false;
+        };
+        if !std::ptr::eq(current, bytes) {
+            return false;
+        }
+        if !self.has_compact_leaf_certificate() {
+            if !ulmdb_core::compact_leaf::is_valid(current) {
+                return false;
+            }
+            self.restore_compact_leaf_certificate();
+        }
+        true
+    }
+    pub(super) fn has_compact_leaf_certificate(&self) -> bool {
+        self.compact_leaf_valid.load(Ordering::Relaxed)
+    }
+    // Call only after actual full validation or a recognized validity-preserving
+    // transformation. Exclusive Permit writes invalidate before changing bytes.
+    pub(super) fn restore_compact_leaf_certificate(&self) {
+        self.compact_leaf_valid.store(true, Ordering::Relaxed);
+    }
     pub(super) fn snapshot_bytes(&self) -> &[u8] {
         &self.map.as_ref().expect("live resident permit")[..]
     }
@@ -455,6 +486,7 @@ impl Permit {
             .checked_add(bytes.len())
             .filter(|n| *n <= PAGE)
             .ok_or(Error::LimitExceeded)?;
+        self.compact_leaf_valid.store(false, Ordering::Relaxed);
         self.map.as_mut().unwrap()[offset..end].copy_from_slice(bytes);
         Ok(())
     }

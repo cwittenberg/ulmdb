@@ -293,7 +293,10 @@ impl<T> Drop for Owned<T> {
     }
 }
 enum State {
+    #[cfg(not(feature = "sql-hash"))]
     Read(ReadTxn),
+    #[cfg(feature = "sql-hash")]
+    Read(cursor_stream::sql_batch::sql_hash::SqlReadTxn),
     PrivateRead(private_read::PrivateReadView),
     Write(Owned<WriteTxn<'static>>),
     Child(Owned<Savepoint<'static, 'static>>),

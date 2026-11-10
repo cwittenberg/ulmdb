@@ -164,6 +164,90 @@ def check_ignore_counters(root, extension, module):
     reference.close()
 
 
+def check_unchanged_columns(root, extension, module):
+    actual = connect(root / "unchanged.sqlite", extension)
+    reference = sqlite3.connect(":memory:")
+    actual.execute(f"CREATE VIRTUAL TABLE kv USING {module}('{root}/unchanged-store')")
+    reference.execute("CREATE TABLE kv(id INTEGER PRIMARY KEY,value BLOB NOT NULL)")
+    rows = [(0, b""), (1, b"inline"), (2, b"heap" * 2048), (3, b"last")]
+    for db in (actual, reference):
+        db.executemany("INSERT INTO kv VALUES(?,?)", rows)
+        db.commit()
+    statements = [
+        "UPDATE kv SET value=x'AA' WHERE id=1",  # Unchanged id.
+        "UPDATE kv SET id=20 WHERE id=2",       # Unchanged large blob.
+        "UPDATE kv SET id=id WHERE id=0",      # Both values unchanged.
+        "UPDATE kv SET value=value WHERE id=20",  # Expression needs the blob.
+        "UPDATE kv SET id=id+100",             # Multirow nochange records.
+        "UPDATE kv SET value=x'CC' WHERE id IN(100,101)",
+        "UPDATE kv SET value=CAST(id AS BLOB) WHERE id>=103",
+        "UPDATE OR REPLACE kv SET id=101 WHERE id=100",
+        "UPDATE kv SET value=s.value FROM (SELECT x'33' AS value) AS s WHERE id=103",
+    ]
+    for statement in statements:
+        expected = reference.execute(statement)
+        received = actual.execute(statement)
+        assert received.rowcount == expected.rowcount, statement
+        reference.commit()
+        actual.commit()
+        assert actual.execute("SELECT * FROM kv ORDER BY id").fetchall() == reference.execute("SELECT * FROM kv ORDER BY id").fetchall(), statement
+        counters = "SELECT changes(),total_changes(),last_insert_rowid()"
+        assert actual.execute(counters).fetchone() == reference.execute(counters).fetchone(), statement
+    # Overlapping REPLACE moves must preserve the current row's unchanged
+    # value, including a row created by an earlier move in this statement.
+    for db in (actual, reference):
+        db.execute("DELETE FROM kv")
+        db.executemany("INSERT INTO kv VALUES(?,?)", [(i, bytes([i])) for i in range(4)])
+        db.commit()
+    for db in (actual, reference):
+        db.execute("UPDATE OR REPLACE kv SET id=id+1")
+        db.commit()
+    assert actual.execute("SELECT * FROM kv").fetchall() == reference.execute("SELECT * FROM kv").fetchall() == [(4, b"\x00")]
+    actual.close()
+    reference.close()
+
+
+def check_writer_row_lifetime(root, extension):
+    db = connect(root / "writer-rows.sqlite", extension)
+    db.execute(f"CREATE VIRTUAL TABLE kv USING ulmdb_owned('{root}/writer-rows-store')")
+    rows = [(0, b"initial"), (1, b"inline"), (2, b"heap" * 2048), (3, b"")]
+    db.executemany("INSERT INTO kv VALUES(?,?)", rows)
+    db.commit()
+    db.execute("BEGIN")
+    db.execute("UPDATE kv SET value=value WHERE id=0")
+    scan = db.execute("SELECT id,value FROM kv ORDER BY id")
+    assert scan.fetchone() == rows[0]
+    # Python has already stepped to the next row. Updating its staged value
+    # must preserve that row's bytes until the outstanding scan consumes it.
+    db.execute("UPDATE kv SET value=zeroblob(4096) WHERE id=1")
+    assert scan.fetchone() == rows[1]
+    db.execute("SAVEPOINT overlap")
+    db.execute("UPDATE kv SET value=x'CC' WHERE id=2")
+    db.execute("ROLLBACK TO overlap")
+    db.execute("RELEASE overlap")
+    assert scan.fetchall() == rows[2:]
+    def replace_during_projection(key):
+        db.execute("UPDATE kv SET value=zeroblob(1024) WHERE id=?", (key,))
+        return key
+    db.create_function("replace_during_projection", 1, replace_during_projection)
+    row = db.execute("SELECT id,replace_during_projection(id),value FROM kv WHERE id=2").fetchone()
+    assert row == (2, 2, rows[2][1])
+    assert db.execute("SELECT length(value) FROM kv WHERE id=2").fetchone() == (1024,)
+    # An abort must drop borrowed delta pointers before freeing their values.
+    scan = db.execute("SELECT id,value FROM kv ORDER BY id")
+    assert scan.fetchone() == rows[0]
+    db.rollback()
+    try:
+        scan.fetchall()
+    except sqlite3.OperationalError as error:
+        assert "invalidated" in str(error) or "abort" in str(error).lower(), error
+    else:
+        raise AssertionError("writer cursor survived transaction rollback")
+    scan.close()
+    assert db.execute("SELECT * FROM kv ORDER BY id").fetchall() == rows
+    db.close()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("extension", type=pathlib.Path)
@@ -269,6 +353,9 @@ def main():
         assert db.execute("SELECT id,value FROM kv ORDER BY id").fetchall() == expected
         db.close()
         check_ignore_counters(root, extension, args.module)
+        check_unchanged_columns(root, extension, args.module)
+        if args.module == "ulmdb_owned":
+            check_writer_row_lifetime(root, extension)
     print(f"SQLite {args.module} adapter: SQL CRUD, signed keys, IN batches/types/order/bounds, planner, read snapshots, transactions, nested savepoints, statement rollback, reopen and detach passed")
 
 

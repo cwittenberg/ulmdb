@@ -382,6 +382,18 @@ impl ReadStore for Arena {
     }
 }
 impl WriteStore for Arena {
+    fn admitted_compact_leaf(&self, at: Reference, page_bytes: &[u8]) -> bool {
+        let Ok((slot, generation, offset)) = unpack(at) else {
+            return false;
+        };
+        if offset != 0 || slot as usize >= self.pool.geometry().0 {
+            return false;
+        }
+        let Ok(Some(private)) = self.private.get(&slot) else {
+            return false;
+        };
+        private.generation == generation && private.admitted_compact_leaf(page_bytes)
+    }
     fn allocate(&mut self, bytes: &[u8], alignment: usize) -> Result<Reference> {
         self.parts(bytes, &[], alignment)
     }
@@ -461,17 +473,19 @@ impl WriteStore for Arena {
             return Ok(old);
         }
         let (slot, generation, start) = unpack(old)?;
-        if self
-            .private
-            .get(&slot)?
-            .is_some_and(|p| p.generation == generation)
-        {
+        if let Some(p) = self.private.get(&slot)?.filter(|p| p.generation == generation) {
+            let preserve_compact = object_len == PAGE
+                && alignment == PAGE
+                && start == 0
+                && p.has_compact_leaf_certificate()
+                && ulmdb_core::compact_leaf::preserves_value_patch(bytes, offset, replacement);
             self.remember_private(slot)?;
             self.tick()?;
-            self.private
-                .get_mut(&slot)?
-                .unwrap()
-                .write(start + offset, replacement)?;
+            let p = self.private.get_mut(&slot)?.unwrap();
+            p.write(start + offset, replacement)?;
+            if preserve_compact {
+                p.restore_compact_leaf_certificate();
+            }
             Ok(old)
         } else {
             #[cfg(feature = "resident-direct-page-patch")]
@@ -505,6 +519,10 @@ impl WriteStore for Arena {
         self.parts(&header, value, 16)
     }
 }
+
+#[cfg(test)]
+#[path = "compact_leaf_tests.rs"]
+mod compact_leaf_tests;
 
 impl View {
     /// Caller supplies an authenticated, state-checked new-family record. Safe
